@@ -46,7 +46,7 @@ function DashboardProblemas() {
     <div className="col-span-full xl:col-span-max bg-white shadow-lg rounded-sm border border-slate-200">
       
       <header className="px-5 py-4 border-b border-slate-100" style={{display:'flex', justifyContent:'space-between', cursor:'pointer'}}>
-        <h2 className="font-semibold text-slate-800">Incidentes</h2>
+        <h2 className="font-semibold text-slate-800">Problemas</h2>
         <div class="text-sm font-semibold text-white px-1.5 bg-green-500 rounded-full"> + Nuevo </div>  
       </header>
       <div className="p-3">
