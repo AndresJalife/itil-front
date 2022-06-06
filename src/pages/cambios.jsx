@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Sidebar from '../partials/Sidebar';
 import Header from '../partials/Header';
 import WelcomeBanner from '../partials/dashboard/WelcomeBanner';
+import DashboardCambios from '../partials/dashboard/DashboardCambios';
 import DashboardAvatars from '../partials/dashboard/DashboardAvatars';
 import FilterButton from '../partials/actions/FilterButton';
 import Datepicker from '../partials/actions/Datepicker';
@@ -37,19 +38,13 @@ function Cambios() {
       <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
       <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} nombreUsuario={"Nombre Usuario"} rolUsuario={"Administrador"}/>
         <main>
-          <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
-
-
-            {/* Welcome banner */}
-            <WelcomeBanner />
-
-            
+          <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">    
 
             {/* Cards */}
             <div className="grid grid-cols-12 gap-6">
 
               {/* Card (Customers) */}
-              <DashboardCard11 />
+              <DashboardCambios />
               
             </div>
 
