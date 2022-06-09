@@ -32,7 +32,7 @@ function App() {
   }
 
   if (!isAuthenticated) {
-    loginWithRedirect();
+    loginWithRedirect({scope: 'read:current_user'});
     return <Loading />;
   }
 

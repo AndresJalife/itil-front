@@ -4,7 +4,6 @@ import Sidebar from '../partials/Sidebar';
 import Header from '../partials/Header';
 import WelcomeBanner from '../partials/dashboard/WelcomeBanner';
 import DashboardCard10 from '../partials/dashboard/DashboardCard10';
-import LoginButton from "../partials/auth/LoginButton";
 
 function Dashboard() {
 
