@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import SearchModal from './header/SearchModal';
-import Notifications from './header/Notifications';
-import Help from './header/Help';
 import UserMenu from './header/UserMenu';
+import {useAuth0} from "@auth0/auth0-react";
+import useUser from "./useUser";
 
 function Header({
   sidebarOpen,
   setSidebarOpen,
-  nombreUsuario,
-  rolUsuario
 }) {
 
+  const { logout } = useAuth0();
+  const {user, isAdmin, isSupport} = useUser();
   const [searchModalOpen, setSearchModalOpen] = useState(false)
+  console.log(user);
 
   return (
     <header className="sticky top-0 bg-white border-b border-slate-200 z-30">
@@ -57,7 +57,7 @@ function Header({
             <Help /> */}
             {/*  Divider */}
             {/* <hr className="w-px h-6 bg-slate-200 mx-3" /> */}
-            <UserMenu nombre={nombreUsuario} rol={rolUsuario}/>
+            <UserMenu user={user} onCloseSession={() => logout({ returnTo: window.location.origin })}/>
 
           </div>
 

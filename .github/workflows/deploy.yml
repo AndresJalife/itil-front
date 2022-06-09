@@ -15,4 +15,4 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "itil-front"
           heroku_email: "maxilevi77@gmail.com"
-          procfile: "web: npm install -g serve && serve -s dist"
+          procfile: "web: npm install -g serve && serve -s build"
