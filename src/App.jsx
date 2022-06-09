@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
 import {
-  Routes,
   Route,
-  useLocation
+  useLocation, Switch, Router
 } from 'react-router-dom';
 
-import './css/style.scss';
+import './index.css';
 
 import './charts/ChartjsConfig';
 
@@ -17,29 +16,38 @@ import Cambios from './pages/cambios';
 import ConfiguracionSoftware from './pages/configuracion_software';
 import ConfiguracionHardware from './pages/configuracion_hardware';
 import ConfiguracionSLA from './pages/configuracion_sla';
+import {useAuth0} from "@auth0/auth0-react";
+import Loading from "./partials/Loading";
+import history from "./utils/history";
 
 function App() {
+  const { isLoading, isAuthenticated, error, loginWithRedirect } = useAuth0();
 
-  const location = useLocation();
+  if (error) {
+    return <div>Oops... {error.message}</div>;
+  }
 
-  useEffect(() => {
-    document.querySelector('html').style.scrollBehavior = 'auto'
-    window.scroll({ top: 0 })
-    document.querySelector('html').style.scrollBehavior = ''
-  }, [location.pathname]); // triggered on route change
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (!isAuthenticated) {
+    loginWithRedirect();
+    return <Loading />;
+  }
 
   return (
-    <>
-      <Routes>
-        <Route exact path="/" element={<Dashboard />} />
-        <Route exact path="/incidentes" element={<Incidentes />} />
-        <Route exact path="/problemas" element={<Problemas />} />
-        <Route exact path="/cambios" element={<Cambios />} />
-        <Route exact path="/configuracion_software" element={<ConfiguracionSoftware />} />
-        <Route exact path="/configuracion_hardware" element={<ConfiguracionHardware />} />
-        <Route exact path="/configuracion_sla" element={<ConfiguracionSLA />} />
-      </Routes>
-    </>
+   <Router history={history}>
+      <Switch>
+        <Route exact path="/" component={Dashboard} />
+        <Route exact path="/incidentes" component={Incidentes} />
+        <Route exact path="/problemas" component={Problemas} />
+        <Route exact path="/cambios" component={Cambios} />
+        <Route exact path="/configuracion_software" component={ConfiguracionSoftware} />
+        <Route exact path="/configuracion_hardware" component={ConfiguracionHardware} />
+        <Route exact path="/configuracion_sla" component={ConfiguracionSLA} />
+      </Switch>
+    </Router>
   );
 }
 
