@@ -125,7 +125,6 @@ function Sidebar({
                 </a>
               </li>
               {/* Configuracion */}
-              {console.log(sidebarSelected)}
               <SidebarLinkGroup activecondition={sidebarSelected.includes('conf')}>
                 {(handleClick, open) => {
                   return (

@@ -1,12 +1,10 @@
 import React, { useEffect } from 'react';
 import {
-  Routes,
   Route,
-  useLocation,
-  Navigate
+  useLocation, Switch, Router, Redirect
 } from 'react-router-dom';
 
-import './css/style.scss';
+import './index.css';
 
 import './charts/ChartjsConfig';
 
@@ -18,24 +16,39 @@ import Cambios from './pages/cambios';
 import ConfiguracionSoftware from './pages/configuracion_software';
 import ConfiguracionHardware from './pages/configuracion_hardware';
 import ConfiguracionSLA from './pages/configuracion_sla';
+import {useAuth0} from "@auth0/auth0-react";
+import Loading from "./partials/Loading";
+import history from "./utils/history";
 
 function App() {
+  const { isLoading, isAuthenticated, error, loginWithRedirect } = useAuth0();
 
-  const location = useLocation();
+  if (error) {
+    return <div>Oops... {error.message}</div>;
+  }
 
-  useEffect(() => {
-    document.querySelector('html').style.scrollBehavior = 'auto'
-    window.scroll({ top: 0 })
-    document.querySelector('html').style.scrollBehavior = ''
-  }, [location.pathname]); // triggered on route change
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (!isAuthenticated) {
+    loginWithRedirect({scope: 'read:current_user'});
+    return <Loading />;
+  }
 
   return (
-    <>
-      <Routes>
-        <Route path="/" element={<Navigate to="/dashboard" />} />
-        <Route exact path="/dashboard" element={<Dashboard />} />
-      </Routes>
-    </>
+
+    
+   <Router history={history}>
+      <Switch>
+       <Route exact path="/" component={history.push('/dashboard') }></Route>
+        {/* {loggedIn ? <Redirect to="/dashboard" /> : <PublicHomePage />} */}
+      
+
+        <Route exact path="/dashboard" component={Dashboard} />
+
+      </Switch>
+    </Router>
   );
 }
 
