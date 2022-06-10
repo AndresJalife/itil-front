@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^1.0.7",
-    "autoprefixer": "^10.4.7",
+    "autoprefixer": "10.4.5",
     "eslint-plugin-react-hooks": "^4.3.0",
     "postcss": "^8.4.14",
     "sass": "^1.49.0",
@@ -30,6 +30,9 @@
     "vite": "^2.7.2"
   },
   "overrides": {
+    "autoprefixer": "10.4.5"
+  },
+  "resolutions": {
     "autoprefixer": "10.4.5"
   },
   "eslintConfig": {
