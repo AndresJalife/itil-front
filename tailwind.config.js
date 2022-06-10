@@ -54,6 +54,9 @@ module.exports = {
       },
     },
   },
+  ignoreWarnings: [
+    (warning) => true,
+  ],
   plugins: [
     // eslint-disable-next-line global-require
     require('@tailwindcss/forms'),
