@@ -7,7 +7,6 @@ import history from "./utils/history";
 import { getConfig } from "./config";
 
 const onRedirectCallback = (appState) => {
-    console.log("tu vieja");
     history.push(
         appState && appState.returnTo ? appState.returnTo : window.location.pathname
     );
