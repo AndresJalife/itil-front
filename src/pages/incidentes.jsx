@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import Sidebar from '../partials/Sidebar';
 import Header from '../partials/Header';
-import WelcomeBanner from '../partials/dashboard/WelcomeBanner';
 import DashboardIncidentes from '../partials/dashboard/DashboardIncidentes';
 import Banner from '../partials/Banner';
 

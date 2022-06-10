@@ -60,7 +60,7 @@ function DashboardConfHardware() {
       
       <header className="px-5 py-4 border-b border-slate-100" style={{display:'flex', justifyContent:'space-between', cursor:'pointer'}}>
         <h2 className="font-semibold text-slate-800">Configuracion de Hardware</h2>
-        <div class="text-sm font-semibold text-white px-1.5 bg-green-500 rounded-full"> + Nuevo </div>  
+        <div className="text-sm font-semibold text-white px-1.5 bg-green-500 rounded-full"> + Nuevo </div>  
       </header>
       <div className="p-3">
 

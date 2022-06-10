@@ -6,10 +6,11 @@ import Image03 from '../../images/user-36-07.jpg';
 import Image04 from '../../images/user-36-08.jpg';
 import Image05 from '../../images/user-36-09.jpg';
 
-function DashboardSLA() {
+function DashboardConfSLA() {
 
   const items = [
     {
+      id: '0',
       nombre: 'Almacenamiento en la nube',
       servicio: 'Almacenamiento',
       gerente: 'Rodolfo Martinez',
@@ -18,6 +19,7 @@ function DashboardSLA() {
       crucial: 'Si'
     },
     {
+      id: '1',
       nombre: 'Proveedor del servidor',
       servicio: 'Servidor',
       gerente: 'Rodolfo Martinez',
@@ -26,6 +28,7 @@ function DashboardSLA() {
       crucial: 'Si'
     },
     {
+      id:'2',
       nombre: 'Almacenamiento en la nube',
       servicio: 'Almacenamiento',
       gerente: 'Rodolfo Martinez',
@@ -40,7 +43,7 @@ function DashboardSLA() {
       
       <header className="px-5 py-4 border-b border-slate-100" style={{display:'flex', justifyContent:'space-between', cursor:'pointer'}}>
         <h2 className="font-semibold text-slate-800">Service Level Agreement</h2>
-        <div class="text-sm font-semibold text-white px-1.5 bg-green-500 rounded-full"> + Nuevo </div>  
+        <div className="text-sm font-semibold text-white px-1.5 bg-green-500 rounded-full"> + Nuevo </div>  
       </header>
       <div className="p-3">
 
@@ -75,7 +78,7 @@ function DashboardSLA() {
               {
                 items.map(item => {
                   return (
-                    <tr key={item.nombre}>
+                    <tr key={item.id}>
                       <td className="p-2 whitespace-nowrap">
                         <div className="text-left">{item.nombre}</div>
                       </td>
@@ -108,4 +111,4 @@ function DashboardSLA() {
   );
 }
 
-export default DashboardSLA;
+export default DashboardConfSLA;

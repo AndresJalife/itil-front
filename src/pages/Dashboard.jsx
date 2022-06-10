@@ -3,35 +3,25 @@ import React, { useState } from 'react';
 import Sidebar from '../partials/Sidebar';
 import Header from '../partials/Header';
 import WelcomeBanner from '../partials/dashboard/WelcomeBanner';
-import DashboardAvatars from '../partials/dashboard/DashboardAvatars';
-import FilterButton from '../partials/actions/FilterButton';
-import Datepicker from '../partials/actions/Datepicker';
-import DashboardCard01 from '../partials/dashboard/DashboardCard01';
-import DashboardCard02 from '../partials/dashboard/DashboardCard02';
-import DashboardCard03 from '../partials/dashboard/DashboardCard03';
-import DashboardCard04 from '../partials/dashboard/DashboardCard04';
-import DashboardCard05 from '../partials/dashboard/DashboardCard05';
-import DashboardCard06 from '../partials/dashboard/DashboardCard06';
-import DashboardCard07 from '../partials/dashboard/DashboardCard07';
-import DashboardCard08 from '../partials/dashboard/DashboardCard08';
-import DashboardCard09 from '../partials/dashboard/DashboardCard09';
-import DashboardCard10 from '../partials/dashboard/DashboardCard10';
-import DashboardCard11 from '../partials/dashboard/DashboardCard11';
-import DashboardCard12 from '../partials/dashboard/DashboardCard12';
-import DashboardCard13 from '../partials/dashboard/DashboardCard13';
-import Banner from '../partials/Banner';
+import DashboardConfHardware from '../partials/dashboard/DashboardConfHardware';
+import DashboardConfSoftware from '../partials/dashboard/DashboardConfSoftware';
+import DashboardConfSLA from '../partials/dashboard/DashboardConfSLA';
+import DashboardIncidentes from '../partials/dashboard/DashboardIncidentes';
+import DashboardProblemas from '../partials/dashboard/DashboardProblemas';
+import DashboardCambios from '../partials/dashboard/DashboardCambios';
 
 function Dashboard() {
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  let [sidebarSelected, setSidebarSelected] = useState("inicio")
   return (
     <div className="flex h-screen overflow-hidden">
 
       {/* Sidebar */}
-      <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+      <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} sidebarSelected={sidebarSelected} setSidebarSelected={setSidebarSelected} />
 
-
+      {console.log("current ",sidebarSelected)}
       
       {/* Content area */}
       <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
@@ -40,18 +30,29 @@ function Dashboard() {
           <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
 
 
-            {/* Welcome banner */}
-            <WelcomeBanner />
+            {/* Welcome banner  <WelcomeBanner />*/ }
+            
 
             
 
-            {/* Cards */}
-            <div className="grid grid-cols-12 gap-6">
+            {/* Cards <div className="grid grid-cols-12 gap-6">  </div>*/}
+            
 
               {/* Card (Customers) */}
-              <DashboardCard10 />
-              
-            </div>
+              {
+                {
+                  'inicio': <WelcomeBanner />,
+                  'configuracion_hardware': <DashboardConfHardware />,
+                  'configuracion_software': <DashboardConfSoftware />,
+                  'configuracion_sla': <DashboardConfSLA />,
+                  'incidentes': <DashboardIncidentes />,
+                  'problemas': <DashboardProblemas />,
+                  'cambios': <DashboardCambios />,
+                  default: <WelcomeBanner></WelcomeBanner>
+
+                }[sidebarSelected]}
+              {/* <DashboardCard10 /> */}
+             
 
           </div>
         </main>

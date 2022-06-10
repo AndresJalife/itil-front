@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import {
   Routes,
   Route,
-  useLocation
+  useLocation,
+  Navigate
 } from 'react-router-dom';
 
 import './css/style.scss';
@@ -31,13 +32,8 @@ function App() {
   return (
     <>
       <Routes>
-        <Route exact path="/" element={<Dashboard />} />
-        <Route exact path="/incidentes" element={<Incidentes />} />
-        <Route exact path="/problemas" element={<Problemas />} />
-        <Route exact path="/cambios" element={<Cambios />} />
-        <Route exact path="/configuracion_software" element={<ConfiguracionSoftware />} />
-        <Route exact path="/configuracion_hardware" element={<ConfiguracionHardware />} />
-        <Route exact path="/configuracion_sla" element={<ConfiguracionSLA />} />
+        <Route path="/" element={<Navigate to="/dashboard" />} />
+        <Route exact path="/dashboard" element={<Dashboard />} />
       </Routes>
     </>
   );
