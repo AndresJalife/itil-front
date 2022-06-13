@@ -11,6 +11,7 @@ function Header({
   const { logout } = useAuth0();
   const {user, isAdmin, isSupport} = useUser();
   const [searchModalOpen, setSearchModalOpen] = useState(false)
+  
   console.log(user);
 
   return (

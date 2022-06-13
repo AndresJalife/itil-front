@@ -1,0 +1,33 @@
+/* From uiverse.io by @alexroumi */
+.custom-button {
+ padding: 10px 25px;
+ border: unset;
+ border-radius: 15px;
+ color: rgb(15 23 42);
+ z-index: 1;
+ background: #e8e8e8;
+ position: relative;
+ transition: all 250ms;
+ overflow: hidden;
+}
+
+.custom-button::before {
+ content: "";
+ position: absolute;
+ top: 0;
+ left: 0;
+ height: 100%;
+ width: 0;
+ border-radius: 15px;
+ background-color: rgb(79 70 229);;
+ z-index: -1;
+ transition: all 250ms
+}
+
+.custom-button:hover {
+ color: #e8e8e8;
+}
+
+.custom-button:hover::before {
+ width: 100%;
+}

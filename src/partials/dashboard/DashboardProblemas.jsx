@@ -8,11 +8,15 @@ import Image03 from '../../images/user-36-07.jpg';
 import Image04 from '../../images/user-36-08.jpg';
 import Image05 from '../../images/user-36-09.jpg';
 import LoadingData from './LoadingData';
+import CustomButton from './CustomButton';
+import ModalCrearProblema from './ModalCrearProblema';
 
 function DashboardProblemas() {
 
 
   const [items, setItems] = useState(null)
+
+  const [createModalOpen, setCreateModalOpen] = useState(false)
 
 
   $.get("https://itil-back.herokuapp.com/problem", function( data, status) {
@@ -25,7 +29,9 @@ function DashboardProblemas() {
         
         <header className="px-5 py-4 border-b border-slate-100" style={{display:'flex', justifyContent:'space-between', cursor:'pointer'}}>
           <h2 className="font-semibold text-slate-800">Problemas</h2>
-          <div className="text-sm font-semibold text-white px-1.5 bg-green-500 rounded-full"> + Nuevo </div>  
+          <CustomButton  onClick={(e) => { e.stopPropagation(); setCreateModalOpen(true);}}>+ Nuevo </CustomButton>  
+          <ModalCrearProblema id="create-problem-modal" searchId="create" modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} />
+
         </header>
         <div className="p-3">
   
