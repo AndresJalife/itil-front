@@ -1,5 +1,5 @@
 {
-  "name": "mosaic-light-react",
+  "name": "itil-react",
   "version": "0.1.0",
   "scripts": {
     "dev": "react-scripts start",
@@ -8,6 +8,10 @@
   },
   "dependencies": {
     "@auth0/auth0-react": "^1.10.0",
+    "@emotion/react": "^11.9.0",
+    "@emotion/styled": "^11.8.1",
+    "@mui/icons-material": "^5.6.2",
+    "@mui/material": "^5.7.0",
     "autoprefixer": "10.4.5",
     "chart.js": "^3.5.0",
     "chartjs-adapter-moment": "^1.0.0",
