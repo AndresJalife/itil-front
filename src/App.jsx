@@ -16,7 +16,6 @@ import Cambios from './pages/cambios';
 import ConfiguracionSoftware from './pages/configuracion_software';
 import ConfiguracionHardware from './pages/configuracion_hardware';
 import ConfiguracionSLA from './pages/configuracion_sla';
-import NuevoCambio from './pages/nuevo_cambio';
 import {useAuth0} from "@auth0/auth0-react";
 import Loading from "./partials/Loading";
 import history from "./utils/history";
@@ -42,12 +41,11 @@ function App() {
     
    <Router history={history}>
       <Switch>
-       <Route exact path="/" component={Dashboard} />
+        <Route exact path="/" component={Dashboard} />
         {/* {loggedIn ? <Redirect to="/dashboard" /> : <PublicHomePage />} */}
       
 
         <Route exact path="/dashboard" component={Dashboard} />
-        <Route exact path="/nuevoCambio" component={NuevoCambio} />
       </Switch>
     </Router>
   );
