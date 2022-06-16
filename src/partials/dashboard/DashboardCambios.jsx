@@ -10,12 +10,15 @@ import Image05 from '../../images/user-36-09.jpg';
 import LoadingData from './LoadingData';
 import CustomButton from './CustomButton';
 import ModalCrearCambio from './ModalCrearCambio';
+import ModalModificarCambio from './ModalModificarCambio';
 
 function DashboardCambios() {
 
   const [items, setItems] = useState(null)
 
   const [createModalOpen, setCreateModalOpen] = useState(false)
+  const [modifyModalOpen, setModifyModalOpen] = useState(false)
+  const [itemId, setItemId] = useState(0)
   
   if (!items) {
     $.get("https://itil-back.herokuapp.com/change", function( data, status) {
@@ -25,7 +28,7 @@ function DashboardCambios() {
 
   if (items) {
     console.log(items);
-  
+
 
   return (
     <div className="col-span-full xl:col-span-max bg-white shadow-lg rounded-sm border border-slate-200">
@@ -79,8 +82,9 @@ function DashboardCambios() {
                       <td className="p-2 whitespace-nowrap">
                         <div className="text-left">{item.id}</div>
                       </td>
-                      <td className="p-2 whitespace-nowrap">           
-                        <div className="font-medium text-slate-800">{item.name}</div>
+                      <td className="p-2 whitespace-nowrap" style={{cursor:'pointer'}}>           
+                        <div onClick={(e) => { e.stopPropagation(); setModifyModalOpen(true); setItemId(item.id)}} className="font-medium text-slate-800">{item.name}</div>
+                        <ModalModificarCambio id="modify-cambio-modal" searchId="modify" modalOpen={modifyModalOpen} setModalOpen={setModifyModalOpen} changeId={itemId}/>
                       </td>
                       <td className="p-2 whitespace-nowrap">
                         <div className="text-left">{item.priority}</div>
@@ -92,7 +96,7 @@ function DashboardCambios() {
                         <div className="text-left">{item.created_by_id}</div>
                       </td>
                       <td className="p-2 whitespace-nowrap">
-                        <div className="text-left">{item.tomado_por}</div>
+                        <div className="text-left">{item.taken_by_id}</div>
                       </td>
                       <td className="p-2 whitespace-nowrap">
                         <div className="text-left">{item.description}</div>
