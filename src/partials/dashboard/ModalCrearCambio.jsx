@@ -6,7 +6,7 @@ import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import {Alert, FormControl, InputLabel, MenuItem, OutlinedInput, Select} from '@mui/material';
+import {Alert, Button, FormControl, InputLabel, MenuItem, OutlinedInput, Select} from '@mui/material';
 
 import $ from 'jquery'
 
@@ -156,7 +156,7 @@ function ModalCrearCambio({
                 <FormControl fullWidth>
                   <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Incidente Asociado</header>
                   <label  className="sr-only">Incidente Asociado</label>
-                  <Select id="incident_id" name="incident_id" fullWidth input={<OutlinedInput label="Incidente asociado" />} renderValue={selected => selected.name} value={selectedIncident.name} onChange={e => handleIncidentChange(e)} >
+                  <Select id="incident_id" name="incident_id" fullWidth input={<OutlinedInput label="Incidente asociado" />} renderValue={selected => selected} value={selectedIncident.name} onChange={e => handleIncidentChange(e)} >
                     {incidents.map((c, i) => <MenuItem key={i} value={c}>{c.name}</MenuItem>)}
                   </Select>
                 </FormControl>
@@ -164,7 +164,7 @@ function ModalCrearCambio({
                 <FormControl fullWidth>
                   <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Problema Asociado</header>
                   <label  className="sr-only">Problema Asociado</label>
-                  <Select id="problem_id" name="problem_id" fullWidth input={<OutlinedInput label="Problema asociado" />} renderValue={selected => selected.name} value={selectedProblem.name} onChange={e => handleProblemChange(e)} >
+                  <Select id="problem_id" name="problem_id" fullWidth input={<OutlinedInput label="Problema asociado" />} renderValue={selected => selected} value={selectedProblem.name} onChange={e => handleProblemChange(e)} >
                     {problems.map((c, i) => <MenuItem key={i} value={c}>{c.name}</MenuItem>)}
                   </Select>
                 </FormControl>
@@ -192,7 +192,7 @@ function ModalCrearCambio({
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={6}>
                     <div type="button" onClick={cancelChange} className="bg-slate-50" style={{width:"100%", display:"flex", justifyContent:"center", paddingBottom: "10px", paddingTop: "10px"}}>
-                      <CustomButton type="button" onClick={cancelChange} >Cancelar</CustomButton>
+                      <Button type="button" onClick={cancelChange} >Cancelar</Button>
                     </div>                 
                   </Grid>
                   <Grid item xs={12} sm={6}>

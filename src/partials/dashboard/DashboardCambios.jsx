@@ -78,6 +78,9 @@ function DashboardCambios() {
                 <th className="p-2 whitespace-nowrap">
                   <div className="font-semibold text-left">Impacto</div>
                 </th>
+                <th className="p-2 whitespace-nowrap">
+                  <div className="font-semibold text-left">Problema</div>
+                </th>
               </tr>
             </thead>
             {/* Table body */}
@@ -111,7 +114,7 @@ function DashboardCambios() {
                         <div className="text-left">{item.impact}</div>
                       </td>
                       <td className="p-2 whitespace-nowrap">
-                        <div className="text-left">{item.problem_id}</div>
+                        <div className="text-center">{item.problem_id}</div>
                       </td>
                     </tr>
                   )
