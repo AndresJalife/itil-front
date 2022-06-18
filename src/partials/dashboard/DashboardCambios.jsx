@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useCallback} from 'react';
 
 import $ from 'jquery'; 
 
@@ -10,22 +10,29 @@ import Image05 from '../../images/user-36-09.jpg';
 import LoadingData from './LoadingData';
 import CustomButton from './CustomButton';
 import ModalCrearCambio from './ModalCrearCambio';
+import ModalModificarCambio from './ModalModificarCambio';
 
 function DashboardCambios() {
 
   const [items, setItems] = useState(null)
 
   const [createModalOpen, setCreateModalOpen] = useState(false)
+  const [modifyModalState, setModifyModalState] = useState({"open": false, "update": false});
+
+  // const wrapperSetModifyModalState = useCallback(val => {
+  //   setModifyModalState(val);
+  // }, [setModifyModalState]);
+
+  const [itemId, setItemId] = useState(0)
   
   if (!items) {
     $.get("https://itil-back.herokuapp.com/change", function( data, status) {
-      setItems(data)
+      setItems(data);
     })
   }
+  console.log(modifyModalState)
 
   if (items) {
-    console.log(items);
-  
 
   return (
     <div className="col-span-full xl:col-span-max bg-white shadow-lg rounded-sm border border-slate-200">
@@ -33,9 +40,12 @@ function DashboardCambios() {
       <header className="px-5 py-4 border-b border-slate-100" style={{display:'flex', justifyContent:'space-between', cursor:'pointer'}}>
         <h2 className="font-semibold text-slate-800">Cambios</h2>
         <CustomButton  onClick={(e) => { e.stopPropagation(); setCreateModalOpen(true);}}>+ Nuevo </CustomButton>  
-        <ModalCrearCambio id="create-cambio-modal" searchId="create" modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} />
-
+        
       </header>
+
+      <ModalCrearCambio id="create-cambio-modal" searchId="create" modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} />
+      <ModalModificarCambio id="modify-cambio-modal" modalState={modifyModalState} setModalState={setModifyModalState} changeId={itemId}/>
+
       <div className="p-3">
 
         {/* Table */}
@@ -79,8 +89,8 @@ function DashboardCambios() {
                       <td className="p-2 whitespace-nowrap">
                         <div className="text-left">{item.id}</div>
                       </td>
-                      <td className="p-2 whitespace-nowrap">           
-                        <div className="font-medium text-slate-800">{item.name}</div>
+                      <td className="p-2 whitespace-nowrap" style={{cursor:'pointer'}}>           
+                        <div onClick={(e) => { e.stopPropagation(); setItemId(item.id); setModifyModalState({"open":true,"update":true}); }} className="font-medium text-slate-800">{item.name}</div>
                       </td>
                       <td className="p-2 whitespace-nowrap">
                         <div className="text-left">{item.priority}</div>
@@ -92,7 +102,7 @@ function DashboardCambios() {
                         <div className="text-left">{item.created_by_id}</div>
                       </td>
                       <td className="p-2 whitespace-nowrap">
-                        <div className="text-left">{item.tomado_por}</div>
+                        <div className="text-left">{item.taken_by_id}</div>
                       </td>
                       <td className="p-2 whitespace-nowrap">
                         <div className="text-left">{item.description}</div>
