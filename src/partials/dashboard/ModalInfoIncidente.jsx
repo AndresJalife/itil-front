@@ -99,24 +99,38 @@ function ModalInfoIncidente({
              
                <Grid container spacing={2}>
                  <Grid item xs={12} sm={6}>
+                   <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Creado Por</header>
+                   <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{incident.created_by_id}</div>
+                 </Grid>
+                
+                 <Grid item xs={12} sm={6}>
+                   <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Tomado Por</header>
+                   <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{incident.taken_by_id}</div>
+                 </Grid>
+               </Grid>
+
+               <Grid container spacing={2}>
+                 <Grid item xs={12} sm={4}>
                    <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Prioridad</header>
                    <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{incident.priority}</div>
                  </Grid>
                 
-                 <Grid item xs={12} sm={6}>
+                 <Grid item xs={12} sm={4}>
                    <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Impacto</header>
                    <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{incident.impact}</div>
                  </Grid>
-               </Grid>
+
+                 <Grid item xs={12} sm={4}>
+                   <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Estado</header>
+                   <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{incident.status}</div>
+                 </Grid>
+               </Grid>              
               
                <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2"> </header>
                <div className="bg-slate-50" style={{width:"100%", display:"flex", justifyContent:"space-around", paddingBottom: "10px", paddingTop: "10px"}}>
                  <Button variant="text" onClick={closeModal}>Salir</Button>
                </div>
-            
-
-           </div>
-
+              </div>
               </div>
             </div>
           </Transition>

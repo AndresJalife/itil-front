@@ -60,15 +60,6 @@ function DashboardIncidentes() {
                     <div className="font-semibold text-left">Estado</div>
                   </th>
                   <th className="p-2 whitespace-nowrap">
-                    <div className="font-semibold text-left">Creado por</div>
-                  </th>
-                  <th className="p-2 whitespace-nowrap">
-                    <div className="font-semibold text-left">Tomado por</div>
-                  </th>
-                  <th className="p-2 whitespace-nowrap">
-                    <div className="font-semibold text-left">Descripción</div>
-                  </th>
-                  <th className="p-2 whitespace-nowrap">
                     <div className="font-semibold text-left">Impacto</div>
                   </th>
                   <th className="p-2 whitespace-nowrap">
@@ -95,15 +86,6 @@ function DashboardIncidentes() {
                           <div className="text-left">{item.status}</div>
                         </td>
                         <td className="p-2 whitespace-nowrap">
-                          <div className="text-left">{item.created_by_id}</div>
-                        </td>
-                        <td className="p-2 whitespace-nowrap">
-                          <div className="text-left">{item.taken_by_id}</div>
-                        </td>
-                        <td className="p-2 whitespace-nowrap">
-                          <div className="text-left">{item.description}</div>
-                        </td>
-                        <td className="p-2 whitespace-nowrap">
                           <div className="text-left">{item.impact}</div>
                         </td>
                         <td className="p-2 whitespace-nowrap">
@@ -112,7 +94,6 @@ function DashboardIncidentes() {
                         <td className="p-2 whitespace-nowrap">
                           <div className="text-center">
                             <Button variant="text" onClick={(e) => { e.stopPropagation(); setItemId(item.id); setInfoModalState({"open": true, "update": true}); }}>Info</Button>
-                             
                           </div>
                         </td>
                       </tr>
