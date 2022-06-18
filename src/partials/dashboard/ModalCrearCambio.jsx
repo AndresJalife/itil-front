@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Transition from '../../utils/Transition';
 import CustomButton from './CustomButton';
 import TextField from '@mui/material/TextField';
@@ -16,17 +16,11 @@ import LoadingData from './LoadingData';
 
 function ModalCrearCambio({
     id,
-    searchId,
     modalOpen,
     setModalOpen
   }) {
 
-  let sin_seleccion = { id:0, name:'Ninguno' };
-  
-  const modalContent = useRef(null);
-  const nameInput = useRef(null);
-  const descInput = useRef(null);
-  const priorityInput = useRef(null);
+  let sin_seleccion = { id:0, name:'' };
 
   const {user, isAdmin, isSupport} = useUser();
   const [problems, setProblems] = useState(null);
@@ -41,7 +35,6 @@ function ModalCrearCambio({
     e.preventDefault()
 
     const form = new FormData(e.currentTarget);
-    console.log(form);
 
     let new_change = {
       name: form.get('name'),
@@ -57,23 +50,14 @@ function ModalCrearCambio({
       type: "POST",
       url: "https://itil-back.herokuapp.com/change",
       data: JSON.stringify(new_change),
-      success: (data)=>{console.log(data)},
+      success: (data)=>{setModalOpen(false);},
       error: (result) => {console.log(result)},
       dataType: "json",
       contentType: "application/json; charset=utf-8"
     });
     
+    //setModalOpen(false);
   }
-  
-  // close on click outside
-  useEffect(() => {
-    const clickHandler = ({ target }) => {
-      if (!modalOpen || modalContent.current.contains(target)) return
-      /*setModalOpen(false);*/
-    };
-    document.addEventListener('click', clickHandler);
-    return () => document.removeEventListener('click', clickHandler);
-  });
 
   // close if the esc key is pressed
   useEffect(() => {
@@ -86,7 +70,7 @@ function ModalCrearCambio({
   });
 
   useEffect(() => {
-    modalOpen && nameInput.current.focus();
+    modalOpen
   }, [modalOpen]);
   
   const cancelChange = () => {
@@ -151,37 +135,36 @@ function ModalCrearCambio({
           leaveStart="opacity-100 translate-y-0"
           leaveEnd="opacity-0 translate-y-4"
         >
-          <div ref={modalContent} className="bg-white overflow-auto max-w-2xl w-full max-h-full rounded shadow-lg">
+          <div className="bg-white overflow-auto max-w-2xl w-full max-h-full rounded shadow-lg">
             {/* Search form */}
             <div className="col-span-full xl:col-span-6 bg-white shadow-lg rounded-sm border border-slate-200" style={{padding: '1%'}}>
 
             <header className="px-5 py-4 border-b border-slate-100 bg-slate-50"> 
             <h2 className="font-semibold text-slate-800 ">Crear nuevo cambio </h2></header>
 
-            <form onSubmit={(e) => { handleSubmit(e); setModalOpen(false);}}  className="border-b border-slate-200">
+            <form onSubmit={(e) => { handleSubmit(e);}}  className="border-b border-slate-200">
 
 
-            {/* <input id={searchId} */}
                 <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Nombre</header>
-                <label htmlFor={searchId} className="sr-only">Nombre</label>
-                <input name="name" className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Nombre…" ref={nameInput} />
+                <label  className="sr-only">Nombre</label>
+                <input name="name" className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Nombre…" />
                 
                 <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Descripcion</header>
-                <label htmlFor={searchId} className="sr-only">Descripcion</label>
-                <input name="description" className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Descripcion…" ref={descInput} />
+                <label  className="sr-only">Descripcion</label>
+                <input name="description" className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Descripcion…" />
              
                 <FormControl fullWidth>
                   <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Incidente Asociado</header>
-                  <label htmlFor={searchId} className="sr-only">Incidente Asociado</label>
-                  <Select id="incident_id" name="incident_id" fullWidth input={<OutlinedInput label="Incidente asociado" />} renderValue={selected => selected.name} value={selectedIncident} onChange={e => handleIncidentChange(e)} >
+                  <label  className="sr-only">Incidente Asociado</label>
+                  <Select id="incident_id" name="incident_id" fullWidth input={<OutlinedInput label="Incidente asociado" />} renderValue={selected => selected.name} value={selectedIncident.name} onChange={e => handleIncidentChange(e)} >
                     {incidents.map((c, i) => <MenuItem key={i} value={c}>{c.name}</MenuItem>)}
                   </Select>
                 </FormControl>
                              
                 <FormControl fullWidth>
                   <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Problema Asociado</header>
-                  <label htmlFor={searchId} className="sr-only">Problema Asociado</label>
-                  <Select id="problem_id" name="problem_id" fullWidth input={<OutlinedInput label="Problema asociado" />} renderValue={selected => selected.name} value={selectedProblem} onChange={e => handleProblemChange(e)} >
+                  <label  className="sr-only">Problema Asociado</label>
+                  <Select id="problem_id" name="problem_id" fullWidth input={<OutlinedInput label="Problema asociado" />} renderValue={selected => selected.name} value={selectedProblem.name} onChange={e => handleProblemChange(e)} >
                     {problems.map((c, i) => <MenuItem key={i} value={c}>{c.name}</MenuItem>)}
                   </Select>
                 </FormControl>
@@ -189,7 +172,7 @@ function ModalCrearCambio({
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={6}>
                     <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Prioridad</header>
-                    <label htmlFor={searchId} className="sr-only">Prioridad</label>
+                    <label htmlFor="prioridad" className="sr-only">Prioridad</label>
                     <Select id="prioridad" name="priority" fullWidth input={<OutlinedInput label="Prioridad" />} renderValue={selected => selected} value={selectedPriority} onChange={e => handlePriorityChange(e)} >
                     {["Alta", "Media", "Baja", ""].map(c => <MenuItem key={c} value={c}>{c}</MenuItem>)}
                     </Select>
@@ -197,7 +180,7 @@ function ModalCrearCambio({
                   
                   <Grid item xs={12} sm={6}>
                     <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Impacto</header>
-                    <label htmlFor={searchId} className="sr-only">Impacto</label>
+                    <label className="sr-only">Impacto</label>
                     <Select id="impacto" name="impact" fullWidth input={<OutlinedInput label="Impacto" />} renderValue={selected => selected} value={selectedImpact} onChange={e => handleImpactChange(e)} >
                     {["Alto", "Medio", "Bajo", ""].map(c => <MenuItem key={c} value={c}>{c}</MenuItem>)}
                     </Select>
@@ -227,7 +210,7 @@ function ModalCrearCambio({
     );
     } else {
     return (
-      <LoadingData/>
+      <></>
     )
   }
 }

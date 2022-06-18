@@ -19,9 +19,11 @@ function DashboardProblemas() {
   const [createModalOpen, setCreateModalOpen] = useState(false)
 
 
-  $.get("https://itil-back.herokuapp.com/problem", function( data, status) {
-    setItems(data)
-  })
+  if (!items){
+    $.get("https://itil-back.herokuapp.com/problem", function( data, status) {
+      setItems(data)
+    })
+  }
 
   if (items) {
     return (
@@ -30,7 +32,7 @@ function DashboardProblemas() {
         <header className="px-5 py-4 border-b border-slate-100" style={{display:'flex', justifyContent:'space-between', cursor:'pointer'}}>
           <h2 className="font-semibold text-slate-800">Problemas</h2>
           <CustomButton  onClick={(e) => { e.stopPropagation(); setCreateModalOpen(true);}}>+ Nuevo </CustomButton>  
-          <ModalCrearProblema id="create-problem-modal" searchId="create" modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} />
+          <ModalCrearProblema id="create-problem-modal" modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} />
 
         </header>
         <div className="p-3">
