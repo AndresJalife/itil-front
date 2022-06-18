@@ -9,14 +9,17 @@ import Image04 from '../../images/user-36-08.jpg';
 import Image05 from '../../images/user-36-09.jpg';
 import LoadingData from './LoadingData';
 import CustomButton from './CustomButton';
-import ModalCrearProblema from './ModalCrearProblema';
 import ModalCrearIncidente from './ModalCrearIncidente';
+import ModalInfoIncidente from './ModalInfoIncidente';
+import { Button } from '@mui/material';
 
 function DashboardIncidentes() {
 
   const [items, setItems] = useState(null)
 
   const [createModalOpen, setCreateModalOpen] = useState(false)
+  const [infoModalState, setInfoModalState] = useState({"open": false, "update": false})
+  const [itemID, setItemId] = useState(0)
 
   if (!items){
     $.get("https://itil-back.herokuapp.com/incident", function( data, status) {
@@ -31,8 +34,11 @@ function DashboardIncidentes() {
         <header className="px-5 py-4 border-b border-slate-100" style={{display:'flex', justifyContent:'space-between', cursor:'pointer'}}>
           <h2 className="font-semibold text-slate-800">Incidentes</h2>
           <CustomButton  onClick={(e) => { e.stopPropagation(); setCreateModalOpen(true);}}>+ Nuevo </CustomButton>  
-          <ModalCrearIncidente id="create-incident-modal" modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} />  
+          
         </header>
+        <ModalCrearIncidente id="create-incident-modal" modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} />
+        <ModalInfoIncidente id="info-incident-modal" modalState={infoModalState} setModalState={setInfoModalState} incidentID={itemID}/>
+        
         <div className="p-3">
 
           {/* Table */}
@@ -102,6 +108,12 @@ function DashboardIncidentes() {
                         </td>
                         <td className="p-2 whitespace-nowrap">
                           <div className="text-center">{item.problem_id}</div>
+                        </td>
+                        <td className="p-2 whitespace-nowrap">
+                          <div className="text-center">
+                            <Button variant="text" onClick={(e) => { e.stopPropagation(); setItemId(item.id); setInfoModalState({"open": true, "update": true}); }}>Info</Button>
+                             
+                          </div>
                         </td>
                       </tr>
                     )

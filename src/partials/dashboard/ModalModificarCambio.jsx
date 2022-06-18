@@ -183,7 +183,6 @@ function ModalModificarCambio({
 
             <form onSubmit={(e) => { handleSubmit(e)}}  className="border-b border-slate-200">
 
-
                 <div key='id-change'className="text-xs uppercase text-slate-600 bg-slate-50 rounded-sm font-semibold p-2"> <span>ID   </span><span>{changeId}</span></div>
                 
                 <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Nombre</header>
