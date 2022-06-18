@@ -42,7 +42,7 @@ import {Alert, Button,FormControl, InputLabel, MenuItem, OutlinedInput, Select, 
 
       $.ajax({
         type: "POST",
-        url: "https://itil-back.herokuapp.com/prodlem",
+        url: "https://itil-back.herokuapp.com/problem",
         data: JSON.stringify({"name": form.get("name"), 
                 "description": form.get("description"), 
                 created_by_id: user.sub,

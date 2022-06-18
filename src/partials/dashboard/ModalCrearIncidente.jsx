@@ -64,9 +64,9 @@ function ModalCrearIncidente({
       return () => document.removeEventListener('keydown', keyHandler);
     });
   
-    useEffect(() => {
-      modalOpen //&& nameInput.current.focus();
-    }, [modalOpen]);
+    // useEffect(() => {
+    //   modalOpen //&& nameInput.current.focus();
+    // }, [modalOpen]);
 
     const handlePriorityChange = (event) => {
       const { target: {value} } = event;
