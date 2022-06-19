@@ -10,6 +10,8 @@ import Image05 from '../../images/user-36-09.jpg';
 import LoadingData from './LoadingData';
 import CustomButton from './CustomButton';
 import ModalCrearProblema from './ModalCrearProblema';
+import ModalInfoProblema from './ModalInfoProblema';
+import { Button } from '@mui/material';
 
 function DashboardProblemas() {
 
@@ -17,6 +19,8 @@ function DashboardProblemas() {
   const [items, setItems] = useState(null)
 
   const [createModalOpen, setCreateModalOpen] = useState(false)
+  const [infoModalState, setInfoModalState] = useState({"open": false, "update": false})
+  const [itemID, setItemId] = useState(0)
 
 
   if (!items){
@@ -32,9 +36,11 @@ function DashboardProblemas() {
         <header className="px-5 py-4 border-b border-slate-100" style={{display:'flex', justifyContent:'space-between', cursor:'pointer'}}>
           <h2 className="font-semibold text-slate-800">Problemas</h2>
           <CustomButton  onClick={(e) => { e.stopPropagation(); setCreateModalOpen(true);}}>+ Nuevo </CustomButton>  
-          <ModalCrearProblema id="create-problem-modal" modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} />
-
         </header>
+
+        <ModalCrearProblema id="create-problem-modal" modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} />
+        <ModalInfoProblema id="info-incident-modal" modalState={infoModalState} setModalState={setInfoModalState} problemId={itemID}/>
+
         <div className="p-3">
   
           {/* Table */}
@@ -54,12 +60,6 @@ function DashboardProblemas() {
                   </th>
                   <th className="p-2 whitespace-nowrap">
                     <div className="font-semibold text-left">Estado</div>
-                  </th>
-                  <th className="p-2 whitespace-nowrap">
-                    <div className="font-semibold text-left">Creado por</div>
-                  </th>
-                  <th className="p-2 whitespace-nowrap">
-                    <div className="font-semibold text-left">Tomado por</div>
                   </th>
                   {/* <th className="p-2 whitespace-nowrap">
                     <div className="font-semibold text-left">Descripción</div>
@@ -88,18 +88,17 @@ function DashboardProblemas() {
                         <td className="p-2 whitespace-nowrap">
                           <div className="text-left">{item.status}</div>
                         </td>
-                        <td className="p-2 whitespace-nowrap">
-                          <div className="text-left">{item.created_by_id}</div>
-                        </td>
-                        <td className="p-2 whitespace-nowrap">
-                          <div className="text-left">{item.taken_by_id}</div>
-                        </td>
                         {/* <td className="p-2 whitespace-nowrap">
                           <div className="text-left">{item.descripcion}</div>
                         </td> */}
                         {/* <td className="p-2 whitespace-nowrap">
                           <div className="text-left">{item.impacto}</div>
                         </td> */}
+                        <td className="p-2 whitespace-nowrap">
+                          <div className="text-center">
+                            <Button variant="text" onClick={(e) => { e.stopPropagation(); setItemId(item.id); setInfoModalState({"open": true, "update": true}); }}>Info</Button>
+                          </div>
+                        </td>
                       </tr>
                     )
                   })
