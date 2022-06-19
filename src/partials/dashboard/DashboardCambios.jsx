@@ -9,8 +9,11 @@ import Image04 from '../../images/user-36-08.jpg';
 import Image05 from '../../images/user-36-09.jpg';
 import LoadingData from './LoadingData';
 import CustomButton from './CustomButton';
+import InfoButton from './InfoButton';
 import ModalCrearCambio from './ModalCrearCambio';
 import ModalModificarCambio from './ModalModificarCambio';
+import ModalInfoCambio from './ModalInfoCambio';
+import { Button } from '@mui/material';
 
 function DashboardCambios() {
 
@@ -18,6 +21,7 @@ function DashboardCambios() {
 
   const [createModalOpen, setCreateModalOpen] = useState(false)
   const [modifyModalState, setModifyModalState] = useState({"open": false, "update": false});
+  const [infoModalState, setInfoModalState] = useState({"open": false, "update": false});
 
   // const wrapperSetModifyModalState = useCallback(val => {
   //   setModifyModalState(val);
@@ -45,6 +49,7 @@ function DashboardCambios() {
 
       <ModalCrearCambio id="create-cambio-modal" searchId="create" modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} />
       <ModalModificarCambio id="modify-cambio-modal" modalState={modifyModalState} setModalState={setModifyModalState} changeId={itemId}/>
+      <ModalInfoCambio id="info-cambio-modal" modalState={infoModalState} setModalState={setInfoModalState} changeId={itemId}/>
 
       <div className="p-3">
 
@@ -65,15 +70,6 @@ function DashboardCambios() {
                 </th>
                 <th className="p-2 whitespace-nowrap">
                   <div className="font-semibold text-left">Estado</div>
-                </th>
-                <th className="p-2 whitespace-nowrap">
-                  <div className="font-semibold text-left">Creado por</div>
-                </th>
-                <th className="p-2 whitespace-nowrap">
-                  <div className="font-semibold text-left">Tomado por</div>
-                </th>
-                <th className="p-2 whitespace-nowrap">
-                  <div className="font-semibold text-left">Descripción</div>
                 </th>
                 <th className="p-2 whitespace-nowrap">
                   <div className="font-semibold text-left">Impacto</div>
@@ -102,19 +98,15 @@ function DashboardCambios() {
                         <div className="text-left">{item.status}</div>
                       </td>
                       <td className="p-2 whitespace-nowrap">
-                        <div className="text-left">{item.created_by_id}</div>
-                      </td>
-                      <td className="p-2 whitespace-nowrap">
-                        <div className="text-left">{item.taken_by_id}</div>
-                      </td>
-                      <td className="p-2 whitespace-nowrap">
-                        <div className="text-left">{item.description}</div>
-                      </td>
-                      <td className="p-2 whitespace-nowrap">
                         <div className="text-left">{item.impact}</div>
                       </td>
                       <td className="p-2 whitespace-nowrap">
                         <div className="text-center">{item.problem_id}</div>
+                      </td>
+                      <td className="p-2 whitespace-nowrap">
+                        <div className="text-center">
+                          <InfoButton variant="text" onClick={(e) => { e.stopPropagation(); setItemId(item.id); setInfoModalState({"open": true, "update": true}); }}/>
+                        </div>
                       </td>
                     </tr>
                   )

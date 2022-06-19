@@ -34,8 +34,10 @@ function ModalCrearIncidente({
         problem_id: selectedProblem.id,
         priority: form.get('priority'),
         impact: form.get('impact'),
-        created_by_id: user.id
+        created_by_id: user.sub
       };
+
+      console.log(JSON.stringify(new_incident))
     
       $.ajax({
         type: "POST",
@@ -114,15 +116,14 @@ function ModalCrearIncidente({
           >
             <div className="bg-white overflow-auto max-w-2xl w-full max-h-full rounded shadow-lg">
               {/* Search form */}
-              <div className="col-span-full xl:col-span-6 bg-white shadow-lg rounded-sm border border-slate-200">
+              <div className="col-span-full xl:col-span-6 bg-white shadow-lg rounded-sm border border-slate-200" style={{padding: '1%', textAlign:"left"}}>
 
               <header className="px-5 py-4 border-b border-slate-100 bg-slate-50"> 
               <h2 className="font-semibold text-slate-800 ">Crear nuevo incidente</h2></header>
 
-              <form onSubmit={(e) => { handleSubmit(e)}}  className="border-b border-slate-200" style={{padding: '1%'}}>
+              <form onSubmit={(e) => { handleSubmit(e)}}  className="border-b border-slate-200">
 
 
-              {/* <input id={searchId} */}
                   <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Nombre</header>
                   <label  className="sr-only">Nombre</label>
                   <input name="name" className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Nombre…" />
