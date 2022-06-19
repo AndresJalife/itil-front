@@ -1,66 +1,80 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import Image01 from '../../images/user-36-05.jpg';
-import Image02 from '../../images/user-36-06.jpg';
-import Image03 from '../../images/user-36-07.jpg';
-import Image04 from '../../images/user-36-08.jpg';
-import Image05 from '../../images/user-36-09.jpg';
+import $ from 'jquery'; 
+
+import LoadingData from './LoadingData';
+import CustomButton from './CustomButton';
+import ModalCrearProblema from './ModalCrearProblema';
+import ItemVersions from './ItemVersions';
 
 function DashboardConfHardware() {
 
-  const items = [
-    {
-      id: '0',
-      name: 'Computadora1',
-      tipo: 'Notebook',
-      nro_serie: 45,
-      localizacion: 'Belgrano',
-      proveedor: 'Dell',
-      precio: 10000,
-      fecha_instalacion: '15/6/2016',
-      capacidad: 512,
-    },
-    {
-      id: '1',
-      name: 'Tablet1',
-      tipo: 'Tablet',
-      nro_serie: 765,
-      localizacion: 'San Telmo',
-      proveedor: 'Apple',
-      precio: 20000,
-      fecha_instalacion: '29/3/2019',
-      capacidad: 32,
-    },
-    {
-      id: '2',
-      name: 'Computadora2',
-      tipo: 'Notebook',
-      nro_serie: 1,
-      localizacion: 'La Plata',
-      proveedor: 'Lenovo',
-      precio: 15000,
-      fecha_instalacion: '3/7/2017',
-      capacidad: 32,
-    },
-    {
-      id: '3',
-      name: 'Impresora1',
-      tipo: 'Impresora',
-      nro_serie: 45,
-      localizacion: 'Belgrano',
-      proveedor: 'HP',
-      precio: 20000,
-      fecha_instalacion: '15/11/2016',
-      capacidad: 0,
-    },
-  ];
+  const [items, setItems] = useState(null)
 
+  const [createModalOpen, setCreateModalOpen] = useState(false)
+
+  if (!items){
+    //hacer get
+    let data=[
+      {
+        id: '0',
+        name: 'Computadora1',
+        tipo: 'Notebook',
+        nro_serie: 45,
+        localizacion: 'Belgrano',
+        proveedor: 'Dell',
+        precio: 10000,
+        fecha_instalacion: '15/6/2016',
+        capacidad: 512,
+      },
+      {
+        id: '1',
+        name: 'Tablet1',
+        tipo: 'Tablet',
+        nro_serie: 765,
+        localizacion: 'San Telmo',
+        proveedor: 'Apple',
+        precio: 20000,
+        fecha_instalacion: '29/3/2019',
+        capacidad: 32,
+      },
+      {
+        id: '2',
+        name: 'Computadora2',
+        tipo: 'Notebook',
+        nro_serie: 1,
+        localizacion: 'La Plata',
+        proveedor: 'Lenovo',
+        precio: 15000,
+        fecha_instalacion: '3/7/2017',
+        capacidad: 32,
+      },
+      {
+        id: '3',
+        name: 'Impresora1',
+        tipo: 'Impresora',
+        nro_serie: 45,
+        localizacion: 'Belgrano',
+        proveedor: 'HP',
+        precio: 20000,
+        fecha_instalacion: '15/11/2016',
+        capacidad: 0,
+      },
+    ];
+    setItems(data)
+  }
+
+  if (items) {
+
+    //return (<ItemVersions></ItemVersions>)
   return (
     <div className="col-span-full xl:col-span-max bg-white shadow-lg rounded-sm border border-slate-200">
       
       <header className="px-5 py-4 border-b border-slate-100" style={{display:'flex', justifyContent:'space-between', cursor:'pointer'}}>
         <h2 className="font-semibold text-slate-800">Configuracion de Hardware</h2>
-        <div className="text-sm font-semibold text-white px-1.5 bg-green-500 rounded-full"> + Nuevo </div>  
+        <CustomButton  onClick={(e) => { e.stopPropagation(); setCreateModalOpen(true);}}>+ Nuevo </CustomButton>  
+        <ModalCrearProblema id="create-confhard-modal" modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} />
+
       </header>
       <div className="p-3">
 
@@ -144,6 +158,9 @@ function DashboardConfHardware() {
       </div>
     </div>
   );
+            } else {
+              return ( <LoadingData/> )
+            }
 }
 
 export default DashboardConfHardware;
