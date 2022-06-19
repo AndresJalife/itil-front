@@ -9,6 +9,7 @@ import Image04 from '../../images/user-36-08.jpg';
 import Image05 from '../../images/user-36-09.jpg';
 import LoadingData from './LoadingData';
 import CustomButton from './CustomButton';
+import InfoButton from './InfoButton';
 import ModalCrearIncidente from './ModalCrearIncidente';
 import ModalInfoIncidente from './ModalInfoIncidente';
 import { Button } from '@mui/material';
@@ -93,7 +94,7 @@ function DashboardIncidentes() {
                         </td>
                         <td className="p-2 whitespace-nowrap">
                           <div className="text-center">
-                            <Button variant="text" onClick={(e) => { e.stopPropagation(); setItemId(item.id); setInfoModalState({"open": true, "update": true}); }}>Info</Button>
+                            <InfoButton variant="text" onClick={(e) => { e.stopPropagation(); setItemId(item.id); setInfoModalState({"open": true, "update": true}); }}/>
                           </div>
                         </td>
                       </tr>
