@@ -27,3 +27,16 @@ export const formatValue = (value) => Intl.NumberFormat('en-US', {
   maximumSignificantDigits: 3,
   notation: 'compact',
 }).format(value);
+
+
+export const userIDToName = (id) => {
+  console.log(id)
+  let name =  {
+    'auth0|629e61b46f7f59006922f069':'admin@itil.com',
+    'auth0|629e61d64925f70068971b41':'soporte@itil.com',
+    'auth0|62a357a84b6448c8e4f8684c':'normal@itil.com',
+    null: "-"
+  }[id]
+
+  return (name == undefined ? "Usuario desconocido" : name)
+}

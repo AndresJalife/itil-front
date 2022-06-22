@@ -7,6 +7,7 @@ import $, { data } from 'jquery'
 import useUser from '../useUser';
 import {Alert, Button, FormControl, InputLabel, MenuItem, OutlinedInput, Select, Grid} from '@mui/material';
   
+import { userIDToName } from '../../utils/Utils';
 
 function ModalInfoCambio({
     id,
@@ -99,7 +100,7 @@ function ModalInfoCambio({
                
 
                <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Creado Por</header>
-               <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{change.created_by_id}</div>
+               <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{userIDToName(change.created_by_id)}</div>
 
                <Grid container spacing={2}>
                  <Grid item xs={12} sm={6}>

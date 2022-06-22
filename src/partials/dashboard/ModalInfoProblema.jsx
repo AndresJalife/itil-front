@@ -7,6 +7,8 @@ import $, { data } from 'jquery'
 import useUser from '../useUser';
 import {Alert, Button, FormControl, InputLabel, MenuItem, OutlinedInput, Select, Grid} from '@mui/material';
   
+import { userIDToName } from '../../utils/Utils';
+
 
 function ModalInfoProblema({
     id,
@@ -94,12 +96,12 @@ function ModalInfoProblema({
                <Grid container spacing={2}>
                  <Grid item xs={12} sm={6}>
                    <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Creado Por</header>
-                   <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{problem.created_by_id}</div>
+                   <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{userIDToName(problem.created_by_id)}</div>
                  </Grid>
                 
                  <Grid item xs={12} sm={6}>
                    <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Tomado Por</header>
-                   <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{problem.taken_by_id}</div>
+                   <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{userIDToName(problem.taken_by_id)}</div>
                  </Grid>
                </Grid>
 
