@@ -13,7 +13,9 @@ import InfoButton from './InfoButton';
 import ModalCrearCambio from './ModalCrearCambio';
 import ModalModificarCambio from './ModalModificarCambio';
 import ModalInfoCambio from './ModalInfoCambio';
-import { Button } from '@mui/material';
+import swal from "sweetalert2";
+import { Button, IconButton} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function DashboardCambios() {
 
@@ -34,7 +36,33 @@ function DashboardCambios() {
       setItems(data);
     })
   }
-  console.log(modifyModalState)
+
+
+  const deleteChangeById = (id) => {
+      let url = 'https://itil-back.herokuapp.com/change/' + id.toString();
+
+      swal.fire({
+          title: 'Borrar el cambio',
+          text: "¿Está seguro que desea borrar este cambio?",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          dangerMode: 'true',
+          confirmButtonText: 'Borrar',
+          cancelButtonText: 'Cancelar'
+      }).then(answer=>{
+          if(answer.isConfirmed){
+              fetch(url, {
+                  method: 'DELETE'}).then(() => {
+                  swal.fire({
+                      title: "Se borro exitosamente el cambio con id " + id.toString() ,
+                      icon: "success"});
+                  setItems(null)
+              })
+          }
+      });
+  }
 
   if (items) {
 
@@ -72,10 +100,16 @@ function DashboardCambios() {
                   <div className="font-semibold text-left">Estado</div>
                 </th>
                 <th className="p-2 whitespace-nowrap">
-                  <div className="font-semibold text-left">Impacto</div>
+                  <div className="font-semibold text-center">Impacto</div>
                 </th>
                 <th className="p-2 whitespace-nowrap">
-                  <div className="font-semibold text-left">Problema</div>
+                  <div className="font-semibold text-center">Problema</div>
+                </th>
+                <th className="p-2 whitespace-nowrap">
+                  <div className="font-semibold text-center">Info</div>
+                </th>
+                <th className="p-2 whitespace-nowrap">
+                  <div className="font-semibold text-center">Borrar</div>
                 </th>
               </tr>
             </thead>
@@ -106,6 +140,14 @@ function DashboardCambios() {
                       <td className="p-2 whitespace-nowrap">
                         <div className="text-center">
                           <InfoButton variant="text" onClick={(e) => { e.stopPropagation(); setItemId(item.id); setInfoModalState({"open": true, "update": true}); }}/>
+                        </div>
+                      </td>
+
+                      <td className="p-2 whitespace-nowrap">
+                      <div className="text-center">
+                        <IconButton aria-label="delete" onClick = {()=>{deleteChangeById(item.id)}} color="error">
+                          <DeleteIcon  />
+                        </IconButton>
                         </div>
                       </td>
                     </tr>

@@ -12,7 +12,9 @@ import CustomButton from './CustomButton';
 import InfoButton from './InfoButton';
 import ModalCrearIncidente from './ModalCrearIncidente';
 import ModalInfoIncidente from './ModalInfoIncidente';
-import { Button } from '@mui/material';
+import swal from "sweetalert2";
+import { Button, IconButton} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function DashboardIncidentes() {
 
@@ -27,6 +29,32 @@ function DashboardIncidentes() {
       setItems(data)
     })
   }
+
+  const deleteIncidentById = (id) => {
+    let url = 'https://itil-back.herokuapp.com/incident/' + id.toString();
+
+    swal.fire({
+        title: 'Borrar el incidente',
+        text: "¿Está seguro que desea borrar este incidente?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        dangerMode: 'true',
+        confirmButtonText: 'Borrar',
+        cancelButtonText: 'Cancelar'
+    }).then(answer=>{
+        if(answer.isConfirmed){
+            fetch(url, {
+                method: 'DELETE'}).then(() => {
+                swal.fire({
+                    title: "Se borro exitosamente el incidente con id " + id.toString() ,
+                    icon: "success"});
+                setItems(null)
+            })
+        }
+    });
+}
 
   if (items) {
     return (
@@ -66,6 +94,12 @@ function DashboardIncidentes() {
                   <th className="p-2 whitespace-nowrap">
                     <div className="font-semibold text-left">Problema</div>
                   </th>
+                  <th className="p-2 whitespace-nowrap">
+                  <div className="font-semibold text-center">Info</div>
+                </th>
+                <th className="p-2 whitespace-nowrap">
+                  <div className="font-semibold text-center">Borrar</div>
+                </th>
                 </tr>
               </thead>
               {/* Table body */}
@@ -97,6 +131,14 @@ function DashboardIncidentes() {
                             <InfoButton variant="text" onClick={(e) => { e.stopPropagation(); setItemId(item.id); setInfoModalState({"open": true, "update": true}); }}/>
                           </div>
                         </td>
+
+                        <td className="p-2 whitespace-nowrap">
+                        <div className="text-center">
+                          <IconButton aria-label="delete" onClick = {()=>{deleteIncidentById(item.id)}} color="error">
+                            <DeleteIcon  />
+                          </IconButton>
+                          </div>
+                      </td>
                       </tr>
                     )
                   })

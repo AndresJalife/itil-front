@@ -23,7 +23,8 @@
     "react-flatpickr": "^3.10.7",
     "react-router-dom": "^5.3.3",
     "react-scripts": "^5.0.1",
-    "react-transition-group": "^4.4.1"
+    "react-transition-group": "^4.4.1",
+    "sweetalert2": "^11.4.18"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.4.1",

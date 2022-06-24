@@ -7,7 +7,9 @@ import CustomButton from './CustomButton';
 import InfoButton from './InfoButton';
 import ModalCrearProblema from './ModalCrearProblema';
 import ModalInfoProblema from './ModalInfoProblema';
-import { Button } from '@mui/material';
+import swal from "sweetalert2";
+import { Button, IconButton} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function DashboardProblemas() {
 
@@ -24,6 +26,32 @@ function DashboardProblemas() {
       setItems(data)
     })
   }
+
+  const deleteProblemById = (id) => {
+    let url = 'https://itil-back.herokuapp.com/problem/' + id.toString();
+
+    swal.fire({
+        title: 'Borrar el problema',
+        text: "¿Está seguro que desea borrar este problema?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        dangerMode: 'true',
+        confirmButtonText: 'Borrar',
+        cancelButtonText: 'Cancelar'
+    }).then(answer=>{
+        if(answer.isConfirmed){
+            fetch(url, {
+                method: 'DELETE'}).then(() => {
+                swal.fire({
+                    title: "Se borro exitosamente el problema con id " + id.toString() ,
+                    icon: "success"});
+                setItems(null)
+            })
+        }
+    });
+}
 
   if (items) {
     return (
@@ -57,12 +85,12 @@ function DashboardProblemas() {
                   <th className="p-2 whitespace-nowrap">
                     <div className="font-semibold text-left">Estado</div>
                   </th>
-                  {/* <th className="p-2 whitespace-nowrap">
-                    <div className="font-semibold text-left">Descripción</div>
-                  </th>
                   <th className="p-2 whitespace-nowrap">
-                    <div className="font-semibold text-left">Impacto</div>
-                  </th> */}
+                  <div className="font-semibold text-center">Info</div>
+                </th>
+                <th className="p-2 whitespace-nowrap">
+                  <div className="font-semibold text-center">Borrar</div>
+                </th>
                 </tr>
               </thead>
               {/* Table body */}
@@ -93,6 +121,14 @@ function DashboardProblemas() {
                         <td className="p-2 whitespace-nowrap">
                           <div className="text-center">
                             <InfoButton variant="text" onClick={(e) => { e.stopPropagation(); setItemId(item.id); setInfoModalState({"open": true, "update": true}); }}/>
+                          </div>
+                        </td>
+
+                        <td className="p-2 whitespace-nowrap">
+                        <div className="text-center">
+                          <IconButton aria-label="delete" onClick = {()=>{deleteProblemById(item.id)}} color="error">
+                            <DeleteIcon  />
+                          </IconButton>
                           </div>
                         </td>
                       </tr>
