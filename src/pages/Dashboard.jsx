@@ -9,6 +9,7 @@ import DashboardConfSLA from '../partials/dashboard/DashboardConfSLA';
 import DashboardIncidentes from '../partials/dashboard/DashboardIncidentes';
 import DashboardProblemas from '../partials/dashboard/DashboardProblemas';
 import DashboardCambios from '../partials/dashboard/DashboardCambios';
+import DashboardErroresConocidos from '../partials/dashboard/DashboardErroresConocidos';
 
 function Dashboard() {
 
@@ -46,6 +47,7 @@ function Dashboard() {
                   'incidentes': <DashboardIncidentes />,
                   'problemas': <DashboardProblemas />,
                   'cambios': <DashboardCambios />,
+                  'erroresConocidos': <DashboardErroresConocidos />,
                   default: <WelcomeBanner></WelcomeBanner>
 
                 }[sidebarSelected]}
