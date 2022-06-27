@@ -21,7 +21,8 @@ import {Alert, Button,FormControl, InputLabel, MenuItem, OutlinedInput, Select, 
   function ModalCrearProblema({
     id,
     modalOpen,
-    setModalOpen
+    setModalOpen,
+    updateDashboard
   }) {
 
     //const postProblem = 
@@ -47,7 +48,7 @@ import {Alert, Button,FormControl, InputLabel, MenuItem, OutlinedInput, Select, 
                 "description": form.get("description"), 
                 created_by_id: user.sub,
                 "priority": form.get("priority")}),
-        success: () => setModalOpen(false),
+        success: () => {setModalOpen(false); updateDashboard();},
         error: (result) => {
           console.log(result);alert(result.statusText)},//(result) => {console.log(result)},
         dataType: "json",

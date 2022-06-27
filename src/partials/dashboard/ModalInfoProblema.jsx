@@ -14,7 +14,8 @@ function ModalInfoProblema({
     id,
     modalState,
     setModalState,
-    problemId
+    problemId,
+    updateDashboard
   }) {
 
     const [problem, setProblem] = useState(null);
@@ -61,11 +62,12 @@ function ModalInfoProblema({
         type: "POST",
         url: "https://itil-back.herokuapp.com/problem/" + problemId + "/take",
         data: JSON.stringify(problem_data),
-        success: (data)=>{setModalOpen(false);},
+        success: ()=>{setModalOpen(false)},
         error: (result) => {console.log(result)},
         dataType: "json",
         contentType: "application/json; charset=utf-8"
       });
+      updateDashboard();
       closeModal();
     }
 
@@ -73,11 +75,12 @@ function ModalInfoProblema({
       $.ajax({
         type: "POST",
         url: "https://itil-back.herokuapp.com/problem/" + problemId + "/solve",
-        success: (data)=>{setModalOpen(false);},
+        success: ()=>{setModalOpen(false)},
         error: (result) => {console.log(result)},
         dataType: "json",
         contentType: "application/json; charset=utf-8"
       });
+      updateDashboard();
       closeModal();
     }
 

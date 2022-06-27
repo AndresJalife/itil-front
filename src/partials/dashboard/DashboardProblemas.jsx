@@ -27,6 +27,10 @@ function DashboardProblemas() {
     })
   }
 
+  const updateDashboard = () =>{
+    setItems(null)
+  }
+
   const deleteProblemById = (id) => {
     let url = 'https://itil-back.herokuapp.com/problem/' + id.toString();
 
@@ -47,7 +51,7 @@ function DashboardProblemas() {
                 swal.fire({
                     title: "Se borro exitosamente el problema con id " + id.toString() ,
                     icon: "success"});
-                setItems(null)
+                    updateDashboard()
             })
         }
     });
@@ -62,8 +66,8 @@ function DashboardProblemas() {
           <CustomButton  onClick={(e) => { e.stopPropagation(); setCreateModalOpen(true);}}>+ Nuevo </CustomButton>  
         </header>
 
-        <ModalCrearProblema id="create-problem-modal" modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} />
-        <ModalInfoProblema id="info-incident-modal" modalState={infoModalState} setModalState={setInfoModalState} problemId={itemID}/>
+        <ModalCrearProblema id="create-problem-modal" modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} updateDashboard={updateDashboard} />
+        <ModalInfoProblema id="info-incident-modal" modalState={infoModalState} setModalState={setInfoModalState} problemId={itemID} updateDashboard={updateDashboard}/>
 
         <div className="p-3">
   

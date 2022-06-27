@@ -26,6 +26,10 @@ function DashboardErroresConocidos() {
     })
   }
 
+  const updateDashboard = () =>{
+    setItems(null)
+  }
+
   const deleteKnownErrorById = (id) => {
     let url = 'https://itil-back.herokuapp.com/knownError/' + id.toString();
 
@@ -61,7 +65,7 @@ function DashboardErroresConocidos() {
           <CustomButton  onClick={(e) => { e.stopPropagation(); setCreateModalOpen(true);}}>+ Nuevo </CustomButton>  
         </header>
 
-        <ModalCrearErrorConocido id="create-problem-modal" modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} />
+        <ModalCrearErrorConocido id="create-problem-modal" modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} updateDashboard={updateDashboard}/>
 
         <div className="p-3">
   

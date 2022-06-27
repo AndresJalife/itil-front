@@ -11,7 +11,8 @@ import {Alert, Button,FormControl, InputLabel, MenuItem, OutlinedInput, Select, 
 function ModalCrearIncidente({
     id,
     modalOpen,
-    setModalOpen
+    setModalOpen,
+    updateDashboard
   }) {
 
     let sin_seleccion = { id:0, name:'' }; 
@@ -43,11 +44,12 @@ function ModalCrearIncidente({
         type: "POST",
         url: "https://itil-back.herokuapp.com/incident",
         data: JSON.stringify(new_incident),
-        success: (data)=>{setModalOpen(false);},
+        success: (data)=>{setModalOpen(false)},
         error: (result) => {console.log(result)},
         dataType: "json",
         contentType: "application/json; charset=utf-8"
       });
+      updateDashboard();
     }
 
     if (!problems) {

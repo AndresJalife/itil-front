@@ -15,7 +15,8 @@ function ModalInfoIncidente({
     id,
     modalState,
     setModalState,
-    incidentID
+    incidentID,
+    updateDashboard
   }) {
 
     const [incident, setIncident] = useState(null);
@@ -67,6 +68,7 @@ function ModalInfoIncidente({
         dataType: "json",
         contentType: "application/json; charset=utf-8"
       });
+      updateDashboard();
       closeModal();
     }
 
@@ -79,6 +81,7 @@ function ModalInfoIncidente({
         dataType: "json",
         contentType: "application/json; charset=utf-8"
       });
+      updateDashboard();
       closeModal();
     }
 

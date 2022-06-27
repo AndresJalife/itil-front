@@ -17,7 +17,8 @@ import LoadingData from './LoadingData';
 function ModalCrearCambio({
     id,
     modalOpen,
-    setModalOpen
+    setModalOpen,
+    updateDashboard
   }) {
 
   let sin_seleccion = { id:0, name:'' };
@@ -57,6 +58,7 @@ function ModalCrearCambio({
     });
     
     //setModalOpen(false);
+    updateDashboard();
   }
 
   // close if the esc key is pressed

@@ -12,7 +12,8 @@ import {Alert, Button,FormControl, InputLabel, MenuItem, OutlinedInput, Select, 
   function ModalCrearErrorConocido({
     id,
     modalOpen,
-    setModalOpen
+    setModalOpen,
+    updateDashboard
   }) {
 
 
@@ -35,6 +36,8 @@ import {Alert, Button,FormControl, InputLabel, MenuItem, OutlinedInput, Select, 
         dataType: "json",
         contentType: "application/json; charset=utf-8"
       });
+
+      updateDashboard();
     }
   
     // close if the esc key is pressed

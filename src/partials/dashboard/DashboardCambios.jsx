@@ -37,6 +37,10 @@ function DashboardCambios() {
     })
   }
 
+  const updateDashboard = () =>{
+    setItems(null)
+  }
+
 
   const deleteChangeById = (id) => {
       let url = 'https://itil-back.herokuapp.com/change/' + id.toString();
@@ -75,9 +79,9 @@ function DashboardCambios() {
         
       </header>
 
-      <ModalCrearCambio id="create-cambio-modal" searchId="create" modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} />
-      <ModalModificarCambio id="modify-cambio-modal" modalState={modifyModalState} setModalState={setModifyModalState} changeId={itemId}/>
-      <ModalInfoCambio id="info-cambio-modal" modalState={infoModalState} setModalState={setInfoModalState} changeId={itemId}/>
+      <ModalCrearCambio id="create-cambio-modal" searchId="create" modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} updateDashboard={updateDashboard}/>
+      <ModalModificarCambio id="modify-cambio-modal" modalState={modifyModalState} setModalState={setModifyModalState} changeId={itemId} updateDashboard={updateDashboard}/>
+      <ModalInfoCambio id="info-cambio-modal" modalState={infoModalState} setModalState={setInfoModalState} changeId={itemId} updateDashboard={updateDashboard}/>
 
       <div className="p-3">
 

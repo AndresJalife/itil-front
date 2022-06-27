@@ -18,7 +18,8 @@ function ModalModificarCambio({
     id,
     modalState,
     setModalState,
-    changeId
+    changeId,
+    updateDashboard
   }) {
 
   let sin_seleccion = { id:0, name:'' };
@@ -82,7 +83,7 @@ function ModalModificarCambio({
       dataType: "json",
       contentType: "application/json; charset=utf-8"
     });
-    
+    updateDashboard();
   }
 
   // close if the esc key is pressed

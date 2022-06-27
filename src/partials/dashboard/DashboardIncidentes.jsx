@@ -29,6 +29,10 @@ function DashboardIncidentes() {
       setItems(data)
     })
   }
+  
+  const updateDashboard = () =>{
+    setItems(null)
+  }
 
   const deleteIncidentById = (id) => {
     let url = 'https://itil-back.herokuapp.com/incident/' + id.toString();
@@ -65,8 +69,8 @@ function DashboardIncidentes() {
           <CustomButton  onClick={(e) => { e.stopPropagation(); setCreateModalOpen(true);}}>+ Nuevo </CustomButton>  
           
         </header>
-        <ModalCrearIncidente id="create-incident-modal" modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} />
-        <ModalInfoIncidente id="info-incident-modal" modalState={infoModalState} setModalState={setInfoModalState} incidentID={itemID}/>
+        <ModalCrearIncidente id="create-incident-modal" modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} updateDashboard={updateDashboard}/>
+        <ModalInfoIncidente id="info-incident-modal" modalState={infoModalState} setModalState={setInfoModalState} incidentID={itemID} updateDashboard={updateDashboard}/>
         
         <div className="p-3">
 

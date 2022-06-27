@@ -13,7 +13,8 @@ function ModalInfoCambio({
     id,
     modalState,
     setModalState,
-    changeId
+    changeId,
+    updateDashboard
   }) {
 
     const [change, setChange] = useState(null);
