@@ -51,7 +51,37 @@ function ModalInfoProblema({
       modalState.open //&& nameInput.current.focus();
     }, [modalState.open]);
 
-    
+ 
+    const takeProblem =  () => {
+      let problem_data = {
+        taken_by_id: user.sub
+      };
+      
+      $.ajax({
+        type: "POST",
+        url: "https://itil-back.herokuapp.com/problem/" + problemId + "/take",
+        data: JSON.stringify(problem_data),
+        success: (data)=>{setModalOpen(false);},
+        error: (result) => {console.log(result)},
+        dataType: "json",
+        contentType: "application/json; charset=utf-8"
+      });
+      closeModal();
+    }
+
+    const solveProblem =  () => {
+      $.ajax({
+        type: "POST",
+        url: "https://itil-back.herokuapp.com/problem/" + problemId + "/solve",
+        success: (data)=>{setModalOpen(false);},
+        error: (result) => {console.log(result)},
+        dataType: "json",
+        contentType: "application/json; charset=utf-8"
+      });
+      closeModal();
+    }
+
+   
     if (problem) {
       console.log(modalState.open);
       return (
@@ -100,7 +130,10 @@ function ModalInfoProblema({
                  </Grid>
                 
                  <Grid item xs={12} sm={6}>
-                   <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Tomado Por</header>
+                   <header style={{display:'flex', justifyContent:'space-between'}}>
+                     <h2 className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Tomado Por</h2>
+                     <Button disabled={problem.status != 'creado'} onClick={(e) => { e.stopPropagation(); takeProblem();}}>Tomar</Button>  
+                   </header>                   
                    <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{userIDToName(problem.taken_by_id)}</div>
                  </Grid>
                </Grid>
@@ -112,7 +145,10 @@ function ModalInfoProblema({
                  </Grid>
 
                  <Grid item xs={12} sm={6}>
-                   <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Estado</header>
+                   <header style={{display:'flex', justifyContent:'space-between'}}>
+                     <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Estado</header>
+                     <Button disabled={problem.status != 'tomado'} onClick={(e) => { e.stopPropagation(); solveProblem();}}>Resolver</Button>  
+                   </header>
                    <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{problem.status}</div>
                  </Grid>
                </Grid>              
