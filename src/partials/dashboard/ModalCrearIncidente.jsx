@@ -4,6 +4,8 @@ import CustomButton from './CustomButton';
 
 import $ from 'jquery'
 
+import swal from 'sweetalert2';
+
 import useUser from '../useUser';
 import {Alert, Button,FormControl, InputLabel, MenuItem, OutlinedInput, Select, Grid} from '@mui/material';
   
@@ -39,17 +41,37 @@ function ModalCrearIncidente({
       };
 
       console.log(JSON.stringify(new_incident))
-    
-      $.ajax({
-        type: "POST",
-        url: "https://itil-back.herokuapp.com/incident",
-        data: JSON.stringify(new_incident),
-        success: (data)=>{setModalOpen(false)},
-        error: (result) => {console.log(result)},
-        dataType: "json",
-        contentType: "application/json; charset=utf-8"
-      });
-      updateDashboard();
+
+
+      let url = "https://itil-back.herokuapp.com/incident"
+      let data = JSON.stringify(new_incident)
+
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': "application/json; charset=utf-8"},
+        body: data,
+      })
+      .then((response) => {
+        if (response.ok){
+          swal.fire({
+            title: "El incidente se creo exitosamente",
+            icon: "success"});
+          updateDashboard();
+        } else {
+          console.log(response)
+          swal.fire({
+            title: "Ocurrió un error: ",
+            text: response.statusText,
+            icon: "error"});
+        }})
+      .catch((error) => {console.log(error); swal.fire({
+        title: "Ocurrió un error: ",
+        text: error.message,
+        icon: "error"});});
+      
+      setModalOpen(false);
+        
     }
 
     if (!problems) {

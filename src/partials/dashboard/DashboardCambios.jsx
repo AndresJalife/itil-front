@@ -63,7 +63,10 @@ function DashboardCambios() {
                       title: "Se borro exitosamente el cambio con id " + id.toString() ,
                       icon: "success"});
                   setItems(null)
-              })
+              }).catch((error) => {console.log(error); swal.fire({
+                title: "Ocurrió un error: ",
+                text: error.message,
+                icon: "error"});});
           }
       });
   }

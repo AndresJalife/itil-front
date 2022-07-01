@@ -4,6 +4,8 @@ import CustomButton from './CustomButton';
 
 import $ from 'jquery'
 
+import swal from 'sweetalert2';
+
 import useUser from '../useUser';
 import {Alert, Button,FormControl, InputLabel, MenuItem, OutlinedInput, Select, Grid} from '@mui/material';
   
@@ -41,19 +43,38 @@ import {Alert, Button,FormControl, InputLabel, MenuItem, OutlinedInput, Select, 
       e.preventDefault()
       const form = new FormData(e.currentTarget);
 
-      $.ajax({
-        type: "POST",
-        url: "https://itil-back.herokuapp.com/problem",
-        data: JSON.stringify({"name": form.get("name"), 
-                "description": form.get("description"), 
-                created_by_id: user.sub,
-                "priority": form.get("priority")}),
-        success: () => {setModalOpen(false); updateDashboard();},
-        error: (result) => {
-          console.log(result);alert(result.statusText)},//(result) => {console.log(result)},
-        dataType: "json",
-        contentType: "application/json; charset=utf-8"
-      });
+      let url = "https://itil-back.herokuapp.com/problem"
+      let data = JSON.stringify({"name": form.get("name"), 
+      "description": form.get("description"), 
+      created_by_id: user.sub,
+      "priority": form.get("priority")})
+
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': "application/json; charset=utf-8"},
+        body: data,
+      })
+      .then((response) => {
+        if (response.ok){
+          swal.fire({
+            title: "El problema se creo exitosamente",
+            icon: "success"});
+          updateDashboard();
+        } else {
+          console.log(response)
+          swal.fire({
+            title: "Ocurrió un error: ",
+            text: response.statusText,
+            icon: "error"});
+        }})
+      .catch((error) => {console.log(error); swal.fire({
+        title: "Ocurrió un error: ",
+        text: error.message,
+        icon: "error"});});
+      
+      setModalOpen(false);
+        
     }
   
     // close if the esc key is pressed

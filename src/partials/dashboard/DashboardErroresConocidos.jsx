@@ -51,7 +51,10 @@ function DashboardErroresConocidos() {
                     title: "Se borro exitosamente el error conocido con id " + id.toString() ,
                     icon: "success"});
                 setItems(null)
-            })
+            }).catch((error) => {console.log(error); swal.fire({
+              title: "Ocurrió un error: ",
+              text: error.message,
+              icon: "error"});});
         }
     });
 }

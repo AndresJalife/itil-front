@@ -47,12 +47,16 @@ function DashboardProblemas() {
     }).then(answer=>{
         if(answer.isConfirmed){
             fetch(url, {
-                method: 'DELETE'}).then(() => {
+                method: 'DELETE'
+            }).then(() => {
                 swal.fire({
                     title: "Se borro exitosamente el problema con id " + id.toString() ,
                     icon: "success"});
                     updateDashboard()
-            })
+            }).catch((error) => {console.log(error); swal.fire({
+              title: "Ocurrió un error: ",
+              text: error.message,
+              icon: "error"});});
         }
     });
 }

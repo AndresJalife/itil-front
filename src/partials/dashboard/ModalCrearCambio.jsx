@@ -8,6 +8,8 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import {Alert, Button, FormControl, InputLabel, MenuItem, OutlinedInput, Select} from '@mui/material';
 
+import swal from 'sweetalert2';
+
 import $ from 'jquery'
 
 import useUser from '../useUser';
@@ -46,19 +48,35 @@ function ModalCrearCambio({
       impact: form.get('impact'),
       created_by_id: user.sub
     };
-  
-    $.ajax({
-      type: "POST",
-      url: "https://itil-back.herokuapp.com/change",
-      data: JSON.stringify(new_change),
-      success: (data)=>{setModalOpen(false);},
-      error: (result) => {console.log(result)},
-      dataType: "json",
-      contentType: "application/json; charset=utf-8"
-    });
+
+    let url = "https://itil-back.herokuapp.com/change"
+
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': "application/json; charset=utf-8"},
+      body: JSON.stringify(new_change),
+    })
+    .then((response) => {
+      if (response.ok){
+        swal.fire({
+          title: "El cambio se creo exitosamente",
+          icon: "success"});
+        updateDashboard();
+      } else {
+        console.log(response)
+        swal.fire({
+          title: "Ocurrió un error: ",
+          text: response.statusText,
+          icon: "error"});
+      }})
+    .catch((error) => {console.log(error); swal.fire({
+      title: "Ocurrió un error: ",
+      text: error.message,
+      icon: "error"});});
     
-    //setModalOpen(false);
-    updateDashboard();
+    setModalOpen(false);
+
   }
 
   // close if the esc key is pressed
