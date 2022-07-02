@@ -18,7 +18,10 @@ import { Button, IconButton} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import useUser from '../useUser';
-import { permisosByUserID } from '../../utils/Utils';
+import { permisosByUserID , customFilter} from '../../utils/Utils';
+
+import ReactTable from 'react-table-6'
+import "react-table-6/react-table.css";
 
 function DashboardCambios() {
 
@@ -90,89 +93,104 @@ function DashboardCambios() {
       <ModalCrearCambio id="create-cambio-modal" searchId="create" modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} updateDashboard={updateDashboard}/>
       <ModalModificarCambio id="modify-cambio-modal" modalState={modifyModalState} setModalState={setModifyModalState} changeId={itemId} updateDashboard={updateDashboard}/>
       <ModalInfoCambio id="info-cambio-modal" modalState={infoModalState} setModalState={setInfoModalState} changeId={itemId} updateDashboard={updateDashboard}/>
+      
+      <div>
+        <ReactTable
+          data={items}
+          columns={[
+                {
+                  id: "id",
+                  Header: "ID",
+                  accessor: "id",
+                  maxWidth: 100,
+                  className: 'text-center'
+                  
+                },
+                {
+                  id: "name",
+                  Header: "Nombre",
+                  accessor: row=>{return row},
+                  minWidth: 300,
+                  Cell: ({value,_}) => (<div onClick={(e) => { e.stopPropagation(); setItemId(value.id); setModifyModalState({"open":true,"update":true}); }} className="cursor-pointer font-medium text-slate-800">{value.name}</div>)
+                },
+                {
+                  id: "priority",
+                  Header: "Prioridad",
+                  accessor: "priority",
+                  className: 'text-center',
+                  Filter: ({ filter, onChange }) =>
+                    customFilter({ fieldName:'priority', filter, onChange , items})
+                },
+                {
+                  Header: "Estado",
+                  accessor: "status",
+                  className: 'text-center',
+                  Filter: ({ filter, onChange }) =>
+                    customFilter({ fieldName:'status', filter, onChange , items})
+                },
+                {
+                  Header: "Impacto",
+                  accessor: "impact",
+                  className: 'text-center',
+                  Filter: ({ filter, onChange }) =>
+                    customFilter({ fieldName:'impact', filter, onChange , items})
+                },
+                {
+                  Header: "Problema",
+                  accessor: "problem_id",
+                  className: 'text-center',
+                  filterable: false,
+                  sortable: false,
+                  maxWidth: 150
+                },
+                {
+                  id: "info",
+                  Header: "Info",
+                  accessor: "id",
+                  filterable: false,
+                  sortable: false,
+                  maxWidth: 150,
+                  Cell: ({ value, _ }) =>
+                    (<div className="text-center">
+                  <InfoButton variant="text" onClick={(e) => { e.stopPropagation(); setItemId(value); setInfoModalState({"open": true, "update": true}); }}/>
+                </div>)
+                },
 
-      <div className="p-3">
-
-        {/* Table */}
-        <div className="overflow-x-auto">
-          <table className="table-auto w-full">
-            {/* Table header */}
-            <thead className="text-xs font-semibold uppercase text-slate-400 bg-slate-50">
-              <tr>
-                <th className="p-2 whitespace-nowrap">
-                  <div className="font-semibold text-left">ID</div>
-                </th>
-                <th className="p-2 whitespace-nowrap">
-                  <div className="font-semibold text-left">Nombre</div>
-                </th>
-                <th className="p-2 whitespace-nowrap">
-                  <div className="font-semibold text-left">Prioridad</div>
-                </th>
-                <th className="p-2 whitespace-nowrap">
-                  <div className="font-semibold text-left">Estado</div>
-                </th>
-                <th className="p-2 whitespace-nowrap">
-                  <div className="font-semibold text-center">Impacto</div>
-                </th>
-                <th className="p-2 whitespace-nowrap">
-                  <div className="font-semibold text-center">Problema</div>
-                </th>
-                <th className="p-2 whitespace-nowrap">
-                  <div className="font-semibold text-center">Info</div>
-                </th>
-                <th className="p-2 whitespace-nowrap">
-                  <div className="font-semibold text-center">Borrar</div>
-                </th>
-              </tr>
-            </thead>
-            {/* Table body */}
-            <tbody className="text-sm divide-y divide-slate-100">
-              {
-                items.map(item => {
-                  return (
-                    <tr key={item.id}>
-                      <td className="p-2 whitespace-nowrap">
-                        <div className="text-left">{item.id}</div>
-                      </td>
-                      <td className="p-2 whitespace-nowrap" style={{cursor:'pointer'}}>           
-                        <div onClick={(e) => { e.stopPropagation(); setItemId(item.id); setModifyModalState({"open":true,"update":true}); }} className="font-medium text-slate-800">{item.name}</div>
-                      </td>
-                      <td className="p-2 whitespace-nowrap">
-                        <div className="text-left">{item.priority}</div>
-                      </td>
-                      <td className="p-2 whitespace-nowrap">
-                        <div className="text-left">{item.status}</div>
-                      </td>
-                      <td className="p-2 whitespace-nowrap">
-                        <div className="text-left">{item.impact}</div>
-                      </td>
-                      <td className="p-2 whitespace-nowrap">
-                        <div className="text-center">{item.problem_id}</div>
-                      </td>
-                      <td className="p-2 whitespace-nowrap">
-                        <div className="text-center">
-                          <InfoButton variant="text" onClick={(e) => { e.stopPropagation(); setItemId(item.id); setInfoModalState({"open": true, "update": true}); }}/>
-                        </div>
-                      </td>
-
-                      <td className="p-2 whitespace-nowrap">
-                      <div className={"text-center " + (permisosByUserID(user.sub).cambios == 2 ? null : "d-none")}>
-                        <IconButton aria-label="delete" onClick = {()=>{deleteChangeById(item.id)}} color="error">
-                          <DeleteIcon  />
-                        </IconButton>
-                        </div>
-                      </td>
-                    </tr>
+                {
+                  id: "borrar",
+                  Header: "Borrar",
+                  accessor: "id",
+                  filterable: false,
+                  sortable: false,
+                  maxWidth: 150,
+                  Cell: ({ value, _ }) => ( // { value, columnProps: { rest: { someFunc } } }
+                    <div className={"text-center " + (permisosByUserID(user.sub).cambios == 2 ? null : "d-none")}>
+                      <IconButton aria-label="delete" onClick = {()=>{deleteChangeById(value)}} color="error">
+                        <DeleteIcon  />
+                      </IconButton>
+                      </div>
                   )
-                })
-              }
-            </tbody>
-          </table>
-
+            },
+          ]}
+          defaultSorted={[
+            {
+              id: "id",
+              desc: true
+            }
+          ]}
+          filterable={true}
+          defaultFiltered={[
+            {
+              //id: "name",
+              //value: "acc"
+            }
+          ]}
+          //onFilteredChange={(filtered) => this.setState({ filtered })}
+          defaultPageSize={10}
+          className="-striped -highlight"
+          />
         </div>
-
       </div>
-    </div>
   );
   } else {
     return (

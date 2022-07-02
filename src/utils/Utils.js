@@ -70,3 +70,29 @@ export const  permisosByUserID = (id) => {
   //return (name == undefined ? "Usuario desconocido" : name)
 
 }
+
+
+export const customFilter = ({ fieldName, filter, onChange , items}) => {
+
+  return (
+    <select
+      onChange={event => onChange(event.target.value)}
+      style={{ width: "100%" }}
+      value={filter ? filter.value : "all"}
+    > 
+      <option value="">*</option>
+      {items
+        .map(item => item[fieldName])
+
+        .filter((item, i, s) => s.lastIndexOf(item) == i)
+        .map(function (value) {
+          //log.debug('renderItem: ', value);
+          return (
+            <option key={value} value={value}>
+              {value}
+            </option>
+          );
+        })}
+    </select>
+  );
+};

@@ -11,7 +11,10 @@ import { Button, IconButton} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import useUser from '../useUser';
-import { permisosByUserID } from '../../utils/Utils';
+import { permisosByUserID , customFilter} from '../../utils/Utils';
+
+import ReactTable from 'react-table-6'
+import "react-table-6/react-table.css";
 
 function DashboardErroresConocidos() {
 
@@ -74,66 +77,75 @@ function DashboardErroresConocidos() {
 
         <ModalCrearErrorConocido id="create-problem-modal" modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} updateDashboard={updateDashboard}/>
 
-        <div className="p-3">
-  
-          {/* Table */}
-          <div className="overflow-x-auto">
-            <table className="table-auto w-full">
-              {/* Table header */}
-              <thead className="text-xs font-semibold uppercase text-slate-400 bg-slate-50">
-                <tr>
-                  <th className="p-2 whitespace-nowrap">
-                    <div className="font-semibold text-left">ID</div>
-                  </th>
-                  <th className="p-2 whitespace-nowrap">
-                    <div className="font-semibold text-left">Nombre</div>
-                  </th>
-                  <th className="p-2 whitespace-nowrap">
-                    <div className="font-semibold text-left">Descripcion</div>
-                  </th>
-                  <th className="p-2 whitespace-nowrap">
-                    <div className="font-semibold text-left">Solucion</div>
-                  </th>
-                <th className="p-2 whitespace-nowrap">
-                  <div className="font-semibold text-center">Borrar</div>
-                </th>
-                </tr>
-              </thead>
-              {/* Table body */}
-              <tbody className="text-sm divide-y divide-slate-100">
+        <div>
+        <ReactTable
+          data={items}
+          columns={[
                 {
+                  id: "id",
+                  Header: "ID",
+                  accessor: "id",
+                  maxWidth: 100,
+                  className: 'text-center'
                   
-                  items.map(item => {
-                    return (
-                      <tr key={item.id}>
-                        <td className="p-2 whitespace-nowrap">
-                          <div className="text-left">{item.id}</div>
-                        </td>
-                        <td className="p-2 whitespace-nowrap">           
-                          <div className="font-medium text-slate-800">{item.name}</div>
-                        </td>
-                        <td className="p-2 whitespace-nowrap">           
-                          <div className="font-medium text-slate-800">{item.description}</div>
-                        </td>
-                        <td className="p-2 whitespace-nowrap">           
-                          <div className="font-medium text-slate-800">{item.solution}</div>
-                        </td>
+                },
+                {
+                  id: "name",
+                  Header: "Nombre",
+                  accessor: "name",
+                  minWidth: 200,
+                  className: 'font-medium text-slate-800'
+                },
+                {
+                  id: "description",
+                  Header: "Descripcion",
+                  accessor: "description",
+                  filterable: false,
+                  sortable: false,
+                  minWidth: 200,
+                },
+                {
+                  id: "solution",
+                  Header: "Solucion",
+                  accessor: "solution",
+                  filterable: false,
+                  sortable: false,
+                  minWidth: 200,
+                },
 
-                        <td className="p-2 whitespace-nowrap">
-                        <div className={"text-center " + (permisosByUserID(user.sub).errores == 2 ? null : "d-none")}>
-                          <IconButton aria-label="delete" onClick = {()=>{deleteKnownErrorById(item.id)}} color="error">
-                            <DeleteIcon  />
-                          </IconButton>
-                          </div>
-                        </td>
-                      </tr>
-                    )
-                  })
-                }
-              </tbody>
-            </table>
-          </div>
-  
+                {
+                  id: "borrar",
+                  Header: "Borrar",
+                  accessor: "id",
+                  filterable: false,
+                  sortable: false,
+                  maxWidth: 150,
+                  Cell: ({ value, _ }) => ( // { value, columnProps: { rest: { someFunc } } }
+                    <div className={"text-center " + (permisosByUserID(user.sub).errores == 2 ? null : "d-none")}>
+                      <IconButton aria-label="delete" onClick = {()=>{deleteKnownErrorById(value)}} color="error">
+                        <DeleteIcon  />
+                      </IconButton>
+                      </div>
+                  )
+            },
+          ]}
+          defaultSorted={[
+            {
+              id: "id",
+              desc: true
+            }
+          ]}
+          filterable={true}
+          defaultFiltered={[
+            {
+              //id: "name",
+              //value: "acc"
+            }
+          ]}
+          //onFilteredChange={(filtered) => this.setState({ filtered })}
+          defaultPageSize={10}
+          className="-striped -highlight"
+          />
         </div>
       </div>
     );

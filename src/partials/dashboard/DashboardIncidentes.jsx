@@ -17,7 +17,10 @@ import { Button, IconButton} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import useUser from '../useUser';
-import { permisosByUserID } from '../../utils/Utils';
+import { permisosByUserID , customFilter} from '../../utils/Utils';
+
+import ReactTable from 'react-table-6'
+import "react-table-6/react-table.css";
 
 function DashboardIncidentes() {
 
@@ -79,86 +82,101 @@ function DashboardIncidentes() {
         <ModalCrearIncidente id="create-incident-modal" modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} updateDashboard={updateDashboard}/>
         <ModalInfoIncidente id="info-incident-modal" modalState={infoModalState} setModalState={setInfoModalState} incidentID={itemID} updateDashboard={updateDashboard}/>
         
-        <div className="p-3">
-
-          {/* Table */}
-          <div className="overflow-x-auto">
-            <table className="table-auto w-full">
-              {/* Table header */}
-              <thead className="text-xs font-semibold uppercase text-slate-400 bg-slate-50">
-                <tr>
-                  <th className="p-2 whitespace-nowrap">
-                    <div className="font-semibold text-left">ID</div>
-                  </th>
-                  <th className="p-2 whitespace-nowrap">
-                    <div className="font-semibold text-left">Nombre</div>
-                  </th>
-                  <th className="p-2 whitespace-nowrap">
-                    <div className="font-semibold text-left">Prioridad</div>
-                  </th>
-                  <th className="p-2 whitespace-nowrap">
-                    <div className="font-semibold text-left">Estado</div>
-                  </th>
-                  <th className="p-2 whitespace-nowrap">
-                    <div className="font-semibold text-left">Impacto</div>
-                  </th>
-                  <th className="p-2 whitespace-nowrap">
-                    <div className="font-semibold text-left">Problema</div>
-                  </th>
-                  <th className="p-2 whitespace-nowrap">
-                  <div className="font-semibold text-center">Info</div>
-                </th>
-                <th className="p-2 whitespace-nowrap">
-                  <div className="font-semibold text-center">Borrar</div>
-                </th>
-                </tr>
-              </thead>
-              {/* Table body */}
-              <tbody className="text-sm divide-y divide-slate-100">
+        <div>
+        <ReactTable
+          data={items}
+          columns={[
                 {
-                  items.map(item => {
-                    return (
-                      <tr key={item.id}>
-                        <td className="p-2 whitespace-nowrap">
-                          <div className="text-left">{item.id}</div>
-                        </td>
-                        <td className="p-2 whitespace-nowrap">           
-                          <div className="font-medium text-slate-800">{item.name}</div>
-                        </td>
-                        <td className="p-2 whitespace-nowrap">
-                          <div className="text-left">{item.priority}</div>
-                        </td>
-                        <td className="p-2 whitespace-nowrap">
-                          <div className="text-left">{item.status}</div>
-                        </td>
-                        <td className="p-2 whitespace-nowrap">
-                          <div className="text-left">{item.impact}</div>
-                        </td>
-                        <td className="p-2 whitespace-nowrap">
-                          <div className="text-center">{item.problem_id}</div>
-                        </td>
-                        <td className="p-2 whitespace-nowrap">
-                          <div className="text-center">
-                            <InfoButton variant="text" onClick={(e) => { e.stopPropagation(); setItemId(item.id); setInfoModalState({"open": true, "update": true}); }}/>
-                          </div>
-                        </td>
+                  id: "id",
+                  Header: "ID",
+                  accessor: "id",
+                  maxWidth: 100,
+                  className: 'text-center'
+                  
+                },
+                {
+                  id: "name",
+                  Header: "Nombre",
+                  accessor: "name",
+                  minWidth: 300,
+                  className: 'font-medium text-slate-800'
+                },
+                {
+                  id: "priority",
+                  Header: "Prioridad",
+                  accessor: "priority",
+                  className: 'text-center',
+                  Filter: ({ filter, onChange }) =>
+                    customFilter({ fieldName:'priority', filter, onChange , items})
+                },
+                {
+                  Header: "Estado",
+                  accessor: "status",
+                  className: 'text-center',
+                  Filter: ({ filter, onChange }) =>
+                    customFilter({ fieldName:'status', filter, onChange , items})
+                },
+                {
+                  Header: "Impacto",
+                  accessor: "impact",
+                  className: 'text-center',
+                  Filter: ({ filter, onChange }) =>
+                    customFilter({ fieldName:'impact', filter, onChange , items})
+                },
+                {
+                  Header: "Problema",
+                  accessor: "problem_id",
+                  className: 'text-center',
+                  filterable: false,
+                  sortable: false,
+                  maxWidth: 150
+                },
+                {
+                  id: "info",
+                  Header: "Info",
+                  accessor: "id",
+                  filterable: false,
+                  sortable: false,
+                  maxWidth: 150,
+                  Cell: ({ value, _ }) =>
+                    (<div className="text-center">
+                  <InfoButton variant="text" onClick={(e) => { e.stopPropagation(); setItemId(value); setInfoModalState({"open": true, "update": true}); }}/>
+                </div>)
+                },
 
-                        <td className="p-2 whitespace-nowrap">
-                        <div className={"text-center " + (permisosByUserID(user.sub).incidentes == 2 ? null : "d-none")}>
-                          <IconButton aria-label="delete" onClick = {()=>{deleteIncidentById(item.id)}} color="error">
-                            <DeleteIcon  />
-                          </IconButton>
-                          </div>
-                      </td>
-                      </tr>
-                    )
-                  })
-                }
-              </tbody>
-            </table>
-
-          </div>
-
+                {
+                  id: "borrar",
+                  Header: "Borrar",
+                  accessor: "id",
+                  filterable: false,
+                  sortable: false,
+                  maxWidth: 150,
+                  Cell: ({ value, _ }) => ( // { value, columnProps: { rest: { someFunc } } }
+                    <div className={"text-center " + (permisosByUserID(user.sub).incidentes == 2 ? null : "d-none")}>
+                      <IconButton aria-label="delete" onClick = {()=>{deleteIncidentById(value)}} color="error">
+                        <DeleteIcon  />
+                      </IconButton>
+                      </div>
+                  )
+            },
+          ]}
+          defaultSorted={[
+            {
+              id: "id",
+              desc: true
+            }
+          ]}
+          filterable={true}
+          defaultFiltered={[
+            {
+              //id: "name",
+              //value: "acc"
+            }
+          ]}
+          //onFilteredChange={(filtered) => this.setState({ filtered })}
+          defaultPageSize={10}
+          className="-striped -highlight"
+          />
         </div>
       </div>
     );
