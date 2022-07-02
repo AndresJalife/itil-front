@@ -17,6 +17,9 @@ import swal from "sweetalert2";
 import { Button, IconButton} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
+import useUser from '../useUser';
+import { permisosByUserID } from '../../utils/Utils';
+
 function DashboardCambios() {
 
   const [items, setItems] = useState(null)
@@ -24,6 +27,8 @@ function DashboardCambios() {
   const [createModalOpen, setCreateModalOpen] = useState(false)
   const [modifyModalState, setModifyModalState] = useState({"open": false, "update": false});
   const [infoModalState, setInfoModalState] = useState({"open": false, "update": false});
+
+  const {user, isAdmin, isSupport} = useUser();
 
   // const wrapperSetModifyModalState = useCallback(val => {
   //   setModifyModalState(val);
@@ -78,7 +83,7 @@ function DashboardCambios() {
       
       <header className="px-5 py-4 border-b border-slate-100" style={{display:'flex', justifyContent:'space-between', cursor:'pointer'}}>
         <h2 className="font-semibold text-slate-800">Cambios</h2>
-        <CustomButton  onClick={(e) => { e.stopPropagation(); setCreateModalOpen(true);}}>+ Nuevo </CustomButton>  
+        <CustomButton className={permisosByUserID(user.sub).cambios == 2 ? null : "d-none"} onClick={(e) => { e.stopPropagation(); setCreateModalOpen(true);}}>+ Nuevo </CustomButton>  
         
       </header>
 
@@ -151,7 +156,7 @@ function DashboardCambios() {
                       </td>
 
                       <td className="p-2 whitespace-nowrap">
-                      <div className="text-center">
+                      <div className={"text-center " + (permisosByUserID(user.sub).cambios == 2 ? null : "d-none")}>
                         <IconButton aria-label="delete" onClick = {()=>{deleteChangeById(item.id)}} color="error">
                           <DeleteIcon  />
                         </IconButton>

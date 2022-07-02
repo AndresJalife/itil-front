@@ -10,6 +10,9 @@ import swal from "sweetalert2";
 import { Button, IconButton} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
+import useUser from '../useUser';
+import { permisosByUserID } from '../../utils/Utils';
+
 function DashboardErroresConocidos() {
 
 
@@ -18,6 +21,7 @@ function DashboardErroresConocidos() {
   const [createModalOpen, setCreateModalOpen] = useState(false)
   const [infoModalState, setInfoModalState] = useState({"open": false, "update": false})
   const [itemID, setItemId] = useState(0)
+  const {user, isAdmin, isSupport} = useUser();
 
 
   if (!items){
@@ -65,7 +69,7 @@ function DashboardErroresConocidos() {
         
         <header className="px-5 py-4 border-b border-slate-100" style={{display:'flex', justifyContent:'space-between', cursor:'pointer'}}>
           <h2 className="font-semibold text-slate-800">Errores Conocidos</h2>
-          <CustomButton  onClick={(e) => { e.stopPropagation(); setCreateModalOpen(true);}}>+ Nuevo </CustomButton>  
+          <CustomButton className={permisosByUserID(user.sub).errores == 2 ? null : "d-none"} onClick={(e) => { e.stopPropagation(); setCreateModalOpen(true);}}>+ Nuevo </CustomButton>  
         </header>
 
         <ModalCrearErrorConocido id="create-problem-modal" modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} updateDashboard={updateDashboard}/>
@@ -116,7 +120,7 @@ function DashboardErroresConocidos() {
                         </td>
 
                         <td className="p-2 whitespace-nowrap">
-                        <div className="text-center">
+                        <div className={"text-center " + (permisosByUserID(user.sub).errores == 2 ? null : "d-none")}>
                           <IconButton aria-label="delete" onClick = {()=>{deleteKnownErrorById(item.id)}} color="error">
                             <DeleteIcon  />
                           </IconButton>

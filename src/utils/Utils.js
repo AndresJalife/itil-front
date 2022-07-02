@@ -40,3 +40,33 @@ export const userIDToName = (id) => {
 
   return (name == undefined ? "Usuario desconocido" : name)
 }
+
+export const  permisosByUserID = (id) => {
+  let permisos =  { // 0 = nada, 1 = vista, 2 = creado/borrado
+    'auth0|629e61b46f7f59006922f069':{ // admin
+      "configuracion":2,
+      "incidentes": 2,
+      "problemas": 2,
+      "cambios": 2,
+      "errores": 2
+    },
+    'auth0|629e61d64925f70068971b41':{// soporte
+      "configuracion":1,
+      "incidentes": 1,
+      "problemas": 2,
+      "cambios": 2,
+      "errores": 2
+    },
+    'auth0|62a357a84b6448c8e4f8684c':{//normal
+      "configuracion":1,
+      "incidentes": 2,
+      "problemas": 0,
+      "cambios": 0,
+      "errores": 0
+    }
+  }[id]
+
+  return permisos
+  //return (name == undefined ? "Usuario desconocido" : name)
+
+}

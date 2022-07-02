@@ -3,6 +3,8 @@ import { NavLink, useLocation } from 'react-router-dom';
 
 import SidebarLinkGroup from './SidebarLinkGroup';
 
+import useUser from './useUser';
+import { permisosByUserID } from '../utils/Utils';
 
 function Sidebar({
   sidebarOpen,
@@ -20,6 +22,9 @@ function Sidebar({
   const storedSidebarExpanded = localStorage.getItem('sidebar-expanded');
   const [sidebarExpanded, setSidebarExpanded] = useState(storedSidebarExpanded === null ? false : storedSidebarExpanded === 'true');
 
+  const {user, isAdmin, isSupport} = useUser();
+
+  
   if (!sidebarSelected){
     setSidebarSelected("inicio")
   }
@@ -125,7 +130,7 @@ function Sidebar({
                 </a>
               </li>
               {/* Configuracion */}
-              <SidebarLinkGroup activecondition={sidebarSelected.includes('conf')}>
+              <SidebarLinkGroup activecondition={sidebarSelected.includes('conf')} className={permisosByUserID(user.sub).configuracion > 0 ? "" : "d-none"}>
                 {(handleClick, open) => {
                   return (
                     <React.Fragment>
@@ -172,7 +177,7 @@ function Sidebar({
                 }}
               </SidebarLinkGroup>
               {/* Incidentes */}
-              <li className={"px-3 py-2 rounded-sm mb-0.5 last:mb-0 " + (sidebarSelected.includes('incidentes') ? 'bg-slate-900' : "")}>
+              <li className={"px-3 py-2 rounded-sm mb-0.5 last:mb-0 " + (permisosByUserID(user.sub).incidentes > 0 ? "" : "d-none ") + (sidebarSelected.includes('incidentes') ? 'bg-slate-900' : "")}>
                 <a onClick={() => setSidebarSelected("incidentes")} className={"cursor-pointer block text-slate-200 hover:text-white truncate transition duration-150 " +(sidebarSelected.includes('incidentes') ? 'hover:text-slate-200': "")}>
                   <div className="flex items-center">
                     <svg className="shrink-0 h-6 w-6" viewBox="0 0 24 24">
@@ -184,7 +189,7 @@ function Sidebar({
                 </a>
               </li>
               {/* Problemas */}
-              <li className={"px-3 py-2 rounded-sm mb-0.5 last:mb-0 "+(sidebarSelected.includes('problemas') ? 'bg-slate-900': "")}>
+              <li className={"px-3 py-2 rounded-sm mb-0.5 last:mb-0 "+ (permisosByUserID(user.sub).problemas > 0 ? "" : "d-none ")+(sidebarSelected.includes('problemas') ? 'bg-slate-900': "")}>
                 <a onClick={() => setSidebarSelected("problemas")}  className={"cursor-pointer block text-slate-200 hover:text-white truncate transition duration-150 " + (sidebarSelected.includes('problemas') ? 'hover:text-slate-200': "")}>
                   <div className="flex items-center">
                     <svg className="shrink-0 h-6 w-6" viewBox="0 0 24 24">
@@ -198,7 +203,7 @@ function Sidebar({
                 </a>
               </li>
               {/* Cambios */}
-              <li className={"px-3 py-2 rounded-sm mb-0.5 last:mb-0 "+(sidebarSelected.includes('cambios') ? 'bg-slate-900': "")}>
+              <li className={"px-3 py-2 rounded-sm mb-0.5 last:mb-0 "+ (permisosByUserID(user.sub).cambios > 0 ? "" : "d-none ")+(sidebarSelected.includes('cambios') ? 'bg-slate-900': "")}>
                 <a onClick={() => setSidebarSelected("cambios")} className={"cursor-pointer block text-slate-200 hover:text-white truncate transition duration-150" + (sidebarSelected.includes('cambios') ? 'hover:text-slate-200': "")}>
                   <div className="flex items-center">
                     <svg className="shrink-0 h-6 w-6" viewBox="0 0 24 24">
@@ -212,7 +217,7 @@ function Sidebar({
                 </a>
               </li>
               {/* Errores Conocidos */}
-              <li className={"px-3 py-2 rounded-sm mb-0.5 last:mb-0 "+(sidebarSelected.includes('erroresConocidos') ? 'bg-slate-900': "")}>
+              <li className={"px-3 py-2 rounded-sm mb-0.5 last:mb-0 "+ (permisosByUserID(user.sub).errores > 0 ? "" : "d-none ") + (sidebarSelected.includes('erroresConocidos') ? 'bg-slate-900': "")}>
                 <a onClick={() => setSidebarSelected("erroresConocidos")} className={"cursor-pointer block text-slate-200 hover:text-white truncate transition duration-150" + (sidebarSelected.includes('erroresConocidos') ? 'hover:text-slate-200': "")}>
                   <div className="flex items-center">
                                          <svg className="shrink-0 h-6 w-6" viewBox="0 0 24 24">

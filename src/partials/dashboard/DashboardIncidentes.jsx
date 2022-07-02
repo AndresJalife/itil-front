@@ -16,6 +16,9 @@ import swal from "sweetalert2";
 import { Button, IconButton} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
+import useUser from '../useUser';
+import { permisosByUserID } from '../../utils/Utils';
+
 function DashboardIncidentes() {
 
   const [items, setItems] = useState(null)
@@ -23,6 +26,7 @@ function DashboardIncidentes() {
   const [createModalOpen, setCreateModalOpen] = useState(false)
   const [infoModalState, setInfoModalState] = useState({"open": false, "update": false})
   const [itemID, setItemId] = useState(0)
+  const {user, isAdmin, isSupport} = useUser();
 
   if (!items){
     $.get("https://itil-back.herokuapp.com/incident", function( data, status) {
@@ -69,7 +73,7 @@ function DashboardIncidentes() {
         
         <header className="px-5 py-4 border-b border-slate-100" style={{display:'flex', justifyContent:'space-between', cursor:'pointer'}}>
           <h2 className="font-semibold text-slate-800">Incidentes</h2>
-          <CustomButton  onClick={(e) => { e.stopPropagation(); setCreateModalOpen(true);}}>+ Nuevo </CustomButton>  
+          <CustomButton  className={permisosByUserID(user.sub).incidentes == 2 ? null : "d-none"} onClick={(e) => { e.stopPropagation(); setCreateModalOpen(true);}}>+ Nuevo </CustomButton>  
           
         </header>
         <ModalCrearIncidente id="create-incident-modal" modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} updateDashboard={updateDashboard}/>
@@ -140,7 +144,7 @@ function DashboardIncidentes() {
                         </td>
 
                         <td className="p-2 whitespace-nowrap">
-                        <div className="text-center">
+                        <div className={"text-center " + (permisosByUserID(user.sub).incidentes == 2 ? null : "d-none")}>
                           <IconButton aria-label="delete" onClick = {()=>{deleteIncidentById(item.id)}} color="error">
                             <DeleteIcon  />
                           </IconButton>
