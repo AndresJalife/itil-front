@@ -71,6 +71,10 @@ export const  permisosByUserID = (id) => {
 
 }
 
+export const simplifyDate = (date) => {
+  return date.substring(5, 22)
+}
+
 
 export const customFilter = ({ fieldName, filter, onChange , items}) => {
 

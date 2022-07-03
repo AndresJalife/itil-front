@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Transition from '../../utils/Transition';
 import CustomButton from './CustomButton';
-import ModalAgregarComentario from './ModalAgregarComentario';
+// import ModalAgregarComentario from './ModalAgregarComentario';
 
 import $, { data } from 'jquery'
 
