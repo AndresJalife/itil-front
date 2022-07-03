@@ -71,7 +71,7 @@ function DashboardConfSoftware() {
     <div className="col-span-full xl:col-span-max bg-white shadow-lg rounded-sm border border-slate-200">
       
       <header className="px-5 py-4 border-b border-slate-100" style={{display:'flex', justifyContent:'space-between', cursor:'pointer'}}>
-        <h2 className="font-semibold text-slate-800">Configuracion de Hardware</h2>
+        <h2 className="font-semibold text-slate-800">Configuracion de Software</h2>
         <CustomButton  onClick={(e) => { e.stopPropagation(); setCreateModalOpen(true);}}>+ Nuevo </CustomButton>  
         <ModalCrearConfSoftware id="create-confsoft-modal" modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} updateDashboard={updateDashboard} />
         <ModalInfoConfSoftware id="info-software-modal" modalState={infoModalState} setModalState={setInfoModalState} itemID={itemId} updateDashboard={updateDashboard}/>
