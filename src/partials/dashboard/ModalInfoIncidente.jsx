@@ -8,7 +8,7 @@ import useUser from '../useUser';
 import {Alert, Button, FormControl, InputLabel, MenuItem, OutlinedInput, Select, Grid} from '@mui/material';
 
 import { userIDToName } from '../../utils/Utils';
-
+import { permisosByUserID } from '../../utils/Utils';
   
 
 function ModalInfoIncidente({
@@ -142,7 +142,7 @@ function ModalInfoIncidente({
                  <Grid item xs={12} sm={6}>
                    <header style={{display:'flex', justifyContent:'space-between'}}>
                      <h2 className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Tomado Por</h2>
-                     <Button disabled={incident.status != 'creado'}onClick={(e) => { e.stopPropagation(); takeIncident();}}>Tomar </Button>  
+                     <Button disabled={(permisosByUserID(user.sub).tomaroresolver == false ) || incident.status != 'creado'}onClick={(e) => { e.stopPropagation(); takeIncident();}}>Tomar </Button>  
                    </header>
                    <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{userIDToName(incident.taken_by_id)}</div>
                  </Grid>
@@ -162,7 +162,7 @@ function ModalInfoIncidente({
                  <Grid item xs={12} sm={4}>
                    <header style={{display:'flex', justifyContent:'space-between'}}>
                      <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Estado</header>
-                     <Button disabled={incident.status != 'tomado'}onClick={(e) => { e.stopPropagation(); solveIncident();}}>Resolver</Button>  
+                     <Button disabled={(permisosByUserID(user.sub).tomaroresolver == false )  || incident.status != 'tomado'}onClick={(e) => { e.stopPropagation(); solveIncident();}}>Resolver</Button>  
                    </header>
                      <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{incident.status}</div>
                  </Grid>

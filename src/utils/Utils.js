@@ -48,21 +48,24 @@ export const  permisosByUserID = (id) => {
       "incidentes": 2,
       "problemas": 2,
       "cambios": 2,
-      "errores": 2
+      "errores": 2,
+      "tomaroresolver": true
     },
     'auth0|629e61d64925f70068971b41':{// soporte
       "configuracion":1,
-      "incidentes": 1,
+      "incidentes": 2,
       "problemas": 2,
       "cambios": 2,
-      "errores": 2
+      "errores": 2,
+      "tomaroresolver": true
     },
     'auth0|62a357a84b6448c8e4f8684c':{//normal
       "configuracion":1,
       "incidentes": 2,
       "problemas": 0,
       "cambios": 0,
-      "errores": 0
+      "errores": 0,
+      "tomaroresolver": false
     }
   }[id]
 

@@ -125,7 +125,7 @@ function ModalCrearConfSLA({
           <div className="col-span-full xl:col-span-6 bg-white shadow-lg rounded-sm border border-slate-200">
 
           <header className="px-5 py-4 border-b border-slate-100 bg-slate-50"> 
-          <h2 className="font-semibold text-slate-800 ">Crear item de configuración de software </h2></header>
+          <h2 className="font-semibold text-slate-800 ">Crear item de configuración de SLA </h2></header>
 
           <form onSubmit={(e) => { handleSubmit(e)}}  className="border-b border-slate-200">
 
