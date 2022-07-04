@@ -84,7 +84,7 @@ function DashboardConfSoftware() {
                 {
                   id: "id",
                   Header: "ID",
-                  accessor: "config.versions[0].id",
+                  accessor: "config.id",
                   maxWidth: 100,
                   className: 'text-center'
                   
@@ -92,7 +92,7 @@ function DashboardConfSoftware() {
                 {
                   id: "name",
                   Header: "Nombre",
-                  accessor: "config.versions[0].name",
+                  accessor: (row)=>(row.config.versions.at(-1).name),
                   minWidth: 300,
                   className: 'font-medium text-slate-800'
                 },
@@ -105,19 +105,19 @@ function DashboardConfSoftware() {
                 {
                   id: "type",
                   Header: "Tipo",
-                  accessor: "config.versions[0].type",
+                  accessor: (row)=>(row.config.versions.at(-1).type),
                   className: 'text-center'
                 },
                 {
                   id: "provider",
                   Header: "Proveedor",
-                  accessor: "config.versions[0].provider",
+                  accessor: (row)=>(row.config.versions.at(-1).provider),
                   className: 'text-center'
                 },
                 {
                   id: "licences",
                   Header: "Licencias",
-                  accessor: "config.versions[0].licences",
+                  accessor: (row)=>(row.config.versions.at(-1).licences),
                   className: 'text-center'
                 },
                 

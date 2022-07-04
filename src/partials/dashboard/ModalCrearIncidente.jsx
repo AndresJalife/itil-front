@@ -7,7 +7,7 @@ import $ from 'jquery'
 import swal from 'sweetalert2';
 
 import useUser from '../useUser';
-import {Alert, Button,FormControl, InputLabel, MenuItem, OutlinedInput, Select, Grid} from '@mui/material';
+import {Alert, Chip, Button,FormControl, InputLabel, MenuItem, OutlinedInput, Select, Grid} from '@mui/material';
   
 
 function ModalCrearIncidente({
@@ -19,9 +19,17 @@ function ModalCrearIncidente({
 
     let sin_seleccion = { id:0, name:'' }; 
 
+    let sin_seleccion_config = { config:{id:0, versions:[{name:''}]} }; 
+
+
     const [problems, setProblems] = useState(null);
+    const [configs, setConfigs] = useState(null);
     const [selectedPriority, setSelectedPriority] = useState("");
     const [selectedProblem, setSelectedProblem] = useState(sin_seleccion);
+    const [selectedConfig, setSelectedConfig] = useState(sin_seleccion_config);
+
+    const [asociatedConfigs, setAsociatedConfigs] = useState([]);
+
     const [selectedImpact, setSelectedImpact] = useState("");
 
     const {user, isAdmin, isSupport} = useUser();
@@ -31,14 +39,20 @@ function ModalCrearIncidente({
       e.preventDefault()
       const form = new FormData(e.currentTarget);
 
+      console.log(asociatedConfigs)
       let new_incident = {
         name: form.get('name'),
         description: form.get('description'),
-        problem_id: selectedProblem.id,
         priority: form.get('priority'),
         impact: form.get('impact'),
-        created_by_id: user.sub
+        created_by_id: user.sub,
+        configuration_ids: (asociatedConfigs ? asociatedConfigs.map((c, i) => c.config.id) : null)
       };
+      if (selectedProblem.id != 0){
+        new_incident["problem_id"]=selectedProblem.id;
+      }
+
+      console.log(new_incident)
 
       console.log(JSON.stringify(new_incident))
 
@@ -74,6 +88,12 @@ function ModalCrearIncidente({
         
     }
 
+    if (!configs) {
+      $.get("https://itil-back.herokuapp.com/config", function( data, status) {
+        setConfigs([...data, sin_seleccion_config])
+      })
+    } 
+
     if (!problems) {
       $.get("https://itil-back.herokuapp.com/problem", function( data, status) {
         setProblems([...data, sin_seleccion])
@@ -108,8 +128,17 @@ function ModalCrearIncidente({
       const { target: {value} } = event;
       setSelectedProblem(value);
     };
+
+    const handleConfigChange = (event) => {
+      const { target: {value} } = event;
+      console.log(value);
+      setSelectedConfig(value);
+      setAsociatedConfigs((prev)=> {return [...prev, value]} )
+
+    };
     
-    if (problems) {
+    if (problems && configs) {
+      console.log(configs)
       return (
         <>
           {/* Modal backdrop */}
@@ -161,6 +190,19 @@ function ModalCrearIncidente({
                   <Select id="problem_id" name="problem_id" fullWidth input={<OutlinedInput label="Problema asociado" />} renderValue={selected => selected} value={selectedProblem.name} onChange={e => handleProblemChange(e)} >
                     {problems.map((c, i) => <MenuItem key={i} value={c}>{c.name}</MenuItem>)}
                   </Select>
+
+                  <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Asociar configuración</header>
+                  <label  className="sr-only">Asociar configuración</label>
+                  <Select id="config_id" fullWidth input={<OutlinedInput label="Asociar configuración" />} renderValue={selected => selected} value={selectedConfig.config.versions.at(-1).name} onChange={e => handleConfigChange(e)} >
+                    {configs.filter(c => !asociatedConfigs.includes(c)).map((c, i) => <MenuItem key={i} value={c}>{c.config.versions.at(-1).name}</MenuItem>)}
+
+                  </Select>
+                  <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Elementos de configuración asociados:</header>
+                  <span className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-3 pr-4"> {
+                                asociatedConfigs.map((c,i) => <Chip  key={i} label={c.config.versions.at(-1).name}  onDelete={() => setAsociatedConfigs((prev) => prev.filter(x => x.config.id != c.config.id))} /> )} 
+                                </span>
+
+                  
 
                   <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>

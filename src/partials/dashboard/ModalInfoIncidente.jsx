@@ -6,7 +6,7 @@ import MessageButton from './MessageButton';
 import $, { data } from 'jquery'
 
 import useUser from '../useUser';
-import {Alert, Button, FormControl, InputLabel, MenuItem, OutlinedInput, Select, Grid} from '@mui/material';
+import {Alert, Chip, Button, FormControl, InputLabel, MenuItem, OutlinedInput, Select, Grid} from '@mui/material';
 
 import { userIDToName, simplifyDate, permisosByUserID, getOnlyDate } from '../../utils/Utils';
   
@@ -181,6 +181,11 @@ function ModalInfoIncidente({
                       <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{getOnlyDate(incident.created_on)}</div>
                     </Grid>
                   </Grid>
+                  <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Elementos de configuración asociados:</header>
+                  <span className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-3 pr-4"> {
+                                incident.configurations.map((c,i) => <Chip  key={i} label={c.versions.at(-1).name} /> )} 
+                  </span>
+
 
                   <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
