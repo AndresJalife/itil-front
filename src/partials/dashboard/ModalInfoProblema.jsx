@@ -3,6 +3,7 @@ import Transition from '../../utils/Transition';
 import CustomButton from './CustomButton';
 import "./Message.css"
 import MessageButton from './MessageButton';
+import { getOnlyDate } from '../../utils/Utils';
 
 
 import $, { data } from 'jquery'
@@ -200,7 +201,11 @@ function ModalInfoProblema({
                       </header>
                       <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{problem.status}</div>
                     </Grid>
-                  </Grid>              
+                  </Grid> 
+
+                  <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Fecha de creacion</header>
+                  <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{getOnlyDate(problem.created_on)}</div>             
+
                   </div>
                   </div>
                 </Grid>

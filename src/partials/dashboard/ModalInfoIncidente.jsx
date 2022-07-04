@@ -8,7 +8,7 @@ import $, { data } from 'jquery'
 import useUser from '../useUser';
 import {Alert, Button, FormControl, InputLabel, MenuItem, OutlinedInput, Select, Grid} from '@mui/material';
 
-import { userIDToName, simplifyDate, permisosByUserID } from '../../utils/Utils';
+import { userIDToName, simplifyDate, permisosByUserID, getOnlyDate } from '../../utils/Utils';
   
 
 function ModalInfoIncidente({
@@ -171,9 +171,17 @@ function ModalInfoIncidente({
                   <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Descripcion</header>
                   <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{incident.description}</div>
 
-                  <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Problema Asociado</header>
-                  <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{incident.problem_id}</div>
-                
+                  <Grid container>
+                    <Grid item xs={12} sm={6}>
+                      <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Problema Asociado</header>
+                      <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{incident.problem_id}</div>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Fecha de creacion</header>
+                      <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{getOnlyDate(incident.created_on)}</div>
+                    </Grid>
+                  </Grid>
+
                   <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
                       <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Creado Por</header>

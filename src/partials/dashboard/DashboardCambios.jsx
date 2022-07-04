@@ -122,6 +122,13 @@ function DashboardCambios() {
                     customFilter({ fieldName:'priority', filter, onChange , items})
                 },
                 {
+                  Header: "Estado",
+                  accessor: "status",
+                  className: 'text-center',
+                  Filter: ({ filter, onChange }) =>
+                    customFilter({ fieldName:'status', filter, onChange , items})
+                },
+                {
                   Header: "Impacto",
                   accessor: "impact",
                   className: 'text-center',
