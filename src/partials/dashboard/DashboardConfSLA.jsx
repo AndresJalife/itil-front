@@ -84,7 +84,7 @@ function DashboardConfSLA() {
                 {
                   id: "id",
                   Header: "ID",
-                  accessor: "config.versions[0].id",
+                  accessor: "config.id",
                   maxWidth: 100,
                   className: 'text-center'
                   
@@ -92,32 +92,32 @@ function DashboardConfSLA() {
                 {
                   id: "name",
                   Header: "Nombre",
-                  accessor: "config.versions[0].name",
+                  accessor: (row)=>(row.config.versions.at(-1).name),
                   minWidth: 300,
                   className: 'font-medium text-slate-800'
                 },
                 {
                   id: "service",
                   Header: "Servicio",
-                  accessor: "config.versions[0].service",
+                  accessor: (row)=>(row.config.versions.at(-1).service),
                   className: 'text-center'
                 },
                 {
                   id: "service_manager",
                   Header: "Gerente",
-                  accessor: "config.versions[0].service_manager",
+                  accessor: (row)=>(row.config.versions.at(-1).service_manager),
                   className: 'text-center'
                 },
                 {
                   id: "start_date",
                   Header: "Fecha de Inicio",
-                  accessor: "config.versions[0].start_date",
+                  accessor: (row)=>(row.config.versions.at(-1).start_date),
                   className: 'text-center'
                 },
                 {
                   id: "end_date",
                   Header: "Fecha de Fin",
-                  accessor: "config.versions[0].end_date",
+                  accessor: (row)=>(row.config.versions.at(-1).end_date),
                   className: 'text-center'
                 },
                 

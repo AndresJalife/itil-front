@@ -84,7 +84,7 @@ function DashboardConfHardware() {
                 {
                   id: "id",
                   Header: "ID",
-                  accessor: "config.versions[0].id",
+                  accessor: "config.id",
                   maxWidth: 100,
                   className: 'text-center'
                   
@@ -92,32 +92,32 @@ function DashboardConfHardware() {
                 {
                   id: "name",
                   Header: "Nombre",
-                  accessor: "config.versions[0].name",
+                  accessor: (row)=>(row.config.versions.at(-1).name),
                   minWidth: 300,
                   className: 'font-medium text-slate-800'
                 },
                 {
                   id: "type",
                   Header: "Tipo",
-                  accessor: "config.versions[0].type",
+                  accessor: (row)=>(row.config.versions.at(-1).type),
                   className: 'text-center'
                 },
                 {
                   id: "location",
                   Header: "Localizacion",
-                  accessor: "config.versions[0].location",
+                  accessor: (row)=>(row.config.versions.at(-1).location),
                   className: 'text-center'
                 },
                 {
                   id: "provider",
                   Header: "Proveedor",
-                  accessor: "config.versions[0].provider",
+                  accessor: (row)=>(row.config.versions.at(-1).provider),
                   className: 'text-center'
                 },
                 {
                   id: "capacity",
                   Header: "Capacidad",
-                  accessor: "config.versions[0].capacity",
+                  accessor: (row)=>(row.config.versions.at(-1).capacity),
                   className: 'text-center'
                 },
                 

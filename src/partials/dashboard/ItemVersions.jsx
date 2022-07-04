@@ -11,6 +11,7 @@ function ItemVersions({
   itemID,
   updateDashboard
   }) {
+    const [loadedID, setLoadedID] = useState(null)
 
     const [versions, setVersions] = useState(null)
     
@@ -68,9 +69,10 @@ function ItemVersions({
         
     }
 
-    if (!versions){
+    if (!versions || loadedID!=itemID){
         $.get("https://itil-back.herokuapp.com/config/" + itemID, function( data, status) {
-        setVersions(data.config.versions)
+          setVersions(data.config.versions)
+          setLoadedID(itemID)
         })
     }
 
