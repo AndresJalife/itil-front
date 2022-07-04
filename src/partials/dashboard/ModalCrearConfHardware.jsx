@@ -17,11 +17,15 @@ import {Alert, Button,FormControl, InputLabel, MenuItem, OutlinedInput, Select, 
     id,
     modalOpen,
     setModalOpen,
-    updateDashboard
+    updateDashboard,
+    oldVersionItem,
+    item
   }) {
 
     const [installationDate, setInstallationDate] = useState(new Date());
- 
+  const [url, setUrl] = useState(oldVersionItem? "https://itil-back.herokuapp.com/config/" + item.config_id : "https://itil-back.herokuapp.com/config"); 
+  const [msg, setMsg] = useState(oldVersionItem? "Se agregó una nueva version" : "El item de configuración se creo exitosamente"); 
+  const {user, isAdmin, isSupport} = useUser();
  
     const handleSubmit =  async (e) => {
 
@@ -37,12 +41,11 @@ import {Alert, Button,FormControl, InputLabel, MenuItem, OutlinedInput, Select, 
         "price": form.get('price'),
         "capacity": form.get('capacity'),
         "serial_number": form.get('serial_number'),
-        "installation_date": installationDate
+        "installation_date": installationDate,
+        "user_id": user.sub
       };
 
       console.log(JSON.stringify(new_config))
-      
-      let url = "https://itil-back.herokuapp.com/config"
       let data = JSON.stringify(new_config)
 
       fetch(url, {
@@ -54,7 +57,7 @@ import {Alert, Button,FormControl, InputLabel, MenuItem, OutlinedInput, Select, 
       .then((response) => {
         if (response.ok){
           swal.fire({
-            title: "El item de configuración se creo exitosamente",
+            title: msg,
             icon: "success"});
           updateDashboard();
         } else {
@@ -120,7 +123,7 @@ import {Alert, Button,FormControl, InputLabel, MenuItem, OutlinedInput, Select, 
             <div className="col-span-full xl:col-span-6 bg-white shadow-lg rounded-sm border border-slate-200">
 
             <header className="px-5 py-4 border-b border-slate-100 bg-slate-50"> 
-            <h2 className="font-semibold text-slate-800 ">Crear item de configuración de hardware </h2></header>
+            <h2 className="font-semibold text-slate-800 ">{oldVersionItem? "Nueva version" : "Crear item de configuración de hardware"} </h2></header>
 
             <form onSubmit={(e) => { handleSubmit(e)}}  className="border-b border-slate-200">
 
@@ -128,25 +131,25 @@ import {Alert, Button,FormControl, InputLabel, MenuItem, OutlinedInput, Select, 
             {/* <input id={searchId} */}
                 <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Nombre</header>
                 <label  className="sr-only">Nombre</label>
-                <input name="name" className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Nombre…" />
+                <input name="name" defaultValue={oldVersionItem? item.name: 'Nombre...'}  className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Nombre…" />
                 
                 <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Tipo</header>
                 <label  className="sr-only">Tipo</label>
-                <input name="type" className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Tipo…"  />
+                <input name="type" defaultValue={oldVersionItem? item.type: 'Tipo...'} className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Tipo…"  />
   
                 <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Localizacion</header>
                 <label  className="sr-only">Localizacion</label>
-                <input name="location" className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Localizacion…"  />
+                <input name="location" defaultValue={oldVersionItem? item.location: 'Locacion...'} className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Localizacion…"  />
                          
                 <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Proveedor</header>
                 <label  className="sr-only">Proveedor</label>
-                <input name="provider" className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Proveedor…"  />
+                <input name="provider" defaultValue={oldVersionItem? item.provider: 'Proveedor...'} className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Proveedor…"  />
                   
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={6}>
                     <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Numero de serie</header>
                     <label  className="sr-only">Numero de serie</label>
-                    <input name="serial_number" className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Numero de serie…"  />
+                    <input name="serial_number" defaultValue={oldVersionItem? item.serial_number: 'Numero de serie...'} className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Numero de serie…"  />
                   </Grid>
                   
                   <Grid item xs={12} sm={6}>
@@ -160,13 +163,13 @@ import {Alert, Button,FormControl, InputLabel, MenuItem, OutlinedInput, Select, 
                   <Grid item xs={12} sm={6}>
                     <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Precio ($)</header>
                     <label  className="sr-only">Precio</label>
-                    <input name="price" onKeyPress={(event) => { if (!/[0-9]/.test(event.key)) { event.preventDefault();}}}  type="number" className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Precio…"  />
+                    <input name="price" defaultValue={oldVersionItem? item.price: 'Precio...'}  onKeyPress={(event) => { if (!/[0-9]/.test(event.key)) { event.preventDefault();}}}  type="number" className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Precio…"  />
                   </Grid>
                       
                   <Grid item xs={12} sm={6}>
                     <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Capacidad (GB)</header>
                     <label  className="sr-only">Capacidad</label>
-                    <input name="capacity"  onKeyPress={(event) => { if (!/[0-9]/.test(event.key)) { event.preventDefault();}}} className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Capacidad…"  />
+                    <input name="capacity" defaultValue={oldVersionItem? item.capacity: 'Capacidad...'} onKeyPress={(event) => { if (!/[0-9]/.test(event.key)) { event.preventDefault();}}} className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Capacidad…"  />
                   </Grid>
                 </Grid>      
 

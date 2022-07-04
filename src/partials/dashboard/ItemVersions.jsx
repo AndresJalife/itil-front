@@ -90,7 +90,7 @@ function ItemVersions({
                     <div className="font-semibold text-left">Fecha de creacion</div>
                 </th>
                 <th className="p-2 whitespace-nowrap">
-                    <div className="font-semibold text-left">Descripcion</div>
+                    <div className="font-semibold text-left">Nombre</div>
                 </th>
                 <th className="p-2 whitespace-nowrap">
                     <div className="font-semibold text-left">Rollback</div>
@@ -111,7 +111,7 @@ function ItemVersions({
                         <div className="text-left">{version.created_on}</div>
                         </td>
                         <td className="p-2 whitespace-nowrap">           
-                        <div className="font-medium text-slate-800">{version.description}</div>
+                        <div className="font-medium text-slate-800">{version.name}</div>
                         </td>
 
                         <td className="p-2 whitespace-nowrap">

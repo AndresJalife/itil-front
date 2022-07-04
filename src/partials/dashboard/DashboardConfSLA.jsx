@@ -73,7 +73,7 @@ function DashboardConfSLA() {
       <header className="px-5 py-4 border-b border-slate-100" style={{display:'flex', justifyContent:'space-between', cursor:'pointer'}}>
         <h2 className="font-semibold text-slate-800">Configuracion de SLA</h2>
         <CustomButton  onClick={(e) => { e.stopPropagation(); setCreateModalOpen(true);}}>+ Nuevo </CustomButton>  
-        <ModalCrearConfSLA id="create-confsoft-modal" modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} updateDashboard={updateDashboard} />
+        <ModalCrearConfSLA id="create-confsoft-modal"  oldVersionItem={false} item={null} modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} updateDashboard={updateDashboard} />
         <ModalInfoConfSLA id="info-software-modal" modalState={infoModalState} setModalState={setInfoModalState} itemID={itemId} updateDashboard={updateDashboard}/>
       </header>
       

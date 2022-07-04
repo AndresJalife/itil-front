@@ -17,13 +17,17 @@ function ModalCrearConfSLA({
     id,
     modalOpen,
     setModalOpen,
-    updateDashboard
+    updateDashboard,
+    oldVersionItem,
+    item
   }) {
 
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [selectedCrucial, setSelectedCrucial] = useState("");
-
+  const [url, setUrl] = useState(oldVersionItem? "https://itil-back.herokuapp.com/config/" + item.config_id : "https://itil-back.herokuapp.com/config"); 
+  const [msg, setMsg] = useState(oldVersionItem? "Se agregó una nueva version" : "El item de configuración se creo exitosamente"); 
+  const {user, isAdmin, isSupport} = useUser();
 
   const handleSubmit =  async (e) => {
 
@@ -37,12 +41,11 @@ function ModalCrearConfSLA({
       "service_manager": form.get('service_manager'),
       "start_date": startDate,
       "end_date": endDate,
-      "crucial": selectedCrucial === "Si"
+      "crucial": selectedCrucial === "Si",
+      "user_id": user.sub
     };
 
     console.log(JSON.stringify(new_config))
-    
-    let url = "https://itil-back.herokuapp.com/config"
     let data = JSON.stringify(new_config)
 
     fetch(url, {
@@ -54,7 +57,7 @@ function ModalCrearConfSLA({
     .then((response) => {
       if (response.ok){
         swal.fire({
-          title: "El item de configuración se creo exitosamente",
+          title: msg,
           icon: "success"});
         updateDashboard();
       } else {
@@ -125,7 +128,7 @@ function ModalCrearConfSLA({
           <div className="col-span-full xl:col-span-6 bg-white shadow-lg rounded-sm border border-slate-200">
 
           <header className="px-5 py-4 border-b border-slate-100 bg-slate-50"> 
-          <h2 className="font-semibold text-slate-800 ">Crear item de configuración de SLA </h2></header>
+          <h2 className="font-semibold text-slate-800 ">{oldVersionItem? "Nueva version" : "Crear item de configuración de SLA"} </h2></header>
 
           <form onSubmit={(e) => { handleSubmit(e)}}  className="border-b border-slate-200">
 
@@ -133,19 +136,19 @@ function ModalCrearConfSLA({
           {/* <input id={searchId} */}
               <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Nombre</header>
               <label  className="sr-only">Nombre</label>
-              <input name="name" className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Nombre…" />
+              <input name="name" defaultValue={oldVersionItem? item.name: 'Nombre...'} className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text"/>
               
               <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Servicio</header>
               <label  className="sr-only">Servicio</label>
-              <input name="service" className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Servicio…"  />
+              <input name="service" defaultValue={oldVersionItem? item.service: 'Servicio...'} className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" />
 
               <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Gerente del servicio</header>
               <label  className="sr-only">Gerente del servicio</label>
-              <input name="service_manager" className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Gerente…"  />
+              <input name="service_manager" defaultValue={oldVersionItem? item.service_manager: 'Gerente...'} className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" />
                        
               <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Crucial</header>
               <label htmlFor="crucial" className="sr-only">Crucial</label>
-              <Select id="crucial" name="crucial" fullWidth input={<OutlinedInput label="Crucial" />} renderValue={selected => selected} value={selectedCrucial} onChange={e => handleCrucialChange(e)} >
+              <Select id="crucial" defaultValue={oldVersionItem? "Si" : ''} name="crucial" fullWidth input={<OutlinedInput label="Crucial" />} renderValue={selected => selected} value={selectedCrucial} onChange={e => handleCrucialChange(e)} >
               {["Si", "No", ""].map(c => <MenuItem key={c} value={c}>{c}</MenuItem>)}
               </Select>
                        

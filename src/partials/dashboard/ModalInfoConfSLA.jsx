@@ -5,6 +5,7 @@ import useUser from '../useUser';
 import {Alert, Button, InputLabel, MenuItem, OutlinedInput, Grid} from '@mui/material';
 import { userIDToName, getOnlyDate } from '../../utils/Utils';
 import useCollapse from 'react-collapsed';
+import ModalCrearConfSLA from './ModalCrearConfSLA';
 
 import $, { data } from 'jquery'
 
@@ -19,6 +20,7 @@ function ModalInfoConfSLA({
   const [item, setItem] = useState(null);
   const {user, isAdmin, isSupport} = useUser();
   const { getCollapseProps, getToggleProps, isExpanded } = useCollapse({duration: 200});
+  const [createModalOpen, setCreateModalOpen] = useState(false)
 
   const closeModal = () => setModalState(prevState => ({
     ...prevState,
@@ -34,7 +36,7 @@ function ModalInfoConfSLA({
 
   if (modalState.update) {
     $.get("https://itil-back.herokuapp.com/config/" + itemID, function( data, status) {
-      setItem(data.config)
+      setItem(data.config.versions.find((e) => e.version_number === data.config.current_version))
       setModalState(prevState => ({
         ...prevState,
         ["update"]: false
@@ -101,6 +103,8 @@ function ModalInfoConfSLA({
           leaveEnd="opacity-0 translate-y-4"
         >
         
+        <ModalCrearConfSLA id="update-confsla-modal" oldVersionItem={true} item={item} modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} updateDashboard={updateInfo} />
+        
           <div id="apareceonoaparece" className="bg-white overflow-auto max-w-2xl w-full max-h-full rounded shadow-lg">
             {/* Search form */}
             <div className="col-span-full xl:col-span-6 bg-white shadow-lg rounded-sm border border-slate-200" style={{padding: '1%'}}>
@@ -110,35 +114,38 @@ function ModalInfoConfSLA({
               <div className="border-b border-slate-200">
 
                 <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Nombre</header>
-                <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.versions[0].name}</div>
+                <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.name}</div>
 
                 <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Servicio</header>
-                <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.versions[0].service}</div>
+                <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.service}</div>
 
                 <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Gerente del servicio</header>
-                <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.versions[0].service_manager}</div>
+                <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.service_manager}</div>
                           
                  <Grid container spacing={2}>
                    <Grid item xs={12} sm={6}>
                      <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Fecha de inicio</header>
-                     <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{getOnlyDate(item.versions[0].start_date)}</div>
+                     <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{getOnlyDate(item.start_date)}</div>
                    </Grid>
                   
                    <Grid item xs={12} sm={6}>
                      <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Fecha de finalizacion</header>
-                     <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{getOnlyDate(item.versions[0].end_date)}</div>
+                     <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{getOnlyDate(item.end_date)}</div>
                   </Grid>
                  </Grid>
                           
                  <Grid container spacing={2}>
                    <Grid item xs={12} sm={6}>
                      <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Crucial</header>
-                     <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.versions[0].crucial ? "Si" : "No"}</div>
+                     <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.crucial ? "Si" : "No"}</div>
                    </Grid>
                   
                    <Grid item xs={12} sm={6}>
-                     <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Version</header>
-                     <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.current_version}</div>
+                    <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2" style={{display:'flex', justifyContent:'space-between'}}>
+                      <h2 className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Version actual</h2>
+                      <Button onClick={(e) => { e.stopPropagation(); setCreateModalOpen(true);}}>Nueva version</Button>  
+                    </header>
+                    <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.version_number}</div>
                   </Grid>
                  </Grid>
   
