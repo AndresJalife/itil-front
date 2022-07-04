@@ -38,7 +38,7 @@ import {Alert, Button,FormControl, InputLabel, MenuItem, OutlinedInput, Select, 
       .then((response) => {
         if (response.ok){
           swal.fire({
-            title: "El cambio se creo exitosamente",
+            title: "El error conocido se creo exitosamente",
             icon: "success"});
           updateDashboard();
         } else {
