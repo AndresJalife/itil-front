@@ -71,12 +71,12 @@ function ModalInfoCambio({
         type: "POST",
         url: "https://itil-back.herokuapp.com/change/" + changeId + "/take",
         data: JSON.stringify(change_data),
-        success: (data)=>{setModalOpen(false);},
-        error: (result) => {console.log(result)},
+        success: (data)=>{updateDashboard();setModalOpen(false);},
+        error: (result) => {updateDashboard();setModalOpen(false);console.log(result)},
         dataType: "json",
         contentType: "application/json; charset=utf-8"
       });
-      updateDashboard();
+      
       closeModal();
     }
 
@@ -84,12 +84,11 @@ function ModalInfoCambio({
       $.ajax({
         type: "POST",
         url: "https://itil-back.herokuapp.com/change/" + changeId + "/solve",
-        success: (data)=>{setModalOpen(false);},
-        error: (result) => {console.log(result)},
+        success: (data)=>{updateDashboard();setModalOpen(false);},
+        error: (result) => {updateDashboard();setModalOpen(false);console.log(result)},
         dataType: "json",
         contentType: "application/json; charset=utf-8"
       });
-      updateDashboard();
       closeModal();
     }
 

@@ -73,12 +73,11 @@ function ModalInfoIncidente({
         type: "POST",
         url: "https://itil-back.herokuapp.com/incident/" + incidentID + "/take",
         data: JSON.stringify(incident_data),
-        success: (data)=>{setModalOpen(false);},
-        error: (result) => {console.log(result)},
+        success: (data)=>{updateDashboard();setModalOpen(false);},
+        error: (result) => {updateDashboard();setModalOpen(false);console.log(result)},
         dataType: "json",
         contentType: "application/json; charset=utf-8"
       });
-      updateDashboard();
       closeModal();
     }
 
@@ -86,12 +85,11 @@ function ModalInfoIncidente({
       $.ajax({
         type: "POST",
         url: "https://itil-back.herokuapp.com/incident/" + incidentID + "/solve",
-        success: (data)=>{setModalOpen(false);},
-        error: (result) => {console.log(result)},
+        success: (data)=>{updateDashboard();setModalOpen(false);},
+        error: (result) => {updateDashboard();setModalOpen(false);console.log(result)},
         dataType: "json",
         contentType: "application/json; charset=utf-8"
       });
-      updateDashboard();
       closeModal();
     }
 
