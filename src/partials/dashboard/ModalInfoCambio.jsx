@@ -1,13 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Transition from '../../utils/Transition';
 import CustomButton from './CustomButton';
+import MessageButton from './MessageButton';
 
 import $, { data } from 'jquery'
 
 import useUser from '../useUser';
 import {Alert, Button, FormControl, InputLabel, MenuItem, OutlinedInput, Select, Grid} from '@mui/material';
   
-import { userIDToName } from '../../utils/Utils';
+import { userIDToName, simplifyDate } from '../../utils/Utils';
 
 function ModalInfoCambio({
     id,
@@ -19,6 +20,10 @@ function ModalInfoCambio({
 
     const [change, setChange] = useState(null);
 
+    const [comments, setComments] = useState(null);
+
+    const [message, setMessage] = useState('');
+
     const {user, isAdmin, isSupport} = useUser();
     
     const closeModal = () => setModalState(prevState => ({
@@ -26,6 +31,11 @@ function ModalInfoCambio({
       ["open"]: false,
     }))
 
+    const updateMessages = () => {
+      $.get("https://itil-back.herokuapp.com/change/" + changeId + "/comment", function( data, status) {
+        setComments(data)
+      })
+    }
 
     if (modalState.update) {
       $.get("https://itil-back.herokuapp.com/change/" + changeId, function( data, status) {
@@ -35,6 +45,7 @@ function ModalInfoCambio({
           ["update"]: false
         }))
       })
+      updateMessages();
     } 
   
     // close if the esc key is pressed
@@ -51,8 +62,36 @@ function ModalInfoCambio({
       modalState.open //&& nameInput.current.focus();
     }, [modalState.open]);
 
+    const postMessage =  async (e) => {
+
+      e.preventDefault()
+
+      let url = "https://itil-back.herokuapp.com/change/" + changeId + "/comment"
+      let data = JSON.stringify({"comment": message,  
+      "user_id": user.sub})
+
+      console.log(data)
     
-    if (change) {
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': "application/json; charset=utf-8"},
+        body: data,
+      })
+      .then((response) => {
+        if (response.ok){
+          updateMessages();
+        } else {
+          console.log(response)
+        }})
+      .catch((error) => {console.log(error)});
+      
+      setMessage('');
+        
+    }
+
+    
+    if (change && comments) {
       console.log(modalState.open);
       return (
         <>
@@ -82,45 +121,74 @@ function ModalInfoCambio({
             leaveStart="opacity-100 translate-y-0"
             leaveEnd="opacity-0 translate-y-4"
           >
-            <div id="apareceonoaparece" className="bg-white overflow-auto max-w-2xl w-full max-h-full rounded shadow-lg">
+            <div id="apareceonoaparece" className="bg-white overflow-auto max-w-4xl w-full max-h-full rounded shadow-lg">
               {/* Search form */}
-              <div className="col-span-full xl:col-span-6 bg-white shadow-lg rounded-sm border border-slate-200" style={{padding: '1%'}}>
-                <header className="px-5 py-4 border-b border-slate-100 bg-slate-50"> 
-                <h2 className="font-semibold text-slate-800 ">Informacion del cambio</h2></header>
 
-              <div className="border-b border-slate-200">
+              <Grid container>
+                <Grid item xs={12} sm={7}>
+                  <div className="col-span-full xl:col-span-6 bg-white rounded-sm" style={{padding: '1%'}}>
+                    <header className="px-5 py-4 border-b border-slate-100 bg-slate-50"> 
+                    <h2 className="font-semibold text-slate-800 ">Informacion del cambio</h2></header>
 
-               <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Nombre</header>
-               <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{change.name}</div>
+                  <div className="border-slate-200">
 
-               <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Descripcion</header>
-               <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{change.description}</div>
+                  <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Nombre</header>
+                  <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{change.name}</div>
 
-               <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Problema Asociado</header>
-               <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{change.problem_id}</div>
-               
+                  <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Descripcion</header>
+                  <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{change.description}</div>
 
-               <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Creado Por</header>
-               <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{userIDToName(change.created_by_id)}</div>
+                  <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Problema Asociado</header>
+                  <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{change.problem_id}</div>
+                  
 
-               <Grid container spacing={2}>
-                 <Grid item xs={12} sm={6}>
-                   <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Prioridad</header>
-                   <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{change.priority}</div>
-                 </Grid>
+                  <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Creado Por</header>
+                  <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{userIDToName(change.created_by_id)}</div>
 
-                 <Grid item xs={12} sm={6}>
-                   <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Estado</header>
-                   <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{change.status}</div>
-                 </Grid>
-               </Grid>              
-              
-               <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2"> </header>
-               <div className="bg-slate-50" style={{width:"100%", display:"flex", justifyContent:"space-around", paddingBottom: "10px", paddingTop: "10px"}}>
-                 <Button variant="text" onClick={closeModal}>Salir</Button>
-               </div>
-              </div>
-              </div>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12} sm={6}>
+                      <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Prioridad</header>
+                      <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{change.priority}</div>
+                    </Grid>
+
+                    <Grid item xs={12} sm={6}>
+                      <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Estado</header>
+                      <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{change.status}</div>
+                    </Grid>
+                  </Grid>              
+                  
+                  
+                  </div>
+                  </div>
+                </Grid>
+                <Grid item xs={12} sm={5}>
+                  <div className="col-span-full xl:col-span-6 bg-white rounded-sm" style={{padding: '1%'}}>
+                    <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Comentarios</header>
+                    <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-5 pr-4 overflow-y-scroll" style={{height: '380px'}}>
+                      {comments.map(c => 
+                        <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-1">
+                          <div style={{fontSize: '13px'}}>{userIDToName(c.user_id)}<a style={{marginLeft: '100px', fontSize: '13px'}}>{simplifyDate(c.created_on)}</a></div>
+                          <div className="message" style={{padding: '2%'}}>{c.comment}</div>
+                        </div>)}
+                    </div>
+                    <form onSubmit={(e) => { postMessage(e)}} className="message">
+                    <Grid container spacing={3}>
+                      <Grid item xs={12} sm={10}>
+                        <input name="message" className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-1" type="text" placeholder="Escriba su mensaje…" onChange={event => setMessage(event.target.value)} value={message} autoComplete='off'/>
+                      </Grid>
+                        
+                      <Grid item xs={12} sm={2}>
+                        <MessageButton type='submit' className='py-1'/>
+                      </Grid>
+                    </Grid> 
+                    </form>
+                  </div>
+                </Grid>
+              </Grid>
+              <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2"> </header>
+                <div className="bg-slate-50" style={{width:"100%", display:"flex", justifyContent:"space-around", paddingBottom: "10px", paddingTop: "10px"}}>
+                  <Button variant="text" onClick={closeModal}>Salir</Button>
+                </div>
             </div>
           </Transition>
         </>

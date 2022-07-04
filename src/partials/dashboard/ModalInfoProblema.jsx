@@ -3,7 +3,7 @@ import Transition from '../../utils/Transition';
 import CustomButton from './CustomButton';
 import "./Message.css"
 import MessageButton from './MessageButton';
-import swal from "sweetalert2";
+
 
 import $, { data } from 'jquery'
 
@@ -201,9 +201,6 @@ function ModalInfoProblema({
                       <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{problem.status}</div>
                     </Grid>
                   </Grid>              
-                  
-                  
-                  
                   </div>
                   </div>
                 </Grid>
