@@ -5,6 +5,7 @@ import useUser from '../useUser';
 import {Alert, Button, InputLabel, MenuItem, OutlinedInput, Grid} from '@mui/material';
 import { userIDToName } from '../../utils/Utils';
 import useCollapse from 'react-collapsed';
+import ModalCrearConfSoftware from './ModalCrearConfSoftware';
 
 import $, { data } from 'jquery'
 
@@ -19,6 +20,7 @@ function ModalInfoConfSoftware({
   const [item, setItem] = useState(null);
   const {user, isAdmin, isSupport} = useUser();
   const { getCollapseProps, getToggleProps, isExpanded } = useCollapse({duration: 200});
+  const [createModalOpen, setCreateModalOpen] = useState(false)
   
   const closeModal = () => setModalState(prevState => ({
     ...prevState,
@@ -34,7 +36,7 @@ function ModalInfoConfSoftware({
 
   if (modalState.update) {
     $.get("https://itil-back.herokuapp.com/config/" + itemID, function( data, status) {
-      setItem(data.config)
+      setItem(data.config.versions.find((e) => e.version_number === data.config.current_version))
       setModalState(prevState => ({
         ...prevState,
         ["update"]: false
@@ -88,6 +90,8 @@ function ModalInfoConfSoftware({
           leaveEnd="opacity-0 translate-y-4"
         >
         
+        <ModalCrearConfSoftware id="update-confsoft-modal" oldVersionItem={true} item={item} modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} updateDashboard={updateInfo} />
+
           <div id="apareceonoaparece" className="bg-white overflow-auto max-w-2xl w-full max-h-full rounded shadow-lg">
             {/* Search form */}
             <div className="col-span-full xl:col-span-6 bg-white shadow-lg rounded-sm border border-slate-200" style={{padding: '1%'}}>
@@ -97,19 +101,22 @@ function ModalInfoConfSoftware({
               <div className="border-b border-slate-200">
 
                 <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Nombre</header>
-                <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.versions[0].name}</div>
+                <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.name}</div>
  
                 <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Proveedor</header>
-                <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.versions[0].provider}</div>
-
-                <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Version actual</header>
-                <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.current_version}</div>
+                <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.provider}</div>
 
                 <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Licencias</header>
-                <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.versions[0].licences}</div>
+                <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.licences}</div>
                            
                  <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Fecha de aceptacion</header>
-                 <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.versions[0].acceptance_date}</div>
+                 <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.acceptance_date}</div>
+
+                  <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2" style={{display:'flex', justifyContent:'space-between'}}>
+                    <h2 className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Version actual</h2>
+                    <Button onClick={(e) => { e.stopPropagation(); setCreateModalOpen(true);}}>Nueva version</Button>  
+                  </header>
+                  <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.version_number}</div>
   
                   <div className="collapsible">
                     <div className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2" {...getToggleProps()}>
