@@ -8,7 +8,7 @@ import $, { data } from 'jquery'
 import useUser from '../useUser';
 import {Alert, Button, FormControl, InputLabel, MenuItem, OutlinedInput, Select, Grid} from '@mui/material';
   
-import { userIDToName, simplifyDate } from '../../utils/Utils';
+import { userIDToName, simplifyDate, getOnlyDate, permisosByUserID } from '../../utils/Utils';
 
 function ModalInfoCambio({
     id,
@@ -61,6 +61,37 @@ function ModalInfoCambio({
     useEffect(() => {
       modalState.open //&& nameInput.current.focus();
     }, [modalState.open]);
+
+    const takeChange =  () => {
+      let change_data = {
+        taken_by_id: user.sub
+      };
+      
+      $.ajax({
+        type: "POST",
+        url: "https://itil-back.herokuapp.com/change/" + changeId + "/take",
+        data: JSON.stringify(change_data),
+        success: (data)=>{setModalOpen(false);},
+        error: (result) => {console.log(result)},
+        dataType: "json",
+        contentType: "application/json; charset=utf-8"
+      });
+      updateDashboard();
+      closeModal();
+    }
+
+    const solveChange =  () => {
+      $.ajax({
+        type: "POST",
+        url: "https://itil-back.herokuapp.com/change/" + changeId + "/solve",
+        success: (data)=>{setModalOpen(false);},
+        error: (result) => {console.log(result)},
+        dataType: "json",
+        contentType: "application/json; charset=utf-8"
+      });
+      updateDashboard();
+      closeModal();
+    }
 
     const postMessage =  async (e) => {
 
@@ -138,16 +169,43 @@ function ModalInfoCambio({
                   <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Descripcion</header>
                   <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{change.description}</div>
 
-                  <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Problema Asociado</header>
-                  <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{change.problem_id}</div>
-                  
+                  <Grid container>
+                    <Grid item xs={12} sm={6}>
+                      <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Problema Asociado</header>
+                      <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{change.problem_id}</div>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Fecha de creacion</header>
+                      <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{getOnlyDate(change.created_on)}</div>
+                    </Grid>
+                  </Grid>
+                  <Grid container>
+                    <Grid item xs={12} sm={6}>
+                      <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Creado Por</header>
+                      <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{userIDToName(change.created_by_id)}</div>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <header style={{display:'flex', justifyContent:'space-between'}}>
+                        <h2 className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Tomado Por</h2>
+                        <Button disabled={(permisosByUserID(user.sub).tomaroresolver == false ) || change.status != 'creado'}onClick={(e) => { e.stopPropagation(); takeChange();}}>Tomar </Button>  
+                      </header>
+                      <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{userIDToName(change.taken_by_id)}</div>
+                    </Grid>
+                  </Grid>
 
-                  <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Creado Por</header>
-                  <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{userIDToName(change.created_by_id)}</div>
-
-                  <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Prioridad</header>
-                  <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{change.priority}</div>           
-                  
+                  <Grid container>
+                    <Grid item xs={12} sm={6}>
+                      <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Prioridad</header>
+                      <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{change.priority}</div>           
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                    <header style={{display:'flex', justifyContent:'space-between'}}>
+                        <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Estado</header>
+                        <Button disabled={(permisosByUserID(user.sub).tomaroresolver == false )  || change.status != 'tomado'}onClick={(e) => { e.stopPropagation(); solveChange();}}>Resolver</Button>  
+                      </header>
+                        <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{change.status}</div>         
+                    </Grid>
+                  </Grid>
                   
                   </div>
                   </div>
