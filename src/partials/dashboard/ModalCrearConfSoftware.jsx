@@ -17,10 +17,15 @@ function ModalCrearConfSoftware({
     id,
     modalOpen,
     setModalOpen,
-    updateDashboard
+    updateDashboard,
+    oldVersionItem,
+    item
   }) {
 
   const [aceptanceDate, setAceptanceDate] = useState(new Date());
+  const [url, setUrl] = useState(oldVersionItem? "https://itil-back.herokuapp.com/config/" + item.config_id : "https://itil-back.herokuapp.com/config"); 
+  const [msg, setMsg] = useState(oldVersionItem? "Se agregó una nueva version" : "El item de configuración se creo exitosamente"); 
+  const {user, isAdmin, isSupport} = useUser();
 
 
   const handleSubmit =  async (e) => {
@@ -33,15 +38,12 @@ function ModalCrearConfSoftware({
       "name": form.get('name'),
       "type": form.get('type'),
       "provider": form.get('provider'),
-      "version": form.get('version'),
       "licences": form.get('licences'),
-      "derivations": form.get('derivations'),
-      "acceptance_date": aceptanceDate
+      "acceptance_date": aceptanceDate,
+      "user_id": user.sub
     };
 
     console.log(JSON.stringify(new_config))
-    
-    let url = "https://itil-back.herokuapp.com/config"
     let data = JSON.stringify(new_config)
 
     fetch(url, {
@@ -53,7 +55,7 @@ function ModalCrearConfSoftware({
     .then((response) => {
       if (response.ok){
         swal.fire({
-          title: "El item de configuración se creo exitosamente",
+          title: msg,
           icon: "success"});
         updateDashboard();
       } else {
@@ -119,7 +121,7 @@ function ModalCrearConfSoftware({
           <div className="col-span-full xl:col-span-6 bg-white shadow-lg rounded-sm border border-slate-200">
 
           <header className="px-5 py-4 border-b border-slate-100 bg-slate-50"> 
-          <h2 className="font-semibold text-slate-800 ">Crear item de configuración de software </h2></header>
+          <h2 className="font-semibold text-slate-800 ">{oldVersionItem? "Nueva version" : "Crear item de configuración de software"} </h2></header>
 
           <form onSubmit={(e) => { handleSubmit(e)}}  className="border-b border-slate-200">
 
@@ -127,28 +129,20 @@ function ModalCrearConfSoftware({
           {/* <input id={searchId} */}
               <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Nombre</header>
               <label  className="sr-only">Nombre</label>
-              <input name="name" className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Nombre…" />
+              <input name="name" defaultValue={oldVersionItem? item.name: 'Nombre...'} className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text"/>
               
               <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Tipo</header>
               <label  className="sr-only">Tipo</label>
-              <input name="type" className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Tipo…"  />
+              <input name="type" defaultValue={oldVersionItem? item.type: 'Tipo...'} className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" />
 
-              <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Version</header>
-              <label  className="sr-only">Version</label>
-              <input name="version" className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Version…"  />
-                       
               <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Proveedor</header>
               <label  className="sr-only">Proveedor</label>
-              <input name="provider" className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Proveedor…"  />
+              <input name="provider" defaultValue={oldVersionItem? item.provider: 'Proveedor...'} className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" />
                        
               <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Licencias</header>
               <label  className="sr-only">Licencias</label>
-              <input name="licences" className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Licencias…"  />
-                                    
-              <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Procedencias</header>
-              <label  className="sr-only">Procedencias</label>
-              <input name="derivations" className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Procedencias…"  />
-                                    
+              <input name="licences" defaultValue={oldVersionItem? item.licences: 'Licencias...'} className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" />
+                   
               <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Fecha de aceptacion</header>
               <label  className="sr-only">Fecha de aceptacion</label>
               <Datetime inputProps={{className:'datetime'}} dateFormat="DD-MM-YYYY" timeFormat={false} value={aceptanceDate} onChange={(e) => setAceptanceDate(e)} closeOnSelect='true' className="text-xs uppercase"/>

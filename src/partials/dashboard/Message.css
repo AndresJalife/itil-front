@@ -1,0 +1,12 @@
+/* From uiverse.io by @alexroumi */
+.message {
+ padding: 10px 25px;
+ border: unset;
+ border-radius: 15px;
+ color: rgb(0, 0, 0);
+ z-index: 1;
+ background: #f3f3f3;
+ position: relative;
+ transition: all 250ms;
+ overflow: hidden;
+}

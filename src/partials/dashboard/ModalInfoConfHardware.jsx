@@ -1,14 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Transition from '../../utils/Transition';
-import CustomButton from './CustomButton';
+import ItemVersions from './ItemVersions';
+import useUser from '../useUser';
+import {Alert, Button, InputLabel, MenuItem, OutlinedInput, Grid} from '@mui/material';
+import { getOnlyDate, userIDToName } from '../../utils/Utils';
+import useCollapse from 'react-collapsed';
 
 import $, { data } from 'jquery'
-
-import useUser from '../useUser';
-import {Alert, Button, FormControl, InputLabel, MenuItem, OutlinedInput, Select, Grid} from '@mui/material';
-
-import { userIDToName } from '../../utils/Utils';
-
   
 
 function ModalInfoConfHardware({
@@ -21,6 +19,7 @@ function ModalInfoConfHardware({
 
   const [item, setItem] = useState(null);
   const {user, isAdmin, isSupport} = useUser();
+  const { getCollapseProps, getToggleProps, isExpanded } = useCollapse({duration: 200});
   
   const closeModal = () => setModalState(prevState => ({
     ...prevState,
@@ -28,7 +27,10 @@ function ModalInfoConfHardware({
   }))
 
   const updateInfo = () => {
-    setItem(null);
+    setModalState(prevState => ({
+    ...prevState,
+    ["update"]: true,
+  }))
   }
 
   if (modalState.update) {
@@ -142,13 +144,18 @@ function ModalInfoConfHardware({
                   
                    <Grid item xs={12} sm={4}>
                      <h2 className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Fecha de instalacion</h2>
-                     <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.versions[0].installation_date}</div>
+                     <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{getOnlyDate(item.versions[0].installation_date)}</div>
                    </Grid>
                  </Grid>    
                            
                  <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Version Actual</header>
                  <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.current_version}</div>
-                                                  
+  
+                  <div className="collapsible">
+                    <div className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2" {...getToggleProps()}>
+                        {isExpanded ? 'Versiones anteriores  ▽' : 'Versiones anteriores  ▼'} </div>
+                    <div {...getCollapseProps()}> <ItemVersions itemID={itemID} updateDashboard={updateInfo} /> </div>
+                 </div>                                                  
                        
                  <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2"> </header>
                  <div className="bg-slate-50" style={{width:"100%", display:"flex", justifyContent:"space-around", paddingBottom: "10px", paddingTop: "10px"}}>
