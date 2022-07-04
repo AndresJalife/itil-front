@@ -210,7 +210,7 @@ function ModalInfoProblema({
                 <Grid item xs={12} sm={5}>
                   <div className="col-span-full xl:col-span-6 bg-white rounded-sm" style={{padding: '1%'}}>
                     <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Comentarios</header>
-                    <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-5 pr-4 overflow-y-scroll" style={{height: '250px'}}>
+                    <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-5 pr-4 overflow-y-scroll" style={{height: '300px'}}>
                       {comments.map(c => 
                         <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-1">
                           <div style={{fontSize: '13px'}}>{userIDToName(c.user_id)}<a style={{marginLeft: '100px', fontSize: '13px'}}>{simplifyDate(c.created_on)}</a></div>
