@@ -3,7 +3,7 @@ import Transition from '../../utils/Transition';
 import ItemVersions from './ItemVersions';
 import useUser from '../useUser';
 import {Alert, Button, InputLabel, MenuItem, OutlinedInput, Grid} from '@mui/material';
-import { userIDToName } from '../../utils/Utils';
+import { getOnlyDate, userIDToName } from '../../utils/Utils';
 import useCollapse from 'react-collapsed';
 
 import $, { data } from 'jquery'
@@ -144,7 +144,7 @@ function ModalInfoConfHardware({
                   
                    <Grid item xs={12} sm={4}>
                      <h2 className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Fecha de instalacion</h2>
-                     <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.versions[0].installation_date}</div>
+                     <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{getOnlyDate(item.versions[0].installation_date)}</div>
                    </Grid>
                  </Grid>    
                            

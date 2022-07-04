@@ -3,7 +3,7 @@ import Transition from '../../utils/Transition';
 import ItemVersions from './ItemVersions';
 import useUser from '../useUser';
 import {Alert, Button, InputLabel, MenuItem, OutlinedInput, Grid} from '@mui/material';
-import { userIDToName } from '../../utils/Utils';
+import { userIDToName, getOnlyDate } from '../../utils/Utils';
 import useCollapse from 'react-collapsed';
 import ModalCrearConfSoftware from './ModalCrearConfSoftware';
 
@@ -110,7 +110,7 @@ function ModalInfoConfSoftware({
                 <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.licences}</div>
                            
                  <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Fecha de aceptacion</header>
-                 <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.acceptance_date}</div>
+                 <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{getOnlyDate(item.acceptance_date)}</div>
 
                   <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2" style={{display:'flex', justifyContent:'space-between'}}>
                     <h2 className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Version actual</h2>

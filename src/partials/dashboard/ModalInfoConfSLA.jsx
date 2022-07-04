@@ -3,7 +3,7 @@ import Transition from '../../utils/Transition';
 import ItemVersions from './ItemVersions';
 import useUser from '../useUser';
 import {Alert, Button, InputLabel, MenuItem, OutlinedInput, Grid} from '@mui/material';
-import { userIDToName } from '../../utils/Utils';
+import { userIDToName, getOnlyDate } from '../../utils/Utils';
 import useCollapse from 'react-collapsed';
 
 import $, { data } from 'jquery'
@@ -121,12 +121,12 @@ function ModalInfoConfSLA({
                  <Grid container spacing={2}>
                    <Grid item xs={12} sm={6}>
                      <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Fecha de inicio</header>
-                     <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.versions[0].start_date}</div>
+                     <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{getOnlyDate(item.versions[0].start_date)}</div>
                    </Grid>
                   
                    <Grid item xs={12} sm={6}>
                      <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Fecha de finalizacion</header>
-                     <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.versions[0].end_date}</div>
+                     <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{getOnlyDate(item.versions[0].end_date)}</div>
                   </Grid>
                  </Grid>
                           

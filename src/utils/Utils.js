@@ -75,7 +75,17 @@ export const  permisosByUserID = (id) => {
 }
 
 export const simplifyDate = (date) => {
-  return date.substring(5, 22)
+  if (date) {
+    return date.substring(5, 22)  
+  }
+  return date
+}
+
+export const getOnlyDate = (date) => {
+  if (date) {
+    return date.substring(0, 16)  
+  }
+  return date
 }
 
 
