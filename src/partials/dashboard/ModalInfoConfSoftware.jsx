@@ -1,15 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Transition from '../../utils/Transition';
-import CustomButton from './CustomButton';
+import ItemVersions from './ItemVersions';
+import useUser from '../useUser';
+import {Alert, Button, InputLabel, MenuItem, OutlinedInput, Grid} from '@mui/material';
+import { userIDToName } from '../../utils/Utils';
+import useCollapse from 'react-collapsed';
 
 import $, { data } from 'jquery'
-
-import useUser from '../useUser';
-import {Alert, Button, FormControl, InputLabel, MenuItem, OutlinedInput, Select, Grid} from '@mui/material';
-
-import { userIDToName } from '../../utils/Utils';
-
-  
 
 function ModalInfoConfSoftware({
     id,
@@ -21,6 +18,7 @@ function ModalInfoConfSoftware({
 
   const [item, setItem] = useState(null);
   const {user, isAdmin, isSupport} = useUser();
+  const { getCollapseProps, getToggleProps, isExpanded } = useCollapse({duration: 200});
   
   const closeModal = () => setModalState(prevState => ({
     ...prevState,
@@ -28,7 +26,10 @@ function ModalInfoConfSoftware({
   }))
 
   const updateInfo = () => {
-    setItem(null);
+    setModalState(prevState => ({
+    ...prevState,
+    ["update"]: true,
+  }))
   }
 
   if (modalState.update) {
@@ -54,20 +55,7 @@ function ModalInfoConfSoftware({
   useEffect(() => {
     modalState.open //&& nameInput.current.focus();
   }, [modalState.open]);
-
-
-  const versionado___ =  () => {
-    $.ajax({
-      type: "POST",
-      url: "https://itil-back.herokuapp.com/config/" + itemID + "/solve",
-      success: (data)=>{setModalOpen(false);},
-      error: (result) => {console.log(result)},
-      dataType: "json",
-      contentType: "application/json; charset=utf-8"
-    });
-    updateDashboard();
-    closeModal();
-  }
+  
 
   if (item) {
     console.log(modalState.open);
@@ -110,29 +98,26 @@ function ModalInfoConfSoftware({
 
                 <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Nombre</header>
                 <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.versions[0].name}</div>
-
+ 
                 <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Proveedor</header>
                 <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.versions[0].provider}</div>
 
+                <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Version actual</header>
+                <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.current_version}</div>
+
                 <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Licencias</header>
                 <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.versions[0].licences}</div>
-
-                <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Procedencias</header>
-                <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.versions[0].derivations}</div>
-                                             
-                 <Grid container spacing={2}>
-                   <Grid item xs={12} sm={6}>
-                     <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Version actual</header>
-                     <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.current_version}</div>
-                   </Grid>
-                  
-                   <Grid item xs={12} sm={6}>
-                     <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Fecha de aceptacion</header>
-                     <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.versions[0].acceptance_date}</div>
-                  </Grid>
-                 </Grid>
-
+                           
+                 <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Fecha de aceptacion</header>
+                 <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.versions[0].acceptance_date}</div>
   
+                  <div className="collapsible">
+                    <div className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2" {...getToggleProps()}>
+                        {isExpanded ? 'Versiones anteriores  ▽' : 'Versiones anteriores  ▼'} </div>
+                    <div {...getCollapseProps()}> <ItemVersions itemID={itemID} updateDashboard={updateInfo} /> </div>
+                 </div>
+                 
+                 
                  <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2"> </header>
                  <div className="bg-slate-50" style={{width:"100%", display:"flex", justifyContent:"space-around", paddingBottom: "10px", paddingTop: "10px"}}>
                    <Button variant="text" onClick={closeModal}>Salir</Button>

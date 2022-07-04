@@ -1,15 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Transition from '../../utils/Transition';
-import CustomButton from './CustomButton';
+import ItemVersions from './ItemVersions';
+import useUser from '../useUser';
+import {Alert, Button, InputLabel, MenuItem, OutlinedInput, Grid} from '@mui/material';
+import { userIDToName } from '../../utils/Utils';
+import useCollapse from 'react-collapsed';
 
 import $, { data } from 'jquery'
-
-import useUser from '../useUser';
-import {Alert, Button, FormControl, InputLabel, MenuItem, OutlinedInput, Select, Grid} from '@mui/material';
-
-import { userIDToName } from '../../utils/Utils';
-
-  
 
 function ModalInfoConfSLA({
     id,
@@ -21,14 +18,18 @@ function ModalInfoConfSLA({
 
   const [item, setItem] = useState(null);
   const {user, isAdmin, isSupport} = useUser();
-  
+  const { getCollapseProps, getToggleProps, isExpanded } = useCollapse({duration: 200});
+
   const closeModal = () => setModalState(prevState => ({
     ...prevState,
     ["open"]: false,
   }))
 
   const updateInfo = () => {
-    setItem(null);
+    setModalState(prevState => ({
+    ...prevState,
+    ["update"]: true,
+  }))
   }
 
   if (modalState.update) {
@@ -141,6 +142,12 @@ function ModalInfoConfSLA({
                   </Grid>
                  </Grid>
   
+                  <div className="collapsible">
+                    <div className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2" {...getToggleProps()}>
+                        {isExpanded ? 'Versiones anteriores  ▽' : 'Versiones anteriores  ▼'} </div>
+                    <div {...getCollapseProps()}> <ItemVersions itemID={itemID} updateDashboard={updateInfo} /> </div>
+                 </div>
+                   
                  <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2"> </header>
                  <div className="bg-slate-50" style={{width:"100%", display:"flex", justifyContent:"space-around", paddingBottom: "10px", paddingTop: "10px"}}>
                    <Button variant="text" onClick={closeModal}>Salir</Button>
