@@ -42,29 +42,29 @@ export const userIDToName = (id) => {
 }
 
 export const  permisosByUserID = (id) => {
-  let permisos =  { // 0 = nada, 1 = vista, 2 = creado/borrado
+  let permisos =  { 
     'auth0|629e61b46f7f59006922f069':{ // admin
-      "configuracion":2,
-      "incidentes": 2,
-      "problemas": 2,
-      "cambios": 2,
-      "errores": 2,
+      "configuracion":{"crear": true, "borrar": true, "ver": true },
+      "incidentes": {"crear": true, "borrar": true, "ver": true },
+      "problemas": {"crear": true, "borrar": true, "ver": true },
+      "cambios": {"crear": true, "borrar": true, "ver": true },
+      "errores": {"crear": true, "borrar": true, "ver": true },
       "tomaroresolver": true
     },
     'auth0|629e61d64925f70068971b41':{// soporte
-      "configuracion":1,
-      "incidentes": 2,
-      "problemas": 2,
-      "cambios": 2,
-      "errores": 2,
+      "configuracion":{"crear": true, "borrar": false, "ver": true },
+      "incidentes": {"crear": true, "borrar": false, "ver": true },
+      "problemas": {"crear": true, "borrar": true, "ver": true },
+      "cambios": {"crear": true, "borrar": false, "ver": true },
+      "errores": {"crear": true, "borrar": true, "ver": true },
       "tomaroresolver": true
     },
     'auth0|62a357a84b6448c8e4f8684c':{//normal
-      "configuracion":1,
-      "incidentes": 2,
-      "problemas": 0,
-      "cambios": 0,
-      "errores": 0,
+      "configuracion":{"crear": false, "borrar": false, "ver": true },
+      "incidentes": {"crear": true, "borrar": false, "ver": true },
+      "problemas": {"crear": false, "borrar": false, "ver": false },
+      "cambios": {"crear": false, "borrar": false, "ver": false },
+      "errores": {"crear": false, "borrar": false, "ver": false },
       "tomaroresolver": false
     }
   }[id]

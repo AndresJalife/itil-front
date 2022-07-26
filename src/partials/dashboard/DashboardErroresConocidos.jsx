@@ -72,7 +72,7 @@ function DashboardErroresConocidos() {
         
         <header className="px-5 py-4 border-b border-slate-100" style={{display:'flex', justifyContent:'space-between', cursor:'pointer'}}>
           <h2 className="font-semibold text-slate-800">Errores Conocidos</h2>
-          <CustomButton className={permisosByUserID(user.sub).errores == 2 ? null : "d-none"} onClick={(e) => { e.stopPropagation(); setCreateModalOpen(true);}}>+ Nuevo </CustomButton>  
+          <CustomButton className={permisosByUserID(user.sub).errores.crear ? null : "d-none"} onClick={(e) => { e.stopPropagation(); setCreateModalOpen(true);}}>+ Nuevo </CustomButton>  
         </header>
 
         <ModalCrearErrorConocido id="create-problem-modal" modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} updateDashboard={updateDashboard}/>
@@ -113,7 +113,7 @@ function DashboardErroresConocidos() {
                   minWidth: 200,
                 },
 
-                {
+                ...(permisosByUserID(user.sub).errores.borrar) ? [{
                   id: "borrar",
                   Header: "Borrar",
                   accessor: "id",
@@ -121,13 +121,13 @@ function DashboardErroresConocidos() {
                   sortable: false,
                   maxWidth: 150,
                   Cell: ({ value, _ }) => ( // { value, columnProps: { rest: { someFunc } } }
-                    <div className={"text-center " + (permisosByUserID(user.sub).errores == 2 ? null : "d-none")}>
+                    <div className={"text-center "}>
                       <IconButton aria-label="delete" onClick = {()=>{deleteKnownErrorById(value)}} color="error">
                         <DeleteIcon  />
                       </IconButton>
                       </div>
                   )
-            },
+            }] : [],
           ]}
           defaultSorted={[
             {

@@ -33,6 +33,8 @@ function DashboardIncidentes() {
 
   if (!items){
     $.get("https://itil-back.herokuapp.com/incident", function( data, status) {
+      data.map((row) => row.status = row.status.toUpperCase());
+
       setItems(data)
     })
   }
@@ -76,7 +78,7 @@ function DashboardIncidentes() {
         
         <header className="px-5 py-4 border-b border-slate-100" style={{display:'flex', justifyContent:'space-between', cursor:'pointer'}}>
           <h2 className="font-semibold text-slate-800">Incidentes</h2>
-          <CustomButton  className={permisosByUserID(user.sub).incidentes == 2 ? null : "d-none"} onClick={(e) => { e.stopPropagation(); setCreateModalOpen(true);}}>+ Nuevo </CustomButton>  
+          <CustomButton  className={permisosByUserID(user.sub).incidentes.crear ? null : "d-none"} onClick={(e) => { e.stopPropagation(); setCreateModalOpen(true);}}>+ Nuevo </CustomButton>  
           
         </header>
         <ModalCrearIncidente id="create-incident-modal" modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} updateDashboard={updateDashboard}/>
@@ -144,7 +146,7 @@ function DashboardIncidentes() {
                 </div>)
                 },
 
-                {
+                ...(permisosByUserID(user.sub).incidentes.borrar) ? [{
                   id: "borrar",
                   Header: "Borrar",
                   accessor: "id",
@@ -152,13 +154,13 @@ function DashboardIncidentes() {
                   sortable: false,
                   maxWidth: 150,
                   Cell: ({ value, _ }) => ( // { value, columnProps: { rest: { someFunc } } }
-                    <div className={"text-center " + (permisosByUserID(user.sub).incidentes == 2 ? null : "d-none")}>
+                    <div className={"text-center "}>
                       <IconButton aria-label="delete" onClick = {()=>{deleteIncidentById(value)}} color="error">
                         <DeleteIcon  />
                       </IconButton>
                       </div>
                   )
-            },
+            }] : [],
           ]}
           defaultSorted={[
             {

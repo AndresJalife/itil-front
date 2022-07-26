@@ -41,6 +41,7 @@ function DashboardCambios() {
   
   if (!items) {
     $.get("https://itil-back.herokuapp.com/change", function( data, status) {
+      data.map((row) => row.status = row.status.toUpperCase());
       setItems(data);
     })
   }
@@ -86,7 +87,7 @@ function DashboardCambios() {
       
       <header className="px-5 py-4 border-b border-slate-100" style={{display:'flex', justifyContent:'space-between', cursor:'pointer'}}>
         <h2 className="font-semibold text-slate-800">Cambios</h2>
-        <CustomButton className={permisosByUserID(user.sub).cambios == 2 ? null : "d-none"} onClick={(e) => { e.stopPropagation(); setCreateModalOpen(true);}}>+ Nuevo </CustomButton>  
+        <CustomButton className={permisosByUserID(user.sub).cambios.crear ? null : "d-none"} onClick={(e) => { e.stopPropagation(); setCreateModalOpen(true);}}>+ Nuevo </CustomButton>  
         
       </header>
 
@@ -156,7 +157,7 @@ function DashboardCambios() {
                 </div>)
                 },
 
-                {
+                ...(permisosByUserID(user.sub).cambios == 2) ? [{
                   id: "borrar",
                   Header: "Borrar",
                   accessor: "id",
@@ -164,13 +165,13 @@ function DashboardCambios() {
                   sortable: false,
                   maxWidth: 150,
                   Cell: ({ value, _ }) => ( // { value, columnProps: { rest: { someFunc } } }
-                    <div className={"text-center " + (permisosByUserID(user.sub).cambios == 2 ? null : "d-none")}>
+                    <div className={"text-center "}>
                       <IconButton aria-label="delete" onClick = {()=>{deleteChangeById(value)}} color="error">
                         <DeleteIcon  />
                       </IconButton>
                       </div>
                   )
-            },
+            }] : [],
           ]}
           defaultSorted={[
             {

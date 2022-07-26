@@ -72,7 +72,7 @@ function DashboardConfHardware() {
       
       <header className="px-5 py-4 border-b border-slate-100" style={{display:'flex', justifyContent:'space-between', cursor:'pointer'}}>
         <h2 className="font-semibold text-slate-800">Configuracion de Hardware</h2>
-        <CustomButton  onClick={(e) => { e.stopPropagation(); setCreateModalOpen(true);}}>+ Nuevo </CustomButton>  
+        <CustomButton  className={permisosByUserID(user.sub).configuracion.crear ? null : "d-none"} onClick={(e) => { e.stopPropagation(); setCreateModalOpen(true);}}>+ Nuevo </CustomButton>  
         <ModalCrearConfHardware id="create-confhard-modal"  oldVersionItem={false} item={null} modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} updateDashboard={updateDashboard} />
         <ModalInfoConfHardware id="info-hardware-modal" modalState={infoModalState} setModalState={setInfoModalState} itemID={itemId} updateDashboard={updateDashboard}/>
       </header>
@@ -134,7 +134,7 @@ function DashboardConfHardware() {
                 </div>)
                 },
 
-                {
+                ...(permisosByUserID(user.sub).configuracion.borrar ) ? [{
                   id: "borrar",
                   Header: "Borrar",
                   accessor: "config.id",
@@ -142,13 +142,13 @@ function DashboardConfHardware() {
                   sortable: false,
                   maxWidth: 150,
                   Cell: ({ value, _ }) => ( // { value, columnProps: { rest: { someFunc } } }
-                    <div className={"text-center " + (permisosByUserID(user.sub).configuracion == 2 ? null : "d-none")}>
+                    <div className={"text-center "}>
                       <IconButton aria-label="delete" onClick = {()=>{deleteConfigById(value)}} color="error">
                         <DeleteIcon  />
                       </IconButton>
                       </div>
                   )
-            },
+            }] : [],
           ]}
           defaultSorted={[
             {
