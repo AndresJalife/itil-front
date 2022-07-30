@@ -92,7 +92,7 @@ function DashboardConfHardware() {
                 {
                   id: "name",
                   Header: "Nombre",
-                  accessor: (row)=>(row.config.versions.at(-1).name),
+                  accessor: (row)=>(row.config.versions.find((e) => e.version_number === row.config.current_version).name),
                   minWidth: 300,
                   className: 'font-medium text-slate-800'
                 },

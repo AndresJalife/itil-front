@@ -22,10 +22,13 @@ function ModalInfoConfSLA({
   const { getCollapseProps, getToggleProps, isExpanded } = useCollapse({duration: 200});
   const [createModalOpen, setCreateModalOpen] = useState(false)
 
-  const closeModal = () => setModalState(prevState => ({
-    ...prevState,
-    ["open"]: false,
-  }))
+  const closeModal = () => {
+    setModalState(prevState => ({
+      ...prevState,
+      ["open"]: false,
+    }));
+    updateDashboard();
+  }
 
   const updateInfo = () => {
     setModalState(prevState => ({
@@ -152,7 +155,7 @@ function ModalInfoConfSLA({
                   <div className="collapsible">
                     <div className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2" {...getToggleProps()}>
                         {isExpanded ? 'Versiones anteriores  ▽' : 'Versiones anteriores  ▼'} </div>
-                    <div {...getCollapseProps()}> <ItemVersions itemID={itemID} updateDashboard={updateInfo} /> </div>
+                    <div {...getCollapseProps()}> <ItemVersions itemID={itemID} updateDashboard={closeModal} /> </div>
                  </div>
                    
                  <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2"> </header>
