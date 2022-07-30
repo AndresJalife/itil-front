@@ -11,7 +11,6 @@ import LoadingData from './LoadingData';
 import CustomButton from './CustomButton';
 import InfoButton from './InfoButton';
 import ModalCrearCambio from './ModalCrearCambio';
-import ModalModificarCambio from './ModalModificarCambio';
 import ModalInfoCambio from './ModalInfoCambio';
 import swal from "sweetalert2";
 import { Button, IconButton} from '@mui/material';
@@ -28,7 +27,6 @@ function DashboardCambios() {
   const [items, setItems] = useState(null)
 
   const [createModalOpen, setCreateModalOpen] = useState(false)
-  const [modifyModalState, setModifyModalState] = useState({"open": false, "update": false});
   const [infoModalState, setInfoModalState] = useState({"open": false, "update": false});
 
   const {user, isAdmin, isSupport} = useUser();
@@ -92,7 +90,6 @@ function DashboardCambios() {
       </header>
 
       <ModalCrearCambio id="create-cambio-modal" searchId="create" modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} updateDashboard={updateDashboard}/>
-      <ModalModificarCambio id="modify-cambio-modal" modalState={modifyModalState} setModalState={setModifyModalState} changeId={itemId} updateDashboard={updateDashboard}/>
       <ModalInfoCambio id="info-cambio-modal" modalState={infoModalState} setModalState={setInfoModalState} changeId={itemId} updateDashboard={updateDashboard}/>
       
       <div>
@@ -112,7 +109,7 @@ function DashboardCambios() {
                   Header: "Nombre",
                   accessor: row=>{return row},
                   minWidth: 300,
-                  Cell: ({value,_}) => (<div onClick={(e) => { e.stopPropagation(); setItemId(value.id); setModifyModalState({"open":true,"update":true}); }} className="cursor-pointer font-medium text-slate-800">{value.name}</div>)
+                  Cell: ({value,_}) => (<div className="font-medium text-slate-800">{value.name}</div>)
                 },
                 {
                   id: "priority",
