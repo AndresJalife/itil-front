@@ -26,6 +26,12 @@ function ModalInfoIncidente({
     const [message, setMessage] = useState('');
 
     const {user, isAdmin, isSupport} = useUser();
+
+    const [problems, setProblems] = useState(null);
+
+    let sin_seleccion = { id:0, name:'' }; 
+    const [selectedProblem, setSelectedProblem] = useState(sin_seleccion);
+
     
     const closeModal = () => setModalState(prevState => ({
       ...prevState,
@@ -38,6 +44,12 @@ function ModalInfoIncidente({
       })
     }
 
+    const updateProblems = () => {
+      $.get("https://itil-back.herokuapp.com/problem", function( data, status) {
+        setProblems([...data, sin_seleccion])
+      })
+    }
+
     if (modalState.update) {
       $.get("https://itil-back.herokuapp.com/incident/" + incidentID, function( data, status) {
         setIncident(data)
@@ -47,7 +59,29 @@ function ModalInfoIncidente({
         }))
       })
       updateMessages();
+      updateProblems();
     } 
+
+    if (!problems) {
+      updateProblems();
+    } 
+
+    const assignProblem = (problem_id) => {
+      let problem_data = {
+        problem_id: problem_id
+      };
+      
+      $.ajax({
+        type: "POST",
+        url: "https://itil-back.herokuapp.com/incident/" + incidentID + "/problem",
+        data: JSON.stringify(problem_data),
+        success: (data)=>{updateDashboard();setModalOpen(false);},
+        error: (result) => {updateDashboard();setModalOpen(false);console.log(result)},
+        dataType: "json",
+        contentType: "application/json; charset=utf-8"
+      });
+      closeModal();
+    }
   
     // close if the esc key is pressed
     useEffect(() => {
@@ -63,6 +97,7 @@ function ModalInfoIncidente({
       modalState.open //&& nameInput.current.focus();
     }, [modalState.open]);
 
+    
 
     const takeIncident =  () => {
       let incident_data = {
@@ -171,8 +206,13 @@ function ModalInfoIncidente({
 
                   <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
-                      <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Problema Asociado</header>
-                      <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{incident.problem_id}</div>
+                    <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Problema Asociado</header>
+                    {permisosByUserID(user.sub).problemas.crear ? 
+                    <><label  className="sr-only">Problema Asociado</label>
+                    <Select id="problem_id" name="problem_id" fullWidth input={<OutlinedInput label="Problema asociado" />} renderValue={ selected => selected } value={incident.problem_id} onChange={e => {assignProblem(e.target.value.id); setSelectedProblem(e.target)}} >
+                      {problems.map((c, i) => <MenuItem key={i} value={c}>{c.name}</MenuItem>)}
+                    </Select></> 
+                    : <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{incident.problem_id}</div>}
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Fecha de creacion</header>
@@ -180,9 +220,11 @@ function ModalInfoIncidente({
                     </Grid>
                   </Grid>
                   <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Elementos de configuración asociados:</header>
-                  <span className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-3 pr-4"> {
-                                incident.configurations.map((c,i) => <Chip  key={i} label={c.versions.at(-1).name} /> )} 
-                  </span>
+                  <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4"> {
+                                incident.configurations.length != 0 ? 
+                                incident.configurations.map((c,i) => <Chip  key={i} label={c.versions.at(-1).name} /> )
+                                : "-"} 
+                  </div>
 
 
                   <Grid container spacing={2}>
@@ -257,7 +299,6 @@ function ModalInfoIncidente({
         </>
       );
       } else {
-        console.log("no se dibuja");
         {
           return (
             <>

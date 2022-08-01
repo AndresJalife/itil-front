@@ -24,6 +24,9 @@ function ModalInfoProblema({
 
     const [problem, setProblem] = useState(null);
 
+    const [incidents, setIncidents] = useState(null);
+
+
     const [comments, setComments] = useState(null);
 
     const [message, setMessage] = useState('');
@@ -34,6 +37,12 @@ function ModalInfoProblema({
       ...prevState,
       ["open"]: false,
     }))
+
+    if (!incidents){
+      $.get("https://itil-back.herokuapp.com/incident", function( data, status) {  
+        setIncidents(data)
+      })
+    }
 
     const updateMessages = () => {
       $.get("https://itil-back.herokuapp.com/problem/" + problemId + "/comment", function( data, status) {
@@ -127,7 +136,7 @@ function ModalInfoProblema({
     }
 
    
-    if (problem && comments) {
+    if (problem && comments && incidents) {
       console.log(modalState.open);
       return (
         <>
@@ -205,7 +214,49 @@ function ModalInfoProblema({
                   <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{getOnlyDate(problem.created_on)}</div>             
 
                   </div>
+
+
+
+                  <div className="overflow-x-auto">
+             <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Incidentes asociados</header>
+
+            <table className="table-auto w-full">
+            
+            <thead className="text-xs font-semibold uppercase text-slate-400 bg-slate-50">
+                <tr>
+                <th className="p-2 whitespace-nowrap">
+                    <div className="font-semibold text-left">ID</div>
+                </th>
+                <th className="p-2 whitespace-nowrap">
+                    <div className="font-semibold text-left">Nombre</div>
+                </th>
+                </tr>
+            </thead>
+            {/* Table body */}
+            <tbody className="text-sm divide-y divide-slate-100">
+                {
+                
+                incidents.filter(c => c.problem_id == problemId).map(incident => {
+                    return (
+                    <tr key={incident.id}>
+                        <td className="p-2 whitespace-nowrap">
+                        <div className="text-left">{incident.id}</div>
+                        </td>
+                        <td className="p-2 whitespace-nowrap">           
+                        <div className="font-medium text-slate-800">{incident.name}</div>
+                        </td>
+                    </tr>
+                    )
+                })
+                }
+            </tbody>
+            </table>
+            </div>
+
+
                   </div>
+
+
                 </Grid>
                 <Grid item xs={12} sm={5}>
                   <div className="col-span-full xl:col-span-6 bg-white rounded-sm" style={{padding: '1%'}}>
