@@ -98,11 +98,11 @@ function MetricasGenerales({
   };
 
   return (
-    <div className="flex my-10 mx-1 ml-4 flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white shadow-lg rounded-sm border border-slate-200">
+    <div className="flex mt-10 mb-6 mx-1 ml-4 flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white shadow-lg rounded-sm border border-slate-200">
       {/* Chart built with Chart.js 3 */}
       {/* Change the height attribute to adjust the chart height */}
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={4} style={{ background: "white" }}>
+        <Grid item className="mx-4" xs={12} sm={4} style={{ background: "white" }}>
           <header className="px-4 mx-auto py-4 border-b border-slate-100"  style={{width: "auto"}}>
             <h2 style={{textAlign: "center"}} className="font-semibold py-2 text-slate-800">Incidentes</h2>
             <h2 style={{textAlign: "center"}} className="font-semibold text-slate-800">Totales: {incidentes.length}</h2>

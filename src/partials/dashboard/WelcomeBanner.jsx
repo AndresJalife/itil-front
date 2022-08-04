@@ -4,6 +4,7 @@ import $ from 'jquery';
 import LoadingData from './LoadingData';
 import MetricasGenerales from './MetricasGenerales';
 import MetricasIncidentes from './MetricasIncidentes';
+import MetricasUltimaSemana from './MetricasUltimaSemana';
 
 function WelcomeBanner() {
 
@@ -87,6 +88,7 @@ function WelcomeBanner() {
           <p>Informacion al dia de hoy</p>
         </div>
         <MetricasGenerales incidentes={incidentes} problemas={problemas} cambios={cambios}/>
+        <MetricasUltimaSemana incidentes={incidentes} problemas={problemas} cambios={cambios}/>
         <MetricasIncidentes incidentes={incidentes}/>
       </div>
     );

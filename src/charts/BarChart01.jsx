@@ -57,6 +57,9 @@ function BarChart01({
               display: false,
               drawBorder: false,
             },
+            ticks: {
+              source: 'labels'
+            },
           },
         },
         plugins: {
@@ -110,7 +113,7 @@ function BarChart01({
             box.style.height = tailwindConfig().theme.height[3];
             box.style.borderRadius = tailwindConfig().theme.borderRadius.full;
             box.style.marginRight = tailwindConfig().theme.margin[2];
-            box.style.borderWidth = '3px';
+            box.style.borderWidth = '10px';
             box.style.borderColor = item.fillStyle;
             box.style.pointerEvents = 'none';
             // Label

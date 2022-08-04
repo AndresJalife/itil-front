@@ -20,51 +20,9 @@ function MetricasIncidentes({
   }) {
   
   
-  // Grafico ultima semana
-  
-  var today = new Date();
-  var lastWeek = [
-      today.subDays(6), today.subDays(5), today.subDays(4), today.subDays(3),
-      today.subDays(2), today.subDays(1), today ];
-  var totales = lastWeek.map(
-    day => incidentes.filter(
-      i => ((new Date(i.created_on)).getDate() === day.getDate()) &&
-           ((new Date(i.created_on)).getMonth() === day.getMonth())).length
-  );
-  var sinResolver = lastWeek.map(
-    day => incidentes.filter(
-      i => ((new Date(i.created_on)).getDate() === day.getDate()) &&
-           ((new Date(i.created_on)).getMonth() === day.getMonth()) &&
-           (i.status != 'RESUELTO')).length
-  );
-
-  const chartDataUltimaSemana = {
-    labels: lastWeek,
-    datasets: [
-      // Light blue bars
-      {
-        label: 'Totales',
-        data: totales,
-        backgroundColor: tailwindConfig().theme.colors.blue[400],
-        hoverBackgroundColor: tailwindConfig().theme.colors.blue[500],
-        barPercentage: 0.66,
-        categoryPercentage: 0.66,
-      },
-      // Blue bars
-      {
-        label: 'Sin Resolver',
-        data: sinResolver,
-        backgroundColor: tailwindConfig().theme.colors.indigo[500],
-        hoverBackgroundColor: tailwindConfig().theme.colors.indigo[600],
-        barPercentage: 0.66,
-        categoryPercentage: 0.66,
-      },
-    ],
-  };
-  
-  
   // Grafico promedio por semana
   
+  var today = new Date();
   const msInWeek = 1000 * 60 * 60 * 24 * 7; 
   const firstDay = new Date('07/15/2022');
   var numberOfWeeks = Math.round(Math.abs(today - firstDay) / msInWeek);
@@ -153,10 +111,6 @@ function MetricasIncidentes({
 
   return (
     <div className="flex flex-col col-span-full sm:col-span-6 bg-white shadow-lg rounded-sm border border-slate-200">
-      <header className="px-5 py-4 border-b border-slate-100">
-        <h2 className="font-semibold text-slate-800">Nuevos incidentes en la última semana</h2>
-      </header>
-      <BarChart data={chartDataUltimaSemana} width={595} height={248} />
       
       <header className="px-5 py-4 border-b border-slate-100">
         <h2 className="font-semibold text-slate-800">Promedio de incidentes por semana</h2>
@@ -178,6 +132,7 @@ function MetricasIncidentes({
           <Chart options={chartDataHoras.options} series={chartDataHoras.series} type="heatmap" width="100%" height="248"/>
         </Grid>
       </Grid>  
+      
     </div>    
   );
 }
