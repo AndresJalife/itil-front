@@ -10,7 +10,7 @@ import { tailwindConfig, formatValue } from '../utils/Utils';
 
 Chart.register(BarController, BarElement, LinearScale, TimeScale, Tooltip, Legend);
 
-function BarChart01({
+function BarChartLabels({
   data,
   width,
   height
@@ -45,14 +45,6 @@ function BarChart01({
             },
           },
           x: {
-            type: 'time',
-            time: {
-              parser: 'MM-DD-YYYY',
-              unit: 'day',
-              displayFormats: {
-                day: 'DD MMM',
-              },
-            },
             grid: {
               display: false,
               drawBorder: false,
@@ -159,4 +151,4 @@ function BarChart01({
   );
 }
 
-export default BarChart01;
+export default BarChartLabels;
