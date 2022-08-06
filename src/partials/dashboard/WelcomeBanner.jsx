@@ -3,14 +3,16 @@ import React, { useState } from 'react';
 import $ from 'jquery'; 
 import LoadingData from './LoadingData';
 import MetricasGenerales from './MetricasGenerales';
-import MetricasIncidentes from './MetricasIncidentes';
+import MetricasIndividuales from './MetricasIndividuales';
 import MetricasUltimaSemana from './MetricasUltimaSemana';
+import MetricasConfig from './MetricasConfig';
 
 function WelcomeBanner() {
 
-  const [incidentes, setIncidentes] = useState(null)
-  const [problemas, setProblemas] = useState(null)
-  const [cambios, setCambios] = useState(null)
+  const [incidentes, setIncidentes] = useState(null);
+  const [problemas, setProblemas] = useState(null);
+  const [cambios, setCambios] = useState(null);
+  const [configuraciones, setConfiguraciones] = useState(null);
 
   if (!incidentes){
     $.get("https://itil-back.herokuapp.com/incident", function( data, status) {
@@ -36,7 +38,13 @@ function WelcomeBanner() {
     })
   }
 
-  if (incidentes && problemas && cambios) {
+  if (!configuraciones){
+    $.get("https://itil-back.herokuapp.com/config", function( data, status) {
+      setConfiguraciones(data)
+    })
+  }
+  
+  if (incidentes && problemas && cambios && configuraciones) {
     return (
       <div className="relative bg-indigo-200 p-4 sm:p-6 rounded-sm overflow-hidden mb-8">
 
@@ -89,7 +97,10 @@ function WelcomeBanner() {
         </div>
         <MetricasGenerales incidentes={incidentes} problemas={problemas} cambios={cambios}/>
         <MetricasUltimaSemana incidentes={incidentes} problemas={problemas} cambios={cambios}/>
-        <MetricasIncidentes incidentes={incidentes}/>
+        <MetricasIndividuales info={incidentes} nombre={"Incidentes"}/>
+        <MetricasIndividuales info={problemas} nombre={"Problemas"}/>
+        <MetricasIndividuales info={cambios} nombre={"Cambios"}/>
+        <MetricasConfig info={configuraciones}/>
       </div>
     );
   } else {

@@ -13,7 +13,8 @@ Chart.register(BarController, BarElement, LinearScale, TimeScale, Tooltip, Legen
 function BarChart01({
   data,
   width,
-  height
+  height,
+  unit_time
 }) {
 
   const canvas = useRef(null);
@@ -48,9 +49,10 @@ function BarChart01({
             type: 'time',
             time: {
               parser: 'MM-DD-YYYY',
-              unit: 'day',
+              unit: unit_time? unit_time: 'day',
               displayFormats: {
                 day: 'DD MMM',
+                month: 'MM YYYY'
               },
             },
             grid: {
