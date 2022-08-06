@@ -15,7 +15,8 @@ function ModalInfoConfHardware({
     modalState,
     setModalState,
     itemID,
-    updateDashboard
+    updateDashboard,
+    enableVersionChange
   }) {
 
   const [item, setItem] = useState(null);
@@ -157,14 +158,14 @@ function ModalInfoConfHardware({
                            
                   <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2" style={{display:'flex', justifyContent:'space-between'}}>
                     <h2 className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Version actual</h2>
-                    <Button onClick={(e) => { e.stopPropagation(); setCreateModalOpen(true);}}>Nueva version</Button>  
+                    {enableVersionChange? <Button onClick={(e) => { e.stopPropagation(); setCreateModalOpen(true);}}>Nueva version</Button>  : ""}
                   </header>
                   <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.version_number}</div>
   
                   <div className="collapsible">
                     <div className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2" {...getToggleProps()}>
                         {isExpanded ? 'Versiones anteriores  ▽' : 'Versiones anteriores  ▼'} </div>
-                    <div {...getCollapseProps()}> <ItemVersions itemID={itemID} updateDashboard={closeModal} /> </div>
+                    <div {...getCollapseProps()}> <ItemVersions itemID={itemID} updateDashboard={closeModal} enableVersionChange={enableVersionChange} /> </div>
                  </div>                                                  
                        
                  <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2"> </header>

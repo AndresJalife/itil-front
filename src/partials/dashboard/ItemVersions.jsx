@@ -9,7 +9,10 @@ import AvTimerIcon from '@mui/icons-material/AvTimer';
 
 function ItemVersions({
   itemID,
-  updateDashboard
+  updateDashboard,
+  enableVersionChange,
+  update,
+  setUpdated,
   }) {
     const [loadedID, setLoadedID] = useState(null)
 
@@ -52,7 +55,7 @@ function ItemVersions({
         if (response.ok){
           swal.fire({
             title: "Se cambió de versión exitosamente",
-            icon: "success"});
+            icon: "success"}).then(setVersions(null));
 
           updateDashboard();
         } else {
@@ -92,9 +95,10 @@ function ItemVersions({
                 <th className="p-2 whitespace-nowrap">
                     <div className="font-semibold text-left">Nombre</div>
                 </th>
-                <th className="p-2 whitespace-nowrap">
+                {enableVersionChange? <th className="p-2 whitespace-nowrap">
                     <div className="font-semibold text-left">Rollback</div>
-                </th>
+                </th>: ""}
+
                 </tr>
             </thead>
             {/* Table body */}
@@ -114,11 +118,11 @@ function ItemVersions({
                         <div className="font-medium text-slate-800">{version.name}</div>
                         </td>
 
-                        <td className="p-2 whitespace-nowrap">
+                        {enableVersionChange? <td className="p-2 whitespace-nowrap">
                         <div className="font-medium text-slate-800">
                             <Button onClick={() => handleClickButton(version)} ><AccessTimeIcon></AccessTimeIcon></Button>
                             </div>
-                        </td>
+                        </td> : ""}
 
                     </tr>
                     )

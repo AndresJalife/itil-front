@@ -166,7 +166,7 @@ function ModalInfoProblema({
             leaveStart="opacity-100 translate-y-0"
             leaveEnd="opacity-0 translate-y-4"
           >
-            <div id="apareceonoaparece" className="bg-white overflow-auto max-w-4xl w-full max-h-full rounded shadow-lg">
+            <div className="bg-white overflow-auto max-w-4xl w-full max-h-full rounded shadow-lg">
               {/* Search form */}
 
               <Grid container>
@@ -218,43 +218,43 @@ function ModalInfoProblema({
 
 
                   <div className="overflow-x-auto">
-             <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Incidentes asociados</header>
+                  <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Incidentes asociados</header>
 
-            <table className="table-auto w-full">
-            
-            <thead className="text-xs font-semibold uppercase text-slate-400 bg-slate-50">
-                <tr>
-                <th className="p-2 whitespace-nowrap">
-                    <div className="font-semibold text-left">ID</div>
-                </th>
-                <th className="p-2 whitespace-nowrap">
-                    <div className="font-semibold text-left">Nombre</div>
-                </th>
-                </tr>
-            </thead>
-            {/* Table body */}
-            <tbody className="text-sm divide-y divide-slate-100">
-                {
-                
-                incidents.filter(c => c.problem_id == problemId).map(incident => {
-                    return (
-                    <tr key={incident.id}>
-                        <td className="p-2 whitespace-nowrap">
-                        <div className="text-left">{incident.id}</div>
-                        </td>
-                        <td className="p-2 whitespace-nowrap">           
-                        <div className="font-medium text-slate-800">{incident.name}</div>
-                        </td>
-                    </tr>
-                    )
-                })
-                }
-            </tbody>
-            </table>
-            </div>
-
-
+                    <table className="table-auto w-full">
+                  
+                      <thead className="text-xs font-semibold uppercase text-slate-400 bg-slate-50">
+                        <tr>
+                        <th className="p-2 whitespace-nowrap">
+                            <div className="font-semibold text-left">ID</div>
+                        </th>
+                        <th className="p-2 whitespace-nowrap">
+                            <div className="font-semibold text-left">Nombre</div>
+                        </th>
+                        </tr>
+                      </thead>
+                      {/* Table body */}
+                      <tbody className="text-sm divide-y divide-slate-100">
+                          {
+                          
+                          incidents.filter(c => c.problem_id == problemId).map(incident => {
+                              return (
+                              <tr key={incident.id}>
+                                  <td className="p-2 whitespace-nowrap">
+                                  <div className="text-left">{incident.id}</div>
+                                  </td>
+                                  <td className="p-2 whitespace-nowrap">           
+                                  <div className="font-medium text-slate-800">{incident.name}</div>
+                                  </td>
+                              </tr>
+                              )
+                          })
+                          }
+                      </tbody>
+                    </table>
                   </div>
+
+
+            </div>
 
 
                 </Grid>

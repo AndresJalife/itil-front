@@ -74,7 +74,7 @@ function DashboardConfSLA() {
         <h2 className="font-semibold text-slate-800">Configuracion de SLA</h2>
         <CustomButton  className={permisosByUserID(user.sub).configuracion.crear ? null : "d-none"} onClick={(e) => { e.stopPropagation(); setCreateModalOpen(true);}}>+ Nuevo </CustomButton>  
         <ModalCrearConfSLA id="create-confsoft-modal"  oldVersionItem={false} item={null} modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} updateDashboard={updateDashboard} />
-        <ModalInfoConfSLA id="info-software-modal" modalState={infoModalState} setModalState={setInfoModalState} itemID={itemId} updateDashboard={updateDashboard}/>
+        <ModalInfoConfSLA id="info-software-modal" enableVersionChange={false}  modalState={infoModalState} setModalState={setInfoModalState} itemID={itemId} updateDashboard={updateDashboard}/>
       </header>
       
       <div>

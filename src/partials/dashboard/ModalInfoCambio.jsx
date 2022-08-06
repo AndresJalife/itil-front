@@ -6,9 +6,13 @@ import MessageButton from './MessageButton';
 import $, { data } from 'jquery'
 
 import useUser from '../useUser';
-import {Alert, Button, FormControl, InputLabel, MenuItem, OutlinedInput, Select, Grid} from '@mui/material';
+import {Alert, Button, FormControl, InputLabel, MenuItem, OutlinedInput, Select, Grid, IconButton} from '@mui/material';
   
 import { userIDToName, simplifyDate, getOnlyDate, permisosByUserID } from '../../utils/Utils';
+import ModalInfoConfSoftware from './ModalInfoConfSoftware';
+import ModalInfoConfHardware from './ModalInfoConfHardware';
+import ModalInfoConfSLA from './ModalInfoConfSLA';
+import { DataSaverOn } from '@mui/icons-material';
 
 function ModalInfoCambio({
     id,
@@ -29,6 +33,11 @@ function ModalInfoCambio({
     const closeModal = () => setModalState(prevState => ({
       ...prevState,
       ["open"]: false,
+    }))
+
+    const updateModal = () => setModalState(prevState => ({
+      ...prevState,
+      ["update"]: true,
     }))
 
     const updateMessages = () => {
@@ -120,11 +129,22 @@ function ModalInfoCambio({
         
     }
 
-    
+
+    const [itemId, setItemId] = useState(null)
+    const [infoModalSoftState, setInfoModalSoftState] = useState({"open": false, "update": false})
+    const [infoModalHardState, setInfoModalHardState] = useState({"open": false, "update": false})
+    const [infoModalSlaState, setInfoModalSlaState] = useState({"open": false, "update": false})
+
+  
+
+    console.log(change)
     if (change && comments) {
       console.log(modalState.open);
       return (
         <>
+        
+
+
           {/* Modal backdrop */}
           <Transition
             className="fixed inset-0 bg-slate-900 bg-opacity-10 z-50 transition-opacity"
@@ -161,12 +181,22 @@ function ModalInfoCambio({
                     <h2 className="font-semibold text-slate-800 ">Informacion del cambio</h2></header>
 
                   <div className="border-slate-200">
-
+                  <Grid container spacing={2}>
+                  <Grid item xs={12} sm={6}>                  
                   <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Nombre</header>
                   <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{change.name}</div>
+                  </Grid>
 
+                  <Grid item xs={12} sm={6}>
+                  <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Fecha de creacion</header>
+                      <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{getOnlyDate(change.created_on)}</div>
+                  </Grid>
+
+                  </Grid>
                   <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Descripcion</header>
                   <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{change.description}</div>
+
+
 
                   <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
@@ -174,8 +204,8 @@ function ModalInfoCambio({
                       <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{change.problem_id}</div>
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                      <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Fecha de creacion</header>
-                      <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{getOnlyDate(change.created_on)}</div>
+                      <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Incidente Asociado</header>
+                      <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{change.incident_id}</div>
                     </Grid>
                   </Grid>
                   <Grid container>
@@ -200,11 +230,66 @@ function ModalInfoCambio({
                     <Grid item xs={12} sm={6}>
                     <header style={{display:'flex', justifyContent:'space-between'}}>
                         <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Estado</header>
-                        <Button disabled={(permisosByUserID(user.sub).tomaroresolver == false )  || change.status != 'tomado'}onClick={(e) => { e.stopPropagation(); solveChange();}}>Resolver</Button>  
+                        <Button disabled={(permisosByUserID(user.sub).tomaroresolver == false )  || change.status != 'tomado' || user.sub != change.taken_by_id}onClick={(e) => { e.stopPropagation(); solveChange()}}>Resolver</Button>  
                       </header>
                         <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{change.status}</div>         
                     </Grid>
                   </Grid>
+
+                  {change.incident && (change.incident.configurations.length>0) ? <div className="overflow-x-auto">
+                  <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Elementos de configuración relacionados</header>
+
+                     <table className="table-auto w-full">
+                  
+                      <thead className="text-xs font-semibold uppercase text-slate-400 bg-slate-50">
+                        <tr>
+                          <th className="p-2 whitespace-nowrap">
+                              <div className="font-semibold text-left">ID</div>
+                          </th>
+                          <th className="p-2 whitespace-nowrap">
+                              <div className="font-semibold text-left">Nombre</div>
+                          </th>
+                          <th className="p-2 whitespace-nowrap">
+                              <div className="font-semibold text-center">Detalle / Acciones</div>
+                          </th>
+                        </tr>
+                      </thead>
+                      {/* Table body */}
+                      <tbody className="text-sm divide-y divide-slate-100">
+                          {
+                          
+                          change.incident.configurations.map(c => {
+                              return (
+                              <tr key={c.id}>
+                                  <td className="p-2 whitespace-nowrap">
+                                  <div className="text-left">{c.id}</div>
+                                  </td>
+                                  <td className="p-2 whitespace-nowrap">           
+                                  <div className="font-medium text-slate-800">{c.versions.filter((x)=> x.version_number == c.current_version)[0].name}</div>
+                                  </td>
+                                  <td className="p-2 whitespace-nowrap">           
+                                    <div className="font-medium text-center text-slate-800"><IconButton onClick={(e) => { 
+                                                                                                                  e.stopPropagation(); setItemId(c.id); 
+                                                                                                                  console.log(c);
+                                                                                                                  switch (c.versions[0].config_type){
+                                                                                                                    case 'software':
+                                                                                                                      setInfoModalSoftState({"open": true, "update": true});
+                                                                                                                    break;
+                                                                                                                    case 'hardware':
+                                                                                                                      setInfoModalHardState({"open": true, "update": true});
+                                                                                                                    break;
+                                                                                                                    case 'sla':
+                                                                                                                      setInfoModalSlaState({"open": true, "update": true});
+                                                                                                                    break;
+                                                                                                                  }}}><DataSaverOn variant="text" /></IconButton></div>
+                                  </td>
+                              </tr>
+                              )
+                          })
+                          }
+                      </tbody>
+                    </table>
+                  </div>: <h className="p-2 whitespace-nowrap"><div className="text-center">No hay elementos de config relacionados</div></h>}
                   
                   </div>
                   </div>
@@ -238,6 +323,10 @@ function ModalInfoCambio({
                   <Button variant="text" onClick={closeModal}>Salir</Button>
                 </div>
             </div>
+
+        <ModalInfoConfHardware id="info-hardware-modal" enableVersionChange={(permisosByUserID(user.sub).tomaroresolver)  && change.status == 'tomado' && user.sub == change.taken_by_id}  modalState={infoModalHardState} setModalState={setInfoModalHardState} itemID={itemId} updateDashboard={updateModal}/>
+        <ModalInfoConfSoftware id="info-hardware-modal" enableVersionChange={(permisosByUserID(user.sub).tomaroresolver )  && change.status == 'tomado' && user.sub == change.taken_by_id}  modalState={infoModalSoftState} setModalState={setInfoModalSoftState} itemID={itemId} updateDashboard={updateModal}/>
+        <ModalInfoConfSLA id="info-hardware-modal" enableVersionChange={(permisosByUserID(user.sub).tomaroresolver )  && change.status == 'tomado' && user.sub == change.taken_by_id}  modalState={infoModalSlaState} setModalState={setInfoModalSlaState} itemID={itemId} updateDashboard={updateModal}/>
           </Transition>
         </>
       );

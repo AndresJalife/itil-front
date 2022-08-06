@@ -74,7 +74,7 @@ function DashboardConfHardware() {
         <h2 className="font-semibold text-slate-800">Configuracion de Hardware</h2>
         <CustomButton  className={permisosByUserID(user.sub).configuracion.crear ? null : "d-none"} onClick={(e) => { e.stopPropagation(); setCreateModalOpen(true);}}>+ Nuevo </CustomButton>  
         <ModalCrearConfHardware id="create-confhard-modal"  oldVersionItem={false} item={null} modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} updateDashboard={updateDashboard} />
-        <ModalInfoConfHardware id="info-hardware-modal" modalState={infoModalState} setModalState={setInfoModalState} itemID={itemId} updateDashboard={updateDashboard}/>
+        <ModalInfoConfHardware id="info-hardware-modal" enableVersionChange={false} modalState={infoModalState} setModalState={setInfoModalState} itemID={itemId} updateDashboard={updateDashboard}/>
       </header>
       
       <div>
