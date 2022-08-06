@@ -64,21 +64,8 @@ function ModalInfoConfHardware({
   }, [modalState.open]);
 
 
-  const versionado___ =  () => {
-    $.ajax({
-      type: "POST",
-      url: "https://itil-back.herokuapp.com/config/" + itemID + "/solve",
-      success: (data)=>{setModalOpen(false);},
-      error: (result) => {console.log(result)},
-      dataType: "json",
-      contentType: "application/json; charset=utf-8"
-    });
-    updateDashboard();
-    closeModal();
-  }
-
   if (item) {
-    console.log(modalState.open);
+    console.log(item);
     return (
       <>
         {/* Modal backdrop */}
@@ -108,7 +95,6 @@ function ModalInfoConfHardware({
           leaveEnd="opacity-0 translate-y-4"
         >
         
-        <ModalCrearConfHardware id="update-confsoft-modal" oldVersionItem={true} item={item} modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} updateDashboard={updateInfo} />
 
           <div id="apareceonoaparece" className="bg-white overflow-auto max-w-2xl w-full max-h-full rounded shadow-lg">
             {/* Search form */}
@@ -155,18 +141,11 @@ function ModalInfoConfHardware({
                      <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{getOnlyDate(item.installation_date)}</div>
                    </Grid>
                  </Grid>    
-                           
-                  <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2" style={{display:'flex', justifyContent:'space-between'}}>
-                    <h2 className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Version actual</h2>
-                    {enableVersionChange? <Button onClick={(e) => { e.stopPropagation(); setCreateModalOpen(true);}}>Nueva version</Button>  : ""}
-                  </header>
-                  <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.version_number}</div>
-  
-                  <div className="collapsible">
-                    <div className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2" {...getToggleProps()}>
-                        {isExpanded ? 'Versiones anteriores  ▽' : 'Versiones anteriores  ▼'} </div>
-                    <div {...getCollapseProps()}> <ItemVersions itemID={itemID} updateDashboard={closeModal} enableVersionChange={enableVersionChange} /> </div>
-                 </div>                                                  
+
+
+                 <ItemVersions itemID={itemID} type={item.config_type}  enableVersionChange={enableVersionChange} 
+                  oldVersionItem={true} item={item} modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} updateDashboard={updateInfo}
+                  />                                       
                        
                  <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2"> </header>
                  <div className="bg-slate-50" style={{width:"100%", display:"flex", justifyContent:"space-around", paddingBottom: "10px", paddingTop: "10px"}}>
@@ -179,7 +158,6 @@ function ModalInfoConfHardware({
       </>
     );
     } else {
-      console.log("no se dibuja");
       {
         return (
           <>

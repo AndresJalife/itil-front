@@ -6,17 +6,29 @@ import swal from 'sweetalert2';
 
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import AvTimerIcon from '@mui/icons-material/AvTimer';
+import ModalCrearConfHardware from "./ModalCrearConfHardware";
+import ModalCrearConfSoftware from "./ModalCrearConfSoftware";
+import ModalCrearConfSLA from "./ModalCrearConfSLA";
+import useCollapse from "react-collapsed";
 
 function ItemVersions({
   itemID,
   updateDashboard,
   enableVersionChange,
-  update,
-  setUpdated,
+  type,
+  oldVersionItem,item,modalOpen,setModalOpen
   }) {
     const [loadedID, setLoadedID] = useState(null)
 
     const [versions, setVersions] = useState(null)
+
+    const [createModalSoftOpen, setCreateModalSoftOpen] = useState(false)
+    const [createModalHardOpen, setCreateModalHardOpen] = useState(false)
+    const [createModalSlaOpen, setCreateModalSlaOpen] = useState(false)
+
+    const { getCollapseProps, getToggleProps, isExpanded } = useCollapse({defaultExpanded: true, duration: 200});
+
+
     
     const handleClickButton = (new_version) => {
       
@@ -80,8 +92,26 @@ function ItemVersions({
     }
 
     if (versions) {
-        return (
-            <div className="overflow-x-auto">
+        return (<>
+          <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2" style={{display:'flex', justifyContent:'space-between'}}>
+          <h2 className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Version actual</h2>
+          {enableVersionChange? <Button onClick={(e) => { e.stopPropagation(); switch (type){
+                                                                                        case 'software':
+                                                                                          setCreateModalSoftOpen(true);
+                                                                                        break;
+                                                                                        case 'hardware':
+                                                                                          setCreateModalHardOpen(true);
+                                                                                        break;
+                                                                                        case 'SLA':
+                                                                                          setCreateModalSlaOpen(true);
+                                                                                        break;}}}>Nueva version</Button>  : ""}
+        </header>
+        <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.version_number}</div>
+
+        <div className="collapsible">
+          <div className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2" {...getToggleProps()}>
+              {isExpanded ? 'Versiones anteriores  ▽' : 'Versiones anteriores  ▼'} </div>
+          <div {...getCollapseProps()}> <div className="overflow-x-auto">
             <table className="table-auto w-full">
             {/* Table header */}
             <thead className="text-xs font-semibold uppercase text-slate-400 bg-slate-50">
@@ -131,6 +161,14 @@ function ItemVersions({
             </tbody>
             </table>
             </div>
+            </div>
+
+            <ModalCrearConfHardware oldVersionItem={oldVersionItem} item={item} modalOpen={createModalHardOpen} setModalOpen={setCreateModalHardOpen} updateDashboard={() => {setVersions(null); updateDashboard()}} />
+            <ModalCrearConfSLA  oldVersionItem={oldVersionItem} item={item} modalOpen={createModalSlaOpen} setModalOpen={setCreateModalSlaOpen} updateDashboard={() => {setVersions(null); updateDashboard()}} />
+            <ModalCrearConfSoftware  oldVersionItem={oldVersionItem} item={item} modalOpen={createModalSoftOpen} setModalOpen={setCreateModalSoftOpen} updateDashboard={() => {setVersions(null); updateDashboard()}} />
+
+       </div>           
+       </>
     )
     }
     else {

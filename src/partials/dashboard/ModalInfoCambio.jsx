@@ -278,7 +278,7 @@ function ModalInfoCambio({
                                                                                                                     case 'hardware':
                                                                                                                       setInfoModalHardState({"open": true, "update": true});
                                                                                                                     break;
-                                                                                                                    case 'sla':
+                                                                                                                    case 'SLA':
                                                                                                                       setInfoModalSlaState({"open": true, "update": true});
                                                                                                                     break;
                                                                                                                   }}}><DataSaverOn variant="text" /></IconButton></div>

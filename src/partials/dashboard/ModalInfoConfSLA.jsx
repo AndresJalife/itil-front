@@ -107,7 +107,6 @@ function ModalInfoConfSLA({
           leaveEnd="opacity-0 translate-y-4"
         >
         
-        <ModalCrearConfSLA id="update-confsla-modal" oldVersionItem={true} item={item} modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} updateDashboard={updateInfo} />
         
           <div id="apareceonoaparece" className="bg-white overflow-auto max-w-2xl w-full max-h-full rounded shadow-lg">
             {/* Search form */}
@@ -144,20 +143,11 @@ function ModalInfoConfSLA({
                      <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.crucial ? "Si" : "No"}</div>
                    </Grid>
                   
-                   <Grid item xs={12} sm={6}>
-                    <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2" style={{display:'flex', justifyContent:'space-between'}}>
-                      <h2 className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Version actual</h2>
-                      {enableVersionChange ? <Button onClick={(e) => { e.stopPropagation(); setCreateModalOpen(true);}}>Nueva version</Button> :""}
-                    </header>
-                    <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.version_number}</div>
-                  </Grid>
                  </Grid>
   
-                  <div className="collapsible">
-                    <div className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2" {...getToggleProps()}>
-                        {isExpanded ? 'Versiones anteriores  ▽' : 'Versiones anteriores  ▼'} </div>
-                    <div {...getCollapseProps()}> <ItemVersions itemID={itemID} updateDashboard={closeModal} enableVersionChange={enableVersionChange}/> </div>
-                 </div>
+                 <ItemVersions itemID={itemID} type={item.config_type}  enableVersionChange={enableVersionChange} 
+                  oldVersionItem={true} item={item} modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} updateDashboard={updateInfo}
+                  />     
                    
                  <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2"> </header>
                  <div className="bg-slate-50" style={{width:"100%", display:"flex", justifyContent:"space-around", paddingBottom: "10px", paddingTop: "10px"}}>

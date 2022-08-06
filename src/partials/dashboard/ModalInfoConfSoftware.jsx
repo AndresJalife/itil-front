@@ -20,7 +20,6 @@ function ModalInfoConfSoftware({
 
   const [item, setItem] = useState(null);
   const {user, isAdmin, isSupport} = useUser();
-  const { getCollapseProps, getToggleProps, isExpanded } = useCollapse({duration: 200});
   const [createModalOpen, setCreateModalOpen] = useState(false)
   
   const closeModal = () => {
@@ -93,8 +92,6 @@ function ModalInfoConfSoftware({
           leaveStart="opacity-100 translate-y-0"
           leaveEnd="opacity-0 translate-y-4"
         >
-        
-        <ModalCrearConfSoftware id="update-confsoft-modal" oldVersionItem={true} item={item} modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} updateDashboard={updateInfo} />
 
           <div id="apareceonoaparece" className="bg-white overflow-auto max-w-2xl w-full max-h-full rounded shadow-lg">
             {/* Search form */}
@@ -116,17 +113,11 @@ function ModalInfoConfSoftware({
                  <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Fecha de aceptacion</header>
                  <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{getOnlyDate(item.acceptance_date)}</div>
 
-                  <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2" style={{display:'flex', justifyContent:'space-between'}}>
-                    <h2 className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Version actual</h2>
-                    {enableVersionChange ? <Button  onClick={(e) => { e.stopPropagation(); setCreateModalOpen(true);}}>Nueva version</Button>  :""}
-                  </header>
-                  <div className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4">{item.version_number}</div>
+                
   
-                  <div className="collapsible">
-                    <div className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2" {...getToggleProps()}>
-                        {isExpanded ? 'Versiones anteriores  ▽' : 'Versiones anteriores  ▼'} </div>
-                    <div {...getCollapseProps()}> <ItemVersions itemID={itemID} updateDashboard={closeModal} enableVersionChange={enableVersionChange} /> </div>
-                 </div>
+                  <ItemVersions itemID={itemID} type={item.config_type}  enableVersionChange={enableVersionChange} 
+                  oldVersionItem={true} item={item} modalOpen={createModalOpen} setModalOpen={setCreateModalOpen} updateDashboard={updateInfo}
+                  />     
                  
                  
                  <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2"> </header>
