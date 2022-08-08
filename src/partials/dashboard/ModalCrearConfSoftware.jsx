@@ -129,19 +129,19 @@ function ModalCrearConfSoftware({
           {/* <input id={searchId} */}
               <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Nombre</header>
               <label  className="sr-only">Nombre</label>
-              <input name="name" defaultValue={oldVersionItem? item.name: 'Nombre...'} className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text"/>
+              <input name="name" defaultValue={oldVersionItem? item.name: ''} placeholder='Nombre...' className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text"/>
               
               <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Tipo</header>
               <label  className="sr-only">Tipo</label>
-              <input name="type" defaultValue={oldVersionItem? item.type: 'Tipo...'} className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" />
+              <input name="type" defaultValue={oldVersionItem? item.type: ''} placeholder='Tipo...' className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" />
 
               <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Proveedor</header>
               <label  className="sr-only">Proveedor</label>
-              <input name="provider" defaultValue={oldVersionItem? item.provider: 'Proveedor...'} className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" />
+              <input name="provider" defaultValue={oldVersionItem? item.provider: ''} placeholder='Proveedor...' className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" />
                        
               <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Licencias</header>
               <label  className="sr-only">Licencias</label>
-              <input name="licences" defaultValue={oldVersionItem? item.licences: 'Licencias...'} className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" />
+              <input name="licences" defaultValue={oldVersionItem? item.licences: ''} placeholder='Licencias...' className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" />
                    
               <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Fecha de aceptacion</header>
               <label  className="sr-only">Fecha de aceptacion</label>

@@ -136,15 +136,15 @@ function ModalCrearConfSLA({
           {/* <input id={searchId} */}
               <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Nombre</header>
               <label  className="sr-only">Nombre</label>
-              <input name="name" defaultValue={oldVersionItem? item.name: 'Nombre...'} className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text"/>
+              <input name="name" defaultValue={oldVersionItem? item.name: ''} placeholder="Nombre..."  className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text"/>
               
               <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Servicio</header>
               <label  className="sr-only">Servicio</label>
-              <input name="service" defaultValue={oldVersionItem? item.service: 'Servicio...'} className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" />
+              <input name="service" defaultValue={oldVersionItem? item.service: ''} placeholder="Servicio..."  className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" />
 
               <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Gerente del servicio</header>
               <label  className="sr-only">Gerente del servicio</label>
-              <input name="service_manager" defaultValue={oldVersionItem? item.service_manager: 'Gerente...'} className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" />
+              <input name="service_manager" defaultValue={oldVersionItem? item.service_manager: ''} placeholder="Gerente..."  className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" />
                        
               <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Crucial</header>
               <label htmlFor="crucial" className="sr-only">Crucial</label>

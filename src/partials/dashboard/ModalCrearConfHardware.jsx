@@ -131,31 +131,31 @@ import {Alert, Button,FormControl, InputLabel, MenuItem, OutlinedInput, Select, 
             {/* <input id={searchId} */}
                 <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Nombre</header>
                 <label  className="sr-only">Nombre</label>
-                <input name="name" defaultValue={oldVersionItem? item.name: 'Nombre...'}  className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Nombre…" />
+                <input name="name" defaultValue={oldVersionItem? item.name: ''}  className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Nombre…" />
                 
                 <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Tipo</header>
                 <label  className="sr-only">Tipo</label>
-                <input name="type" defaultValue={oldVersionItem? item.type: 'Tipo...'} className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Tipo…"  />
+                <input name="type" defaultValue={oldVersionItem? item.type: ''} className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Tipo…"  />
   
                 <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Localizacion</header>
                 <label  className="sr-only">Localizacion</label>
-                <input name="location" defaultValue={oldVersionItem? item.location: 'Locacion...'} className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Localizacion…"  />
+                <input name="location" defaultValue={oldVersionItem? item.location: ''} className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Localizacion…"  />
                          
                 <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Proveedor</header>
                 <label  className="sr-only">Proveedor</label>
-                <input name="provider" defaultValue={oldVersionItem? item.provider: 'Proveedor...'} className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Proveedor…"  />
+                <input name="provider" defaultValue={oldVersionItem? item.provider: ''} className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Proveedor…"  />
                   
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={6}>
                     <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Numero de serie</header>
                     <label  className="sr-only">Numero de serie</label>
-                    <input name="serial_number" defaultValue={oldVersionItem? item.serial_number: 'Numero de serie...'} className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Numero de serie…"  />
+                    <input name="serial_number" defaultValue={oldVersionItem? item.serial_number: ''} className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Numero de serie…"  />
                   </Grid>
                   
                   <Grid item xs={12} sm={6}>
                     <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Fecha de instalacion</header>
                     <label  className="sr-only">Fecha de instalacion</label>
-                    <Datetime inputProps={{className:'datetime'}} dateFormat="DD-MM-YYYY" timeFormat={false} value={installationDate} onChange={(e) => setInstallationDate(e)} closeOnSelect='true' className="text-xs uppercase"/>
+                    <Datetime inputProps={{className:'datetime'}} dateFormat="" timeFormat={false} value={installationDate} onChange={(e) => setInstallationDate(e)} closeOnSelect='true' className="text-xs uppercase"/>
                   </Grid>
                 </Grid>
 
@@ -163,13 +163,13 @@ import {Alert, Button,FormControl, InputLabel, MenuItem, OutlinedInput, Select, 
                   <Grid item xs={12} sm={6}>
                     <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Precio ($)</header>
                     <label  className="sr-only">Precio</label>
-                    <input name="price" defaultValue={oldVersionItem? item.price: 'Precio...'}  onKeyPress={(event) => { if (!/[0-9]/.test(event.key)) { event.preventDefault();}}}  type="number" className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Precio…"  />
+                    <input name="price" defaultValue={oldVersionItem? item.price: ''}  onKeyPress={(event) => { if (!/[0-9]/.test(event.key)) { event.preventDefault();}}}  type="number" className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Precio…"  />
                   </Grid>
                       
                   <Grid item xs={12} sm={6}>
                     <header className="text-xs uppercase text-slate-400 bg-slate-50 rounded-sm font-semibold p-2">Capacidad (GB)</header>
                     <label  className="sr-only">Capacidad</label>
-                    <input name="capacity" defaultValue={oldVersionItem? item.capacity: 'Capacidad...'} onKeyPress={(event) => { if (!/[0-9]/.test(event.key)) { event.preventDefault();}}} className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Capacidad…"  />
+                    <input name="capacity" defaultValue={oldVersionItem? item.capacity: ''} onKeyPress={(event) => { if (!/[0-9]/.test(event.key)) { event.preventDefault();}}} className="w-full border-0 focus:ring-transparent placeholder-slate-400 appearance-none py-3 pl-10 pr-4" type="text" placeholder="Capacidad…"  />
                   </Grid>
                 </Grid>      
 
